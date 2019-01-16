@@ -34,6 +34,9 @@
       @blur="onBlur"
       @click="$emit('click')"
     >
+    <div class="country-selector-arrow">
+      ▼
+    </div>
     <label
       ref="label"
       :for="id"
@@ -48,7 +51,6 @@
       v-if="isFocus"
       class="country-list"
     >
-      <input type="text">
       <div
         v-for="item in items"
         :key="item.code"
@@ -56,7 +58,7 @@
         class="flex country-list-item"
         @click.stop="updateValue(item.iso2)"
       >
-        <div class="flag-container mr-2">
+        <div class="flag-container">
           <img
             :class="`flag-small flag flag-${item.iso2.toLowerCase()}`"
             :alt="item.iso2"
@@ -147,6 +149,7 @@
           color: #000;
         }
       }
+      
     }
     .field-country-flag {
       margin: auto 0;
@@ -179,7 +182,7 @@
       width: 100%;
       height: 42px;
       min-height: 42px;
-      padding-right: 10px;
+      padding-right: 18px;
       padding-left: 40px;
       font-weight: 400;
       -webkit-appearance: none;
@@ -188,6 +191,15 @@
       border-radius: 4px;
       font-size: 14px;
       z-index: 0;
+    }
+    &-arrow {
+      position: absolute;
+      right: 0;
+      bottom: 10px;
+      width: 25px;
+      color: #424242;
+      transition: all .25s cubic-bezier(.645,.045,.355,1);
+      font-size: 15px;
     }
     &.has-error {
       .field-input {
@@ -211,6 +223,9 @@
       }
       .field-label {
         color: dodgerblue;
+      }
+      .country-selector-arrow {
+        transform: rotate(180deg)
       }
     }
     &.is-disabled {
@@ -313,8 +328,7 @@
       border-radius: 4px;
       width: 100%;
       min-width: 230px;
-      -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-      box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
       &-item {
         padding: 5px 10px;
         text-overflow: ellipsis;
@@ -327,6 +341,9 @@
         &.selected {
           background: dodgerblue;
           color: #FFF;
+        }
+        .flag-container {
+          margin-right: 10px;
         }
       }
     }
