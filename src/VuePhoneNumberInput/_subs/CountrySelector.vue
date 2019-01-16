@@ -149,7 +149,7 @@
           color: #000;
         }
       }
-      
+
     }
     .field-country-flag {
       margin: auto 0;
@@ -168,7 +168,6 @@
       -webkit-transform: translateY(25%);
       transform: translateY(25%);
       opacity: 0;
-      -webkit-transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
       color: rgba(0, 0, 0, 0.54);
@@ -176,8 +175,7 @@
     .field-input{
       cursor: pointer;
       background-color: transparent;
-      -webkit-transition-duration: 0.3s;
-      transition-duration: 0.3s;
+      transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       position: relative;
       width: 100%;
       height: 42px;
@@ -198,8 +196,10 @@
       bottom: 10px;
       width: 25px;
       color: #424242;
-      transition: all .25s cubic-bezier(.645,.045,.355,1);
+      transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 15px;
+      transform: scaleY(.5);
+      display: inline-block;
     }
     &.has-error {
       .field-input {
@@ -225,7 +225,7 @@
         color: dodgerblue;
       }
       .country-selector-arrow {
-        transform: rotate(180deg)
+        transform: scaleY(.5) rotate(180deg);
       }
     }
     &.is-disabled {

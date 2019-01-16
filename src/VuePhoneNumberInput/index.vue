@@ -1,9 +1,14 @@
 <template>
-  <div class="vue-phone-number-input flex">
+  <div
+    :class="{ 'dark': dark }"
+    class="vue-phone-number-input flex"
+  >
     <div class="select-country-container">
       <SelectCountry
         v-model="codeCountry"
         :items="codesCountries"
+        :color="color"
+        :dark="dark"
         label="Country Code"
         class="input-country-selector"
       />
@@ -14,6 +19,8 @@
         label="Phone number"
         :error="!numberIsValid"
         :hint="codeCountry ? phoneNumberHint : 'Choose country'"
+        :color="color"
+        :dark="dark"
         class="input-phone-number"
       />
     </div>
@@ -34,7 +41,9 @@
       SelectCountry
     },
     props: {
-      value: { type: Object, default: Object }
+      value: { type: Object, default: Object },
+      color: { type: String, default: String },
+      dark: { type: Boolean, default: Boolean }
     },
     data () {
       return {
@@ -138,7 +147,11 @@
     .input-phone-number input {
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
-      background-color: transparent !important;
+    }
+    &:not(.dark) {
+      .input-phone-number input {
+        background-color: transparent !important;
+      }
     }
   }
 </style>

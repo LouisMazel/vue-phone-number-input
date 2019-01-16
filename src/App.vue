@@ -1,7 +1,17 @@
 <template>
   <div id="app">
     <h1>VuePhoneNumberInput</h1>
-    <VuePhoneNumberInput v-model="value" />
+    <button
+      class="btn"
+      @click="dark = !dark"
+    >
+      Enable Dark Mode
+    </button>
+    <VuePhoneNumberInput
+      v-model="value"
+      color="purple"
+      :dark="dark"
+    />
   </div>
 </template>
 
@@ -18,7 +28,8 @@
         value: {
           code: 'FR',
           phoneNumber: '0658584729'
-        }
+        },
+        dark: false
       }
     }
   }
