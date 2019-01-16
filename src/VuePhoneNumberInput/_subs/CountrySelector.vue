@@ -65,9 +65,7 @@
             src="./../assets/flags/blank.gif"
           >
         </div>
-        <div>
-          {{ item.name }}
-        </div>
+        <div>{{ item.name }}</div>
       </div>
     </div>
   </div>
@@ -78,32 +76,28 @@
     name: 'CountrySelector',
     props: {
       value: { type: [String, Object], required: false, default: null },
-      label: { type: String, default: 'Enter text' },
+      label: { type: String, default: "Enter text" },
       hint: { type: String, default: String },
       error: { type: Boolean, default: Boolean },
-      color: { type: String, default: 'dodgerblue' },
+      color: { type: String, default: "dodgerblue" },
       disabled: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      id: { type: String, default: 'CountrySelector' },
+      id: { type: String, default: "CountrySelector" },
       items: { type: Array, default: Array, required: true }
     },
-    data () {
+    data() {
       return {
         isFocus: false
       }
     },
     computed: {
       borderStyle () {
-        const cond = (this.isFocus && !this.error)
-        return cond
-          ? { border: `1px solid ${this.color} !important` }
-          : null
+        const cond = this.isFocus && !this.error
+        return cond ? { border: `1px solid ${this.color} !important` } : null
       },
       colorStyle () {
         const cond = this.isFocus
-        return cond
-          ? { color: `${this.color}` }
-          : null
+        return cond ? { color: `${this.color}` } : null
       },
       selectedCountry () {
         return this.items.filter(x => x.iso2 === this.value).map(x => x.name)[0]
@@ -113,16 +107,16 @@
       focusInput () {
         this.$refs.CountrySelector.focus()
       },
-      onFocus: function () {
-        this.$emit('focus')
+      onFocus () {
+        this.$emit("focus")
         this.isFocus = true
       },
-      onBlur: function () {
-        this.$emit('blur')
+      onBlur () {
+        this.$emit("blur")
         this.isFocus = false
       },
       updateValue (iso2) {
-        this.$emit('input', iso2 || this.value)
+        this.$emit("input", iso2 || this.value)
       }
     }
   }
@@ -130,37 +124,40 @@
 
 <style lang="scss" scoped>
   @import "./../assets/flags/flags.css";
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
   .country-selector {
     position: relative;
     &.is-dark {
-      .field-label{
-        color: rgba(255, 255, 255, 0.70);
+      .field-label {
+        color: rgba(255, 255, 255, 0.7);
       }
-      .field-input{
+      .field-input {
         background-color: #424242;
-        border-color: rgba(255, 255, 255, 0.70);
-        color: rgba(255, 255, 255, 0.70);
+        border-color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.7);
       }
       &.is-disabled {
-        .field-label, .field-input {
+        .field-label,
+        .field-input {
           color: #000;
         }
       }
-
     }
     .field-country-flag {
       margin: auto 0;
       position: absolute;
       top: 19px;
       left: 13px;
-      img{
+      z-index: 1;
+      img {
         position: absolute;
       }
     }
-    .field-label{
+    .field-label {
       position: absolute;
       top: 3px;
       cursor: pointer;
@@ -172,7 +169,7 @@
       font-size: 11px;
       color: rgba(0, 0, 0, 0.54);
     }
-    .field-input{
+    .field-input {
       cursor: pointer;
       background-color: transparent;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -198,7 +195,7 @@
       color: #424242;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 15px;
-      transform: scaleY(.5);
+      transform: scaleY(0.5);
       display: inline-block;
     }
     &.has-error {
@@ -225,15 +222,16 @@
         color: dodgerblue;
       }
       .country-selector-arrow {
-        transform: scaleY(.5) rotate(180deg);
+        transform: scaleY(0.5) rotate(180deg);
       }
     }
     &.is-disabled {
       .field-input {
-        border-color: #CCC;
-        background: #F2F2F2;
+        border-color: #ccc;
+        background: #f2f2f2;
       }
-      .field-label, .field-input {
+      .field-label,
+      .field-input {
         cursor: default;
       }
     }
@@ -241,45 +239,57 @@
       color: orangered !important;
     }
     &.is-dark {
-      ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-        color: rgba(255, 255, 255, 0.70);
+      ::-webkit-input-placeholder {
+        /* WebKit, Blink, Edge */
+        color: rgba(255, 255, 255, 0.7);
       }
-      :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color: rgba(255, 255, 255, 0.70);
-        opacity:  1;
+      :-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: rgba(255, 255, 255, 0.7);
+        opacity: 1;
       }
-      ::-moz-placeholder { /* Mozilla Firefox 19+ */
-        color: rgba(255, 255, 255, 0.70);
-        opacity:  1;
+      ::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: rgba(255, 255, 255, 0.7);
+        opacity: 1;
       }
-      :-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: rgba(255, 255, 255, 0.70);
+      :-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: rgba(255, 255, 255, 0.7);
       }
-      ::-ms-input-placeholder { /* Microsoft Edge */
-        color: rgba(255, 255, 255, 0.70);
+      ::-ms-input-placeholder {
+        /* Microsoft Edge */
+        color: rgba(255, 255, 255, 0.7);
       }
-      ::placeholder { /* Most modern browsers support this now. */
-        color: rgba(255, 255, 255, 0.70);
+      ::placeholder {
+        /* Most modern browsers support this now. */
+        color: rgba(255, 255, 255, 0.7);
       }
       &.is-disabled {
-        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        ::-webkit-input-placeholder {
+          /* WebKit, Blink, Edge */
           color: #424242;
         }
-        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        :-moz-placeholder {
+          /* Mozilla Firefox 4 to 18 */
           color: #424242;
-          opacity:  1;
+          opacity: 1;
         }
-        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        ::-moz-placeholder {
+          /* Mozilla Firefox 19+ */
           color: #424242;
-          opacity:  1;
+          opacity: 1;
         }
-        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        :-ms-input-placeholder {
+          /* Internet Explorer 10-11 */
           color: #424242;
         }
-        ::-ms-input-placeholder { /* Microsoft Edge */
+        ::-ms-input-placeholder {
+          /* Microsoft Edge */
           color: #424242;
         }
-        ::placeholder { /* Most modern browsers support this now. */
+        ::placeholder {
+          /* Most modern browsers support this now. */
           color: #424242;
         }
       }
@@ -317,7 +327,7 @@
     .country-list {
       padding: 0;
       list-style: none;
-      background: #FFF;
+      background: #fff;
       max-height: 200px;
       overflow: auto;
       z-index: 9;
@@ -328,7 +338,7 @@
       border-radius: 4px;
       width: 100%;
       min-width: 230px;
-      box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12);
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
       &-item {
         padding: 5px 10px;
         text-overflow: ellipsis;
@@ -336,11 +346,11 @@
         overflow: hidden;
         cursor: pointer;
         &:hover {
-          background-color: #F2F2F2;
+          background-color: #f2f2f2;
         }
         &.selected {
           background: dodgerblue;
-          color: #FFF;
+          color: #fff;
         }
         .flag-container {
           margin-right: 10px;
