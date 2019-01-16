@@ -1,4 +1,4 @@
-# vue-input-ui
+# vue-phone-number-input
 
 > A beautiful input made with Vue JS
 

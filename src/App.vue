@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <h1>VuePhoneNumberInput</h1>
-    <PhoneNumber v-model="value" />
+    <VuePhoneNumberInput v-model="value" />
   </div>
 </template>
 
 <script>
-  import PhoneNumber from './PhoneNumber'
+  import VuePhoneNumberInput from './VuePhoneNumberInput'
 
   export default {
     name: 'App',
     components: {
-      PhoneNumber
+      VuePhoneNumberInput
     },
     data () {
       return {
