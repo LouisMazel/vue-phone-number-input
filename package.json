@@ -1,12 +1,25 @@
 {
   "name": "vue-phone-number-input",
   "version": "0.1.0",
-  "private": true,
+  "description": "A phone number input made with Vue JS && libphonenumber",
+  "author": "Louis Mazel <mazuel.loic@gmail.com>",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "vue-cli-service serve --mode development",
+    "build": "npm run lint && npm run build:lib && npm run build:docs",
+    "test": "vue-cli-service test:unit /test/specs",
+    "lint": "vue-cli-service lint",
+    "before-publish": "npm i && npm run lint && npm run build",
+    "build:docs": "vue-cli-service build --dest docs --mode production",
+    "build:lib": "vue-cli-service build --target lib ./src/VueInputUi/index.vue",
+    "publish-npm:beta": "npm publish --tag beta",
+    "serve:build": "vue-cli-service serve --mode production",
+    "test:unit": "vue-cli-service test:unit",
+    "test:unit:watch": "vue-cli-service test:unit --watch",
+    "ui": "vue ui"
   },
+  "files": [
+    "dist/"
+  ],
   "dependencies": {
     "libphonenumber-js": "^1.7.7",
     "vue": "^2.5.21",
@@ -23,28 +36,33 @@
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
   "postcss": {
     "plugins": {
       "autoprefixer": {}
     }
   },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "input",
+    "text",
+    "javascript",
+    "vue-component"
+  ],
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "license": "MIT",
+  "main": "dist/vue-phone-number-input.common.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouisMazel/vue-phone-number-input.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LouisMazel/vue-phone-number-input/issues"
+  },
+  "homepage": "https://github.com/LouisMazel/vue-phone-number-input#readme",
+  "types": "dist/index.d.ts"
 }

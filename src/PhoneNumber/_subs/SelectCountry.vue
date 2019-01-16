@@ -1,58 +1,56 @@
 <template>
   <div
     ref="parent"
-    :class="{'is-focused': isOpen, 'has-value': valueToShow}"
+    :class="{'is-focused': isFocus, 'has-value': value}"
     class="field has-label"
-    @click="isOpen ? close : open"
   >
     <label
-      for="ctk-input"
+      v-if="isFocus || value"
+      for="select-country"
       class="field-label"
-    >{{ hint || label }}</label>
-    <div class="flag-container field-country-flag">
+    >
+      {{ hint || label }}
+    </label>
+    <div
+      v-if="value"
+      class="flag-container field-country-flag"
+    >
       <img
         :class="`flag-small flag flag-${value.toLowerCase()}`"
         :alt="value.toLowerCase()"
         src="./../assets/flags/blank.gif"
       >
     </div>
-    <i
-      aria-hidden="true"
-      class="material-icons field-arrow"
-    >arrow_drop_down</i>
     <input
-      id="ctk-input"
-      ref="ctkInput"
+      id="select-coutnry"
+      ref="SelectCountry"
       :placeholder="label"
-      :value="valueToShow"
+      :value="selectedCountry"
       type="text"
       class="field-input dots-text"
       readonly
-      @focus="open"
-      @blur="close">
-    <input
-      ref="ctkInput"
-      :value="value"
-      type="hidden">
+      @focus="isFocus = true"
+      @blur="isFocus = false"
+    >
     <ul
-      v-show="isOpen"
-      class="ctk-input-select-list">
+      class="select-country-list"
+    >
       <li
         v-for="item in items"
-        :class="{'selected': value === item.code }"
         :key="item.code"
-        class="flex ctk-input-select-item"
-        @click.stop="updateValue(item.code)"
+        :class="{'selected': value === item.iso2 }"
+        class="flex select-country-list-item"
+        @click.stop="updateValue(item.iso2)"
       >
         <div class="flag-container mr-2">
           <img
-            :class="`flag-small flag flag-${item.code.toLowerCase()}`"
-            :alt="item.code.toLowerCase()"
+            :class="`flag-small flag flag-${item.iso2.toLowerCase()}`"
+            :alt="item.iso2"
             src="./../assets/flags/blank.gif"
           >
         </div>
         <div>
-          {{ item.dial_code }} - <b>{{ item.name }}</b>
+          {{ item.iso2 }} - <b>{{ item.name }}</b>
         </div>
       </li>
     </ul>
@@ -63,39 +61,22 @@
   export default {
     name: 'SelectCountry',
     props: {
-      label: {
-        type: String,
-        default: 'Label'
-      },
-      value: {
-        type: null,
-        default: null,
-        require: true
-      },
-      hint: {
-        type: String,
-        default: null
-      },
-      errorHint: {
-        type: Boolean,
-        default: false
-      },
-      items: {
-        type: Array,
-        required: true
-      },
-      valueToShow: {
-        type: String,
-        default: null
-      },
-      isOpen: {
-        type: Boolean,
-        default: false
-      }
+      label: { type: String, default: 'Label' },
+      value: { type: null, default: null, require: true },
+      hint: { type: String, default: null },
+      errorHint: { type: Boolean, default: false },
+      items: { type: Array, required: true }
     },
     data () {
       return {
-        inputValue: null
+        inputValue: null,
+        isOpen: false,
+        isFocus: false
+      }
+    },
+    computed: {
+      selectedCountry () {
+        return this.items.filter(x => x.iso2 === this.value).map(x => x.name)[0]
       }
     },
     methods: {
@@ -107,14 +88,17 @@
           this.$emit('toggle', false)
         }, 300)
       },
-      updateValue (code) {
-        this.$emit('input', code || this.value)
+      updateValue (iso2) {
+        this.$emit('input', iso2 || this.value)
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
   .field {
     user-select: none;
     cursor: pointer;
@@ -127,6 +111,11 @@
         position: absolute;
       }
     }
+    .field-country-flag {
+      position: absolute;
+      top: 19px;
+      left: 13px;
+    }
 
     .field-label{
       cursor: pointer;
@@ -138,11 +127,6 @@
       transition: all .25s cubic-bezier(.645,.045,.355,1);
       font-size: 11px;
       color: rgba(0,0,0, 0.54);
-    }
-    .field-country-flag {
-      position: absolute;
-      top: 19px;
-      left: 13px;
     }
     .field-input{
       user-select: none;
@@ -166,7 +150,7 @@
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       &.has-error {
-        border-color: $danger !important;
+        border-color: orangered !important;
       }
     }
     .field-arrow {
@@ -178,28 +162,29 @@
     }
     &.is-focused {
       .field-input {
-        border-color: $info;
+        border-color: dodgerblue;
       }
       .field-label {
-        color: $info;
+        color: dodgerblue;
       }
     }
-    .ctk-input-select-list {
+    .select-country-list {
       padding: 0;
       list-style: none;
       background: #FFF;
       max-height: 200px;
       overflow: auto;
       z-index: 9;
+      margin: 0;
       max-width: 100%;
       position: absolute;
-      top: 42px;
+      top: 100%;
       border-radius: 4px;
       width: 100%;
       min-width: 230px;
       -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
       box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-      .ctk-input-select-item {
+      &-item {
         padding: 5px 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -209,7 +194,7 @@
           background-color: #F2F2F2;
         }
         &.selected {
-          background: $info;
+          background: dodgerblue;
           color: #FFF;
         }
       }

@@ -1,22 +1,30 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <PhoneNumber />
+    <h1>VuePhoneNumberInput</h1>
+    <PhoneNumber v-model="value" />
   </div>
 </template>
 
 <script>
-import PhoneNumber from './PhoneNumber'
+  import PhoneNumber from './PhoneNumber'
 
-export default {
-  name: 'app',
-  components: {
-    PhoneNumber
+  export default {
+    name: 'App',
+    components: {
+      PhoneNumber
+    },
+    data () {
+      return {
+        value: {
+          code: 'FR',
+          phoneNumber: '0658584729'
+        }
+      }
+    }
   }
-}
 </script>
 
-<style>
+<style lang="scss" scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
