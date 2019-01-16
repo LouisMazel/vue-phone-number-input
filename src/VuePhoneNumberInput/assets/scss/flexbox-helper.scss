@@ -147,3 +147,9 @@
 .flex-grow {
   flex-grow: 1;
 }
+// Helpers 
+.dots-text {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

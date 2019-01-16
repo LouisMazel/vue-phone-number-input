@@ -1,7 +1,7 @@
 <template>
   <div
     ref="parent"
-    :class="{'is-focused': isFocus, 'has-value': value}"
+    :class="{'is-focused': !isFocus, 'has-value': value}"
     class="field has-label"
   >
     <label
@@ -50,7 +50,7 @@
           >
         </div>
         <div>
-          {{ item.iso2 }} - <b>{{ item.name }}</b>
+          {{ item.name }}
         </div>
       </li>
     </ul>

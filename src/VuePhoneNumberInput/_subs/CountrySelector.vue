@@ -24,7 +24,7 @@
     <input
       :id="id"
       ref="CountrySelector"
-      v-model="selectedCountry"
+      :value="selectedCountry"
       :placeholder="label"
       :disabled="disabled"
       :style="[borderStyle]"
@@ -44,7 +44,11 @@
     >
       {{ hint || label }}
     </label>
-    <div class="country-list">
+    <div
+      v-if="isFocus"
+      class="country-list"
+    >
+      <input type="text">
       <div
         v-for="item in items"
         :key="item.code"
@@ -60,7 +64,7 @@
           >
         </div>
         <div>
-          {{ item.iso2 }} - <b>{{ item.name }}</b>
+          {{ item.name }}
         </div>
       </div>
     </div>
@@ -168,14 +172,15 @@
     }
     .field-input{
       cursor: pointer;
-      background-color: #FFF;
+      background-color: transparent;
       -webkit-transition-duration: 0.3s;
       transition-duration: 0.3s;
       position: relative;
       width: 100%;
       height: 42px;
       min-height: 42px;
-      padding: 0 12px;
+      padding-right: 10px;
+      padding-left: 40px;
       font-weight: 400;
       -webkit-appearance: none;
       outline: none;

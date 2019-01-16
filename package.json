@@ -4,7 +4,7 @@
   "description": "A phone number input made with Vue JS && libphonenumber",
   "author": "Louis Mazel <mazuel.loic@gmail.com>",
   "scripts": {
-    "serve": "vue-cli-service serve --mode development",
+    "serve": "vue-cli-service serve --mode development --open",
     "build": "npm run lint && npm run build:lib && npm run build:docs",
     "test": "vue-cli-service test:unit /test/specs",
     "lint": "vue-cli-service lint",

@@ -5,6 +5,7 @@
         v-model="codeCountry"
         :items="codesCountries"
         label="Country Code"
+        class="input-country-selector"
       />
     </div>
     <div class="flex-1">
@@ -13,7 +14,7 @@
         label="Phone number"
         :error="!numberIsValid"
         :hint="codeCountry ? phoneNumberHint : 'Choose country'"
-        class="input-text-phone"
+        class="input-phone-number"
       />
     </div>
   </div>
@@ -110,20 +111,34 @@
   }
 </script>
 <style lang="scss">
-  @import "./assets/css/flexbox-helper.scss";
+  @import "./assets/scss/flexbox-helper.scss";
   @import "./assets/flags/flags.css";
   *, *::before, *::after {
     box-sizing: border-box;
   }
   .vue-phone-number-input {
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     .select-country-container {
       flex: 0 0 130px;
+      width: 130px;
+      min-width: 130px;
+      max-width: 130px;
     }
     .country-selector {
       cursor: pointer;
-      &:hover {
-        background: #CCC;
+    }
+    .input-country-selector {
+      margin-right: -1px;
+      input {
+        border-top-right-radius: 0 !important; 
+        border-bottom-right-radius: 0 !important;
       }
+    }
+    .input-phone-number input {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+      background-color: transparent !important;
     }
   }
 </style>
