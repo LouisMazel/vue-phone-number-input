@@ -4,24 +4,35 @@
     class="vue-phone-number-input flex"
   >
     <div class="select-country-container">
-      <SelectCountry
-        v-model="codeCountry"
+      <CountrySelector
+        ref="CountrySelector"
+        v-model="countryCode"
         :items="codesCountries"
         :color="color"
+        :error="(!countryCode && !!phoneNumber)"
+        :hint="phoneNumber ? 'Choose country' : null"
         :dark="dark"
+        :disabled="disabled"
+        :valid="isValid"
+        :preferred-countries="preferredCountries"
+        :only-countries="onlyCountries"
+        :ignored-countries="ignoredCountries"
         label="Country Code"
         class="input-country-selector"
       />
     </div>
     <div class="flex-1">
       <VueInputUI
+        ref="PhoneNumberInput"
         v-model="phoneNumber"
         label="Phone number"
-        :error="!numberIsValid"
-        :hint="codeCountry ? phoneNumberHint : 'Choose country'"
+        :hint="countryCode && phoneNumber ? phoneFormatted : null"
         :color="color"
         :dark="dark"
+        :disabled="disabled"
+        :valid="isValid"
         class="input-phone-number"
+        @focus="$emit('phone-number-focused')"
       />
     </div>
   </div>
@@ -29,92 +40,91 @@
 <script>
   /* eslint-disable */
   import CodesCountries from './assets/js/phoneCodeCountries.js'
-  import { parseNumber, format, isValidNumber, AsYouType } from 'libphonenumber-js'
+  import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js'
   import VueInputUI from 'vue-input-ui'
   import 'vue-input-ui/dist/vue-input-ui.css'
-  import SelectCountry from './_subs/CountrySelector'
+  import CountrySelector from './_subs/CountrySelector'
 
   export default {
     name: 'VuePhoneNumberInput',
     components: {
       VueInputUI,
-      SelectCountry
+      CountrySelector
     },
     props: {
-      value: { type: Object, default: Object },
-      color: { type: String, default: String },
-      dark: { type: Boolean, default: Boolean }
+      value: { type: String, default: null },
+      color: { type: String, default: 'dodgerblue' },
+      dark: { type: Boolean, default: Boolean },
+      disabled: { type: Boolean, default: Boolean },
+      defaultCountryCode: { type: String, default: null },
+      preferredCountries: { type: Array, default: null },
+      onlyCountries: { type: Array, default: null },
+      ignoredCountries: { type: Array, default: null }
     },
     data () {
       return {
-        phoneNumberHint: '',
-        formatter: null,
-        numberIsValid: true
+        results: {}
       }
     },
-    created () {
-      this.formatter = new AsYouType(this.codeCountry)
+    mounted () {
+      if (this.value && this.defaultCountryCode) {
+        this.emitValue({ phoneNumber: this.phoneNumber, countryCode: this.countryCode})
+      }
     },
     computed: {
-      codeCountry: {
-        get () {
-          return this.value.code
-        },
-        set (country) {
-          this.$emit('input', { phoneNumber: this.phoneNumber, code: country})
-          // this.formatter = new AsYouType(country)
-          // if (this.phoneNumber) {
-          //   this.updateNumberAfterChangeCountry(this.phoneNumber)
-          // }
-        }
-      },
       codesCountries () {
         return CodesCountries
       },
+      countryCode: {
+        get () {
+          return this.results.countryCode || this.defaultCountryCode
+        },
+        set (newCountry) {
+          this.emitValue({countryCode: newCountry, phoneNumber: this.phoneNumber})
+          this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
+        }
+      },
       phoneNumber: {
         get () {
-          return this.value.phoneNumber
+          return this.value
         },
         set (newPhone) {
-          this.$emit('input', { phoneNumber: newPhone, code: this.codeCountry})
-          // const inputNumber = this.updateFormatNumber(newPhone)
-          // this.formatNumberLogic(inputNumber, newPhone)
+          this.$emit('input', newPhone)
+          this.emitValue({countryCode: this.countryCode, phoneNumber: newPhone})
         }
+      },
+      phoneFormatted () {
+        const asYouType = new AsYouType(this.countryCode).input(this.phoneNumber)
+        return this.results.isValid ? this.results.formatInternational : asYouType
+      },
+      isValid () {
+        return this.results.isValid
       }
     },
     methods: {
-      resetFormatNumber (val) {
-        this.formatter.reset()
-        let format
-        let chars = val.split('')
-        chars.map((charac) => {
-          format = this.formatter.input(charac)
-        })
-        return format
-      },
-      updateFormatNumber (val) {
-        return this.formatter.input(val.slice(-1))
-      },
-      updateNumberAfterChangeCountry (val) {
-        this.formatNumberLogic(this.resetFormatNumber(val), this.phoneNumber)
-      },
-      formatNumberLogic (inputNumber, val) {
-        const numberParsed = parseNumber(val, this.codeCountry)
-        if (Object.keys(numberParsed).length) {
-          this.numberIsValid = isValidNumber(numberParsed)
-          if (this.numberIsValid) {
-            this.$emit('update-phone', {val: format(numberParsed.phone, this.codeCountry, 'International'), isValid: true})
-            this.phoneNumberHint = format(numberParsed.phone, this.codeCountry, 'International')
-          }
-        } else if (val.length) {
-          this.$emit('update-phone', {val: this.phoneNumber, isValid: false})
-          this.phoneNumberHint = format(val, this.codeCountry, 'International')
-          this.numberIsValid = false
-        } else {
-          this.$emit('update-phone', {val: null, isValid: false})
-          this.phoneNumberHint = ''
-          this.numberIsValid = true
+      getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
+        const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
+        return {
+          phoneNumber: phoneNumber ? phoneNumber : null,
+          countryCode: countryCode,
+          isValid: false,
+          ...( parsing
+            ? { 
+              formattedNumber: parsing.number,
+              nationalNumber: parsing.nationalNumber,
+              isValid: parsing.isValid(),
+              type: parsing.getType(),
+              formatInternational: parsing.formatInternational(),
+              formatNational: parsing.formatNational(),
+              uri: parsing.getURI()
+            }
+            : null
+          )
         }
+      },
+      emitValue (payload) {
+        this.results = this.getParsePhoneNumberFromString(payload)
+        this.$emit('update', this.results)
       }
     }
   }
@@ -137,9 +147,9 @@
     .country-selector {
       cursor: pointer;
     }
-    .input-country-selector {
+    .select-country-container {
       margin-right: -1px;
-      input {
+      .input-country-selector input {
         border-top-right-radius: 0 !important; 
         border-bottom-right-radius: 0 !important;
       }

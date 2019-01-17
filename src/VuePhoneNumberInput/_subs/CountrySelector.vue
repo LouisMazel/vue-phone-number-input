@@ -1,9 +1,11 @@
 <template>
   <div
     ref="parent"
+    v-click-outside="onBlur"
     :class="[{
       'is-focused': isFocus,
       'has-value': value,
+      'has-hint': hint,
       'has-error': error,
       'is-disabled': disabled,
       'is-dark': dark
@@ -31,10 +33,11 @@
       class="field-input"
       readonly
       @focus="onFocus"
-      @blur="onBlur"
       @click="$emit('click')"
     >
-    <div class="country-selector-arrow">
+    <div
+      class="country-selector-arrow"
+    >
       ▼
     </div>
     <label
@@ -52,10 +55,11 @@
       class="country-list"
     >
       <div
-        v-for="item in items"
+        v-for="item in countriesSorted"
         :key="item.code"
         :class="{'selected': value === item.iso2 }"
         class="flex country-list-item"
+        :style="[value === item.iso2 ? bgStyle : null]"
         @click.stop="updateValue(item.iso2)"
       >
         <div class="flag-container">
@@ -72,18 +76,28 @@
 </template>
 
 <script>
+  import { directive } from 'v-click-outside'
+
   export default {
     name: 'CountrySelector',
+    directives: {
+      clickOutside: directive
+    },
     props: {
       value: { type: [String, Object], required: false, default: null },
-      label: { type: String, default: "Enter text" },
+      label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
       error: { type: Boolean, default: Boolean },
-      color: { type: String, default: "dodgerblue" },
       disabled: { type: Boolean, default: false },
+      valid: { type: Boolean, default: false },
+      validColor: { type: String, default: 'yellowgreen' },
+      color: { type: String, default: String },
       dark: { type: Boolean, default: false },
-      id: { type: String, default: "CountrySelector" },
-      items: { type: Array, default: Array, required: true }
+      id: { type: String, default: 'CountrySelector' },
+      items: { type: Array, default: Array, required: true },
+      preferredCountries: { type: Array, default: null },
+      onlyCountries: { type: Array, default: null },
+      ignoredCountries: { type: Array, default: null }
     },
     data() {
       return {
@@ -92,31 +106,57 @@
     },
     computed: {
       borderStyle () {
-        const cond = this.isFocus && !this.error
-        return cond ? { border: `1px solid ${this.color} !important` } : null
+        const cond = (this.isFocus && !this.error) || this.valid
+        return cond ? { border: `1px solid ${this.valid ? this.validColor : this.color} !important` } : null
       },
       colorStyle () {
-        const cond = this.isFocus
-        return cond ? { color: `${this.color}` } : null
+        const cond = this.isFocus || this.valid
+        return cond ? { color: `${this.valid ? this.validColor : this.color}` } : null
+      },
+      bgStyle () {
+        return { backgroundColor: `${this.color}` }
+      },
+      countriesList () {
+        console.log('ignoredCountries', this.ignoredCountries)
+        return this.items.filter(item => !this.ignoredCountries.includes(item.iso2))
       },
       selectedCountry () {
-        return this.items.filter(x => x.iso2 === this.value).map(x => x.name)[0]
+        return this.countriesList.filter(x => x.iso2 === this.value).map(x => x.name)[0]
+      },
+      countriesFiltered () {
+        const countries = this.onlyCountries || this.preferredCountries
+        return this.countriesList.filter(item => countries.find(country => item.iso2.includes(country)))
+      },
+      otherCountries () {
+        return this.countriesList.filter(item => this.preferredCountries.find(country => !item.iso2.includes(country)))
+      },
+      countriesSorted () {
+        return this.preferredCountries
+          ? [ ...this.countriesFiltered,
+              ...this.otherCountries ]
+          : this.onlyCountries
+            ? this.countriesFiltered
+            : this.countriesList
       }
+    },
+    created () {
+      this.$parent.$on('phone-number-focused', () => { this.isFocus = false })
     },
     methods: {
       focusInput () {
         this.$refs.CountrySelector.focus()
       },
       onFocus () {
-        this.$emit("focus")
+        this.$emit('focus')
         this.isFocus = true
       },
       onBlur () {
-        this.$emit("blur")
+        this.$emit('blur')
         this.isFocus = false
       },
       updateValue (iso2) {
-        this.$emit("input", iso2 || this.value)
+        this.isFocus = false
+        this.$emit('input', iso2)
       }
     }
   }
@@ -131,22 +171,6 @@
   }
   .country-selector {
     position: relative;
-    &.is-dark {
-      .field-label {
-        color: rgba(255, 255, 255, 0.7);
-      }
-      .field-input {
-        background-color: #424242;
-        border-color: rgba(255, 255, 255, 0.7);
-        color: rgba(255, 255, 255, 0.7);
-      }
-      &.is-disabled {
-        .field-label,
-        .field-input {
-          color: #000;
-        }
-      }
-    }
     .field-country-flag {
       margin: auto 0;
       position: absolute;
@@ -178,7 +202,7 @@
       height: 42px;
       min-height: 42px;
       padding-right: 18px;
-      padding-left: 40px;
+      padding-left: 12px;
       font-weight: 400;
       -webkit-appearance: none;
       outline: none;
@@ -212,17 +236,23 @@
       }
       .field-input {
         padding-top: 14px;
+        padding-left: 40px;
+      }
+    }
+    &.has-hint {
+      .field-label {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        font-size: 11px;
+      }
+      .field-input {
+        padding-top: 14px;
       }
     }
     &.is-focused {
-      .field-input {
-        border-color: dodgerblue;
-      }
-      .field-label {
-        color: dodgerblue;
-      }
       .country-selector-arrow {
-        transform: scaleY(0.5) rotate(180deg);
+        transform: scaleY(0.5) rotate(-180deg);
       }
     }
     &.is-disabled {
@@ -238,7 +268,64 @@
     .text-danger {
       color: orangered !important;
     }
+    .country-list {
+      padding: 0;
+      list-style: none;
+      background: #fff;
+      max-height: 200px;
+      overflow: auto;
+      z-index: 9;
+      margin: 0;
+      max-width: 100%;
+      position: absolute;
+      top: 100%;
+      border-radius: 4px;
+      width: 100%;
+      min-width: 230px;
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      &-item {
+        padding: 5px 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        cursor: pointer;
+        &:hover {
+          background-color: #f2f2f2;
+        }
+        &.selected {
+          color: #fff;
+          font-weight: 600;
+        }
+        .flag-container {
+          margin-right: 10px;
+        }
+      }
+    }
     &.is-dark {
+      .field-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .field-input {
+        background-color: #424242;
+        border-color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .country-list {
+        background-color: #424242;
+        color: rgba(255, 255, 255, 0.7);
+        &-item:hover {
+          background-color: darken(#424242, 5%);
+        }
+      }
+      .country-selector-arrow {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      &.is-disabled {
+        .field-label,
+        .field-input {
+          color: #000;
+        }
+      }
       ::-webkit-input-placeholder {
         /* WebKit, Blink, Edge */
         color: rgba(255, 255, 255, 0.7);
@@ -321,39 +408,6 @@
       &.has-value {
         .field-input {
           padding-top: 16px;
-        }
-      }
-    }
-    .country-list {
-      padding: 0;
-      list-style: none;
-      background: #fff;
-      max-height: 200px;
-      overflow: auto;
-      z-index: 9;
-      margin: 0;
-      max-width: 100%;
-      position: absolute;
-      top: 100%;
-      border-radius: 4px;
-      width: 100%;
-      min-width: 230px;
-      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-      &-item {
-        padding: 5px 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        cursor: pointer;
-        &:hover {
-          background-color: #f2f2f2;
-        }
-        &.selected {
-          background: dodgerblue;
-          color: #fff;
-        }
-        .flag-container {
-          margin-right: 10px;
         }
       }
     }
