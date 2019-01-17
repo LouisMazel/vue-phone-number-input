@@ -97,7 +97,7 @@
       items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
-      ignoredCountries: { type: Array, default: null }
+      ignoredCountries: { type: Array, default: Array }
     },
     data() {
       return {
@@ -117,7 +117,6 @@
         return { backgroundColor: `${this.color}` }
       },
       countriesList () {
-        console.log('ignoredCountries', this.ignoredCountries)
         return this.items.filter(item => !this.ignoredCountries.includes(item.iso2))
       },
       selectedCountry () {

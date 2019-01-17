@@ -16,6 +16,7 @@
       <div class="component-container">
         <div class="component">
           <VuePhoneNumberInput
+            id="phoneNumber1"
             v-model="phoneNumber"
             color="purple"
             :dark="dark"
@@ -23,15 +24,29 @@
             :default-country-code="defaultCountry"
             :ignored-countries="countriesIgnored"
             :preferred-countries="countriesList"
+            :translations="translations"
+            :no-validator-state="false"
             @update="onUpdate"
           />
         </div>
-        <br>
-        <h3>v-model</h3>
         <div class="component">
-          <b>phoneNumber</b> : {{ phoneNumber }}
+          <b>v-model</b> : {{ phoneNumber }}
           <hr>
           <b>onUpdate</b> : {{ results || 'null' }}
+        </div>
+      </div>
+      <div class="component-container">
+        <div class="component">
+          <VuePhoneNumberInput
+            id="phoneNumber2"
+            v-model="phoneNumber2"
+            @update="onUpdate2"
+          />
+        </div>
+        <div class="component">
+          <b>v-model</b> : {{ phoneNumber2 }}
+          <hr>
+          <b>onUpdate</b> : {{ results2 || 'null' }}
         </div>
       </div>
     </div>
@@ -48,11 +63,18 @@
     },
     data () {
       return {
-        phoneNumber: '06585849',
-        defaultCountry: 'FR',
+        phoneNumber: '0658584929',
+        phoneNumber2: null,
+        defaultCountry: null,
         countriesList: ['FR', 'BE', 'DE'],
         countriesIgnored: ['AF', 'AD', 'AL'],
+        translations: {
+          countrySelectorLabel: 'Code pays',
+          countrySelectorError: 'Choisir un pays',
+          phoneNumberLabel: 'Numéro de téléphone'
+        },
         results: null,
+        results2: null,
         dark: false,
         disabled: false
       }
@@ -60,6 +82,9 @@
     methods: {
       onUpdate (payload) {
         this.results = payload
+      },
+      onUpdate2 (payload) {
+        this.results2 = payload
       }
     }
   }
@@ -83,26 +108,6 @@
       color: rgba(255, 255, 255, 0.70);
     }
   }
-}
-html, body {
-  margin: 0;
-  min-height: 100%;
-}
-html {
-  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;      /* TWEENER - IE 10 */
-  display: -webkit-flex;     /* NEW - Chrome */
-  display: flex;
-  width: 100%;
-}
-
-body {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  -moz-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
 }
 .container {
   width: 80%;

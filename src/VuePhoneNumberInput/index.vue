@@ -5,32 +5,34 @@
   >
     <div class="select-country-container">
       <CountrySelector
+        :id="`${id}_country_selector`"
         ref="CountrySelector"
         v-model="countryCode"
         :items="codesCountries"
         :color="color"
-        :error="(!countryCode && !!phoneNumber)"
-        :hint="phoneNumber ? 'Choose country' : null"
+        :error="shouldChooseCountry"
+        :hint="shouldChooseCountry ? t.countrySelectorError : null"
         :dark="dark"
         :disabled="disabled"
-        :valid="isValid"
+        :valid="isValid && !noValidatorState"
         :preferred-countries="preferredCountries"
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
-        label="Country Code"
+        :label="t.countrySelectorLabel"
         class="input-country-selector"
       />
     </div>
     <div class="flex-1">
       <VueInputUI
+        :id="`${id}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
-        label="Phone number"
+        :label="t.phoneNumberLabel"
         :hint="countryCode && phoneNumber ? phoneFormatted : null"
         :color="color"
         :dark="dark"
         :disabled="disabled"
-        :valid="isValid"
+        :valid="isValid && !noValidatorState"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
       />
@@ -44,6 +46,12 @@
   import VueInputUI from 'vue-input-ui'
   import 'vue-input-ui/dist/vue-input-ui.css'
   import CountrySelector from './_subs/CountrySelector'
+  import locales from './assets/locales'
+
+  const browserLocale = () => {
+    const locale = window.navigator.userLanguage || window.navigator.language
+    return locale.substr(0, 2).toUpperCase()
+  }
 
   export default {
     name: 'VuePhoneNumberInput',
@@ -53,13 +61,17 @@
     },
     props: {
       value: { type: String, default: null },
+      id: { type: String, default: 'VuePhoneNumberInput' },
       color: { type: String, default: 'dodgerblue' },
       dark: { type: Boolean, default: Boolean },
       disabled: { type: Boolean, default: Boolean },
       defaultCountryCode: { type: String, default: null },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
-      ignoredCountries: { type: Array, default: null }
+      ignoredCountries: { type: Array, default: Array },
+      translations: { type: Object, default: Object },
+      noValidatorState: { type: Boolean, default: false },
+      noUseBrowserLocale: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -67,11 +79,18 @@
       }
     },
     mounted () {
-      if (this.value && this.defaultCountryCode) {
-        this.emitValue({ phoneNumber: this.phoneNumber, countryCode: this.countryCode})
+      const locale = this.defaultCountryCode || !this.noUseBrowserLocale ? browserLocale() : null
+      if (this.value && locale) {
+        this.emitValue({ phoneNumber: this.phoneNumber, countryCode: locale})
       }
     },
     computed: {
+      t () {
+        return {
+          ...locales,
+          ...this.translations
+        }
+      },
       codesCountries () {
         return CodesCountries
       },
@@ -93,9 +112,12 @@
           this.emitValue({countryCode: this.countryCode, phoneNumber: newPhone})
         }
       },
+      shouldChooseCountry () {
+        return !this.countryCode && !!this.phoneNumber
+      },
       phoneFormatted () {
         const asYouType = new AsYouType(this.countryCode).input(this.phoneNumber)
-        return this.results.isValid ? this.results.formatInternational : asYouType
+        return this.isValid ? this.results.formatInternational : asYouType
       },
       isValid () {
         return this.results.isValid
