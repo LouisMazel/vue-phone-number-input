@@ -29,6 +29,7 @@
             @update="onUpdate"
           />
         </div>
+        <br>
         <div class="component">
           <b>v-model</b> : {{ phoneNumber }}
           <hr>
@@ -43,6 +44,7 @@
             @update="onUpdate2"
           />
         </div>
+        <br>
         <div class="component">
           <b>v-model</b> : {{ phoneNumber2 }}
           <hr>
