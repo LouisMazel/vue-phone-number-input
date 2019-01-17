@@ -19,6 +19,7 @@
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
         :label="t.countrySelectorLabel"
+        :size="size"
         class="input-country-selector"
       />
     </div>
@@ -32,6 +33,7 @@
         :color="color"
         :dark="dark"
         :disabled="disabled"
+        :size="size"
         :valid="isValid && !noValidatorState"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
@@ -66,6 +68,7 @@
       dark: { type: Boolean, default: Boolean },
       disabled: { type: Boolean, default: Boolean },
       defaultCountryCode: { type: String, default: null },
+      size: { type: String, default: String },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array },

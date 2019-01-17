@@ -26,6 +26,7 @@
             :preferred-countries="countriesList"
             :translations="translations"
             :no-validator-state="false"
+            :size="'sm'"
             @update="onUpdate"
           />
         </div>

@@ -9,7 +9,7 @@
       'has-error': error,
       'is-disabled': disabled,
       'is-dark': dark
-    }]"
+    }, size]"
     class="field country-selector"
     @click="focusInput"
   >
@@ -87,6 +87,7 @@
       value: { type: [String, Object], required: false, default: null },
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
+      size: { type: String, default: String },
       error: { type: Boolean, default: Boolean },
       disabled: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
@@ -403,6 +404,52 @@
       }
       .field-label {
         font-size: 14px;
+      }
+      &.has-value {
+        .field-input {
+          padding-top: 16px;
+        }
+      }
+    }
+    &.sm {
+      .field-input {
+        height: 36px;
+        min-height: 36px;
+        font-size: 12px;
+      }
+      .field-label {
+        font-size: 10px;
+      }
+      .field-country-flag {
+        top: 16px;
+        img {
+          zoom: .3;
+          -moz-transform: scale(.3);
+          -moz-transform-origin: 0 0;
+        }
+      }
+      &.has-value {
+        .field-input {
+          padding-top: 12px;
+        }
+      }
+    }
+    &.lg {
+      .field-input {
+        height: 48px;
+        min-height: 48px;
+        font-size: 16px;
+      }
+      .field-label {
+        font-size: 14px;
+      }
+      .field-country-flag {
+        top: 21px;
+        img {
+          zoom: .45;
+          -moz-transform: scale(.45);
+          -moz-transform-origin: 0 0;
+        }
       }
       &.has-value {
         .field-input {
