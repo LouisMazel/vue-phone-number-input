@@ -24,9 +24,7 @@
             :default-country-code="defaultCountry"
             :ignored-countries="countriesIgnored"
             :preferred-countries="countriesList"
-            :translations="translations"
             :no-validator-state="false"
-            :size="'sm'"
             @update="onUpdate"
           />
         </div>
@@ -39,9 +37,14 @@
       </div>
       <div class="component-container">
         <div class="component">
+          <b>With translations (FR)</b>
+          <br>
+          <br>
           <VuePhoneNumberInput
             id="phoneNumber2"
             v-model="phoneNumber2"
+            :dark="dark"
+            :translations="translations"
             @update="onUpdate2"
           />
         </div>
@@ -68,7 +71,7 @@
       return {
         phoneNumber: '0658584929',
         phoneNumber2: null,
-        defaultCountry: null,
+        defaultCountry: 'FR',
         countriesList: ['FR', 'BE', 'DE'],
         countriesIgnored: ['AF', 'AD', 'AL'],
         translations: {

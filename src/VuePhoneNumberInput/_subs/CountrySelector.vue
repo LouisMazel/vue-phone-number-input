@@ -11,14 +11,15 @@
       'is-dark': dark
     }, size]"
     class="field country-selector"
-    @click="focusInput"
+    @click="onFocus"
+    @keydown="keyboardNav"
   >
     <div
       v-if="value"
       class="flag-container field-country-flag"
     >
       <img
-        :class="`flag-small flag flag-${value.toLowerCase()}`"
+        :class="`iti-flag-small iti-flag ${value.toLowerCase()}`"
         :alt="value.toLowerCase()"
         src="./../assets/flags/blank.gif"
       >
@@ -26,7 +27,7 @@
     <input
       :id="id"
       ref="CountrySelector"
-      :value="selectedCountry"
+      :value="selectedCountry.name"
       :placeholder="label"
       :disabled="disabled"
       :style="[borderStyle]"
@@ -46,19 +47,23 @@
       :class="error ? 'text-danger' : null"
       :style="[colorStyle]"
       class="field-label"
-      @click="focusInput"
+      @click="onFocus"
     >
       {{ hint || label }}
     </label>
     <div
-      v-if="isFocus"
+      v-show="isFocus"
+      ref="countriesList"
       class="country-list"
     >
       <div
         v-for="item in countriesSorted"
         :key="item.code"
-        :class="{'selected': value === item.iso2 }"
-        class="flex country-list-item"
+        :class="[
+          {'selected': value === item.iso2},
+          {'keyboard-selected': tmpValue === item.iso2}
+        ]"
+        class="flex align-center country-list-item"
         :style="[value === item.iso2 ? bgStyle : null]"
         @click.stop="updateValue(item.iso2)"
       >
@@ -77,6 +82,7 @@
 
 <script>
   import { directive } from 'v-click-outside'
+  const itemHeight = 30 // if you modify this value, you should update the height property on css (.country-list-item)
 
   export default {
     name: 'CountrySelector',
@@ -100,9 +106,11 @@
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array }
     },
-    data() {
+    data () {
       return {
-        isFocus: false
+        isFocus: false,
+        selectedIndex: null,
+        tmpValue: this.value
       }
     },
     computed: {
@@ -117,18 +125,20 @@
       bgStyle () {
         return { backgroundColor: `${this.color}` }
       },
+      itemHeight () {
+        return {
+          height: `${this.itemHeight}px`
+        }
+      },
       countriesList () {
         return this.items.filter(item => !this.ignoredCountries.includes(item.iso2))
-      },
-      selectedCountry () {
-        return this.countriesList.filter(x => x.iso2 === this.value).map(x => x.name)[0]
       },
       countriesFiltered () {
         const countries = this.onlyCountries || this.preferredCountries
         return this.countriesList.filter(item => countries.find(country => item.iso2.includes(country)))
       },
       otherCountries () {
-        return this.countriesList.filter(item => this.preferredCountries.find(country => !item.iso2.includes(country)))
+        return this.countriesList.filter(item => !this.preferredCountries.includes(item.iso2))
       },
       countriesSorted () {
         return this.preferredCountries
@@ -137,18 +147,28 @@
           : this.onlyCountries
             ? this.countriesFiltered
             : this.countriesList
+      },
+      selectedCountry () {
+        return this.value
+        ? {
+          ...this.countriesSorted.find(country => country.iso2 === this.value),
+          index: this.countriesSorted.findIndex(c => c.iso2 === this.value)
+        } : {}
+      },
+      tmpValueIndex () {
+        return this.countriesSorted.findIndex(c => c.iso2 === this.tmpValue)
       }
     },
-    created () {
+    mounted () {
       this.$parent.$on('phone-number-focused', () => { this.isFocus = false })
     },
     methods: {
-      focusInput () {
-        this.$refs.CountrySelector.focus()
-      },
       onFocus () {
         this.$emit('focus')
         this.isFocus = true
+        if (this.value) {
+          this.scrollToSelectedOnFocus(this.selectedCountry.index)
+        }
       },
       onBlur () {
         this.$emit('blur')
@@ -156,14 +176,58 @@
       },
       updateValue (iso2) {
         this.isFocus = false
+        this.tmpValue = iso2
         this.$emit('input', iso2)
+      },
+      updateTmpValue (iso2) {
+        this.tmpValue = iso2
+      },
+      scrollToSelectedOnFocus (arrayIndex) {
+        const countrylist = this.$refs.countriesList
+        this.$nextTick(() => {
+          this.$refs.countriesList.scrollTop = arrayIndex * itemHeight - (itemHeight * 3)
+        })
+      },
+      keyboardNav(e) {
+        const code = e.keyCode
+        if (code === 40 || code === 38) {
+          e.view.event.preventDefault()
+          // down arrow
+          let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
+          if (index === -1 || index >= this.countriesSorted.length) {
+            index = index === -1
+              ? this.countriesSorted.length - 1
+              : 0
+          }
+          this.updateTmpValue(this.countriesSorted[index].iso2)
+          this.scrollToSelectedOnFocus(index)
+        } else if (code === 13) {
+          // enter key
+          this.updateValue(this.tmpValue)
+        } else {
+          // typing a country's name
+          this.typeToFindInput += e.key
+          clearTimeout(this.typeToFindTimer)
+          this.typeToFindTimer = setTimeout(() => {
+            this.typeToFindInput = ''
+          }, 700)
+          // don't include preferred countries so we jump to the right place in the alphabet
+          const typedCountryI = this.countriesSorted.slice(this.preferredCountries.length).findIndex(c => c.name.toLowerCase().startsWith(this.typeToFindInput))
+          if (~typedCountryI) {
+            this.selectedIndex = this.preferredCountries.length + typedCountryI
+            const selEle = this.$refs.countriesList.children[this.selectedIndex]
+            if (selEle.offsetTop < this.$refs.countriesList.scrollTop || selEle.offsetTop + selEle.clientHeight > this.$refs.countriesList.scrollTop + this.$refs.countriesList.clientHeight) {
+              this.$refs.countriesList.scrollTop = selEle.offsetTop - this.$refs.countriesList.clientHeight / 2
+            }
+          }
+        }
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import "./../assets/flags/flags.css";
+  @import "./../assets/iti-flags/flags.css";
   *,
   *::before,
   *::after {
@@ -174,7 +238,7 @@
     .field-country-flag {
       margin: auto 0;
       position: absolute;
-      top: 19px;
+      top: 21px;
       left: 13px;
       z-index: 1;
       img {
@@ -272,8 +336,10 @@
       padding: 0;
       list-style: none;
       background: #fff;
-      max-height: 200px;
-      overflow: auto;
+      height: 210px;
+      max-height: 210px;
+      overflow-y: auto;
+      overflow-x: hidden;
       z-index: 9;
       margin: 0;
       max-width: 100%;
@@ -284,12 +350,14 @@
       min-width: 230px;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
       &-item {
-        padding: 5px 10px;
+        padding: 0 10px;
+        height: 30px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        font-size: 12px;
         cursor: pointer;
-        &:hover {
+        &:hover, &.keyboard-selected {
           background-color: #f2f2f2;
         }
         &.selected {

@@ -82,7 +82,7 @@
       }
     },
     mounted () {
-      const locale = this.defaultCountryCode || !this.noUseBrowserLocale ? browserLocale() : null
+      const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
       if (this.value && locale) {
         this.emitValue({ phoneNumber: this.phoneNumber, countryCode: locale})
       }
