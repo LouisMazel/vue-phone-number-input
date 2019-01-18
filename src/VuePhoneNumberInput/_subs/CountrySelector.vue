@@ -165,10 +165,12 @@
     },
     methods: {
       onFocus () {
-        this.$emit('focus')
-        this.isFocus = true
-        if (this.value) {
-          this.scrollToSelectedOnFocus(this.selectedCountry.index)
+        if (!this.disabled) {
+          this.$emit('focus')
+          this.isFocus = true
+          if (this.value) {
+            this.scrollToSelectedOnFocus(this.selectedCountry.index)
+          }
         }
       },
       onBlur () {
@@ -186,7 +188,7 @@
           this.$refs.countriesList.scrollTop = arrayIndex * itemHeight - (itemHeight * 3)
         })
       },
-      keyboardNav(e) {
+      keyboardNav (e) {
         const code = e.keyCode
         if (code === 40 || code === 38) {
           e.view.event.preventDefault()
@@ -206,17 +208,23 @@
           this.onBlur()
         } else {
           // typing a country's name
-          this.query += e.key
           clearTimeout(this.queryTimer)
           this.queryTimer = setTimeout(() => {
             this.query = ''
-          }, 700)
-          // don't include preferred countries so we jump to the right place in the alphabet
-          const resultIndex = this.countriesSorted.slice(this.preferredCountries.length).findIndex(c => {
-            this.tmpValue = c.iso2
-            return c.name.toLowerCase().startsWith(this.query)
-          })
-          this.scrollToSelectedOnFocus(resultIndex + this.preferredCountries.length)
+          }, 1000)
+          var q = String.fromCharCode(code)
+          if (code === 8 && this.query !== '') {
+            this.query = this.query.substring(0, this.query.length-1)
+          } else if (/[a-zA-Z-e ]/.test(q)) {
+            this.query += e.key
+            const resultIndex = this.countriesSorted.slice(this.preferredCountries.length).findIndex(c => {
+              this.tmpValue = c.iso2
+              return c.name.toLowerCase().startsWith(this.query)
+            })
+            if (resultIndex !== -1) {
+              this.scrollToSelectedOnFocus(resultIndex + this.preferredCountries.length)
+            }
+          }
         }
       }
     }
@@ -319,7 +327,7 @@
     &.is-disabled {
       .field-input {
         border-color: #ccc;
-        background: #f2f2f2;
+        background-color: #f2f2f2;
       }
       .field-label,
       .field-input {
@@ -378,7 +386,7 @@
       .country-list {
         background-color: #424242;
         color: rgba(255, 255, 255, 0.7);
-        &-item:hover {
+        &-item:hover, &-item.keyboard-selected {
           background-color: darken(#424242, 5%);
         }
       }
@@ -418,6 +426,13 @@
         color: rgba(255, 255, 255, 0.7);
       }
       &.is-disabled {
+        .field-input {
+          border-color: #ccc;
+          background-color: #f2f2f2;
+        }
+        .country-selector-arrow {
+          color: #888;
+        }
         ::-webkit-input-placeholder {
           /* WebKit, Blink, Edge */
           color: #424242;
@@ -443,21 +458,6 @@
         ::placeholder {
           /* Most modern browsers support this now. */
           color: #424242;
-        }
-      }
-    }
-    &.sm {
-      .field-input {
-        height: 36px;
-        min-height: 36px;
-        font-size: 12px;
-      }
-      .field-label {
-        font-size: 10px;
-      }
-      &.has-value {
-        .field-input {
-          padding-top: 12px;
         }
       }
     }

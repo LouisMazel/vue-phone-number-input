@@ -43,9 +43,9 @@
           <VuePhoneNumberInput
             id="phoneNumber2"
             v-model="phoneNumber2"
-            :dark="dark"
             :translations="translations"
             @update="onUpdate2"
+            dark
           />
         </div>
         <br>
@@ -114,6 +114,10 @@
       color: rgba(255, 255, 255, 0.70);
     }
   }
+}
+hr {
+  border: 0;
+  border-top:  1px solid #ebebeb;
 }
 .container {
   width: 80%;

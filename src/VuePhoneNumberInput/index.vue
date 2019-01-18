@@ -183,10 +183,5 @@
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
     }
-    &:not(.dark) {
-      .input-phone-number input {
-        background-color: transparent !important;
-      }
-    }
   }
 </style>
