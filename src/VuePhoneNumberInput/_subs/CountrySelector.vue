@@ -110,7 +110,8 @@
       return {
         isFocus: false,
         selectedIndex: null,
-        tmpValue: this.value
+        tmpValue: this.value,
+        query: ''
       }
     },
     computed: {
@@ -179,9 +180,6 @@
         this.tmpValue = iso2
         this.$emit('input', iso2)
       },
-      updateTmpValue (iso2) {
-        this.tmpValue = iso2
-      },
       scrollToSelectedOnFocus (arrayIndex) {
         const countrylist = this.$refs.countriesList
         this.$nextTick(() => {
@@ -199,27 +197,26 @@
               ? this.countriesSorted.length - 1
               : 0
           }
-          this.updateTmpValue(this.countriesSorted[index].iso2)
+          this.tmpValue = this.countriesSorted[index].iso2
           this.scrollToSelectedOnFocus(index)
         } else if (code === 13) {
           // enter key
           this.updateValue(this.tmpValue)
+        } else if (code === 27) {
+          this.onBlur()
         } else {
           // typing a country's name
-          this.typeToFindInput += e.key
-          clearTimeout(this.typeToFindTimer)
-          this.typeToFindTimer = setTimeout(() => {
-            this.typeToFindInput = ''
+          this.query += e.key
+          clearTimeout(this.queryTimer)
+          this.queryTimer = setTimeout(() => {
+            this.query = ''
           }, 700)
           // don't include preferred countries so we jump to the right place in the alphabet
-          const typedCountryI = this.countriesSorted.slice(this.preferredCountries.length).findIndex(c => c.name.toLowerCase().startsWith(this.typeToFindInput))
-          if (~typedCountryI) {
-            this.selectedIndex = this.preferredCountries.length + typedCountryI
-            const selEle = this.$refs.countriesList.children[this.selectedIndex]
-            if (selEle.offsetTop < this.$refs.countriesList.scrollTop || selEle.offsetTop + selEle.clientHeight > this.$refs.countriesList.scrollTop + this.$refs.countriesList.clientHeight) {
-              this.$refs.countriesList.scrollTop = selEle.offsetTop - this.$refs.countriesList.clientHeight / 2
-            }
-          }
+          const resultIndex = this.countriesSorted.slice(this.preferredCountries.length).findIndex(c => {
+            this.tmpValue = c.iso2
+            return c.name.toLowerCase().startsWith(this.query)
+          })
+          this.scrollToSelectedOnFocus(resultIndex + this.preferredCountries.length)
         }
       }
     }
