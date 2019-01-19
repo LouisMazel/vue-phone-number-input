@@ -18,11 +18,7 @@
       v-if="value"
       class="flag-container field-country-flag"
     >
-      <img
-        :class="`iti-flag-small iti-flag ${value.toLowerCase()}`"
-        :alt="value.toLowerCase()"
-        src="./../assets/flags/blank.gif"
-      >
+      <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
     </div>
     <input
       :id="id"
@@ -68,11 +64,7 @@
         @click.stop="updateValue(item.iso2)"
       >
         <div class="flag-container">
-          <img
-            :class="`flag-small flag flag-${item.iso2.toLowerCase()}`"
-            :alt="item.iso2"
-            src="./../assets/flags/blank.gif"
-          >
+          <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
         </div>
         <div>{{ item.name }}</div>
       </div>
@@ -151,10 +143,10 @@
       },
       selectedCountry () {
         return this.value
-        ? {
-          ...this.countriesSorted.find(country => country.iso2 === this.value),
-          index: this.countriesSorted.findIndex(c => c.iso2 === this.value)
-        } : {}
+          ? {
+            ...this.countriesSorted.find(country => country.iso2 === this.value),
+            index: this.countriesSorted.findIndex(c => c.iso2 === this.value)
+          } : {}
       },
       tmpValueIndex () {
         return this.countriesSorted.findIndex(c => c.iso2 === this.tmpValue)
@@ -183,7 +175,6 @@
         this.$emit('input', iso2)
       },
       scrollToSelectedOnFocus (arrayIndex) {
-        const countrylist = this.$refs.countriesList
         this.$nextTick(() => {
           this.$refs.countriesList.scrollTop = arrayIndex * itemHeight - (itemHeight * 3)
         })
@@ -212,7 +203,7 @@
           this.queryTimer = setTimeout(() => {
             this.query = ''
           }, 1000)
-          var q = String.fromCharCode(code)
+          const q = String.fromCharCode(code)
           if (code === 8 && this.query !== '') {
             this.query = this.query.substring(0, this.query.length-1)
           } else if (/[a-zA-Z-e ]/.test(q)) {
@@ -232,7 +223,6 @@
 </script>
 
 <style lang="scss" scoped>
-  @import "./../assets/iti-flags/flags.css";
   *,
   *::before,
   *::after {

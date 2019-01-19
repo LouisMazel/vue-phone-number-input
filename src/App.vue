@@ -30,9 +30,32 @@
         </div>
         <br>
         <div class="component">
+          <h3>Datas returned with "onUpdate" event</h3>
+          <hr>
           <b>v-model</b> : {{ phoneNumber }}
           <hr>
-          <b>onUpdate</b> : {{ results || 'null' }}
+          <div class="flex flex-wrap">
+            <div class="component">
+              <table>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+                <tr
+                  v-for="item in resultsTable"
+                  :key="item"
+                >
+                  <td align="left">
+                    {{ item }}
+                  </td>
+                  <td>{{ results[item] }}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="component flex-1">
+              {{ results }}
+            </div>
+          </div>
         </div>
       </div>
       <div class="component-container">
@@ -44,15 +67,38 @@
             id="phoneNumber2"
             v-model="phoneNumber2"
             :translations="translations"
-            @update="onUpdate2"
             dark
+            @update="onUpdate2"
           />
         </div>
         <br>
         <div class="component">
-          <b>v-model</b> : {{ phoneNumber2 }}
+          <h3>Datas returned with "onUpdate" event</h3>
           <hr>
-          <b>onUpdate</b> : {{ results2 || 'null' }}
+          <b>v-model</b> : {{ phoneNumber }}
+          <hr>
+          <div class="flex flex-wrap">
+            <div class="component">
+              <table>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+                <tr
+                  v-for="item in resultsTable2"
+                  :key="item"
+                >
+                  <td align="left">
+                    {{ item }}
+                  </td>
+                  <td>{{ results2[item] }}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="component flex-1">
+              {{ results2 }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -67,9 +113,9 @@
     components: {
       VuePhoneNumberInput
     },
-    data () {
+    data() {
       return {
-        phoneNumber: '0658584929',
+        phoneNumber: '0665656565',
         phoneNumber2: null,
         defaultCountry: 'FR',
         countriesList: ['FR', 'BE', 'DE'],
@@ -79,17 +125,25 @@
           countrySelectorError: 'Choisir un pays',
           phoneNumberLabel: 'Numéro de téléphone'
         },
-        results: null,
-        results2: null,
+        results: {},
+        results2: {},
         dark: false,
         disabled: false
       }
     },
+    computed: {
+      resultsTable () {
+        return Object.keys(this.results)
+      },
+      resultsTable2 () {
+        return Object.keys(this.results)
+      }
+    },
     methods: {
-      onUpdate (payload) {
+      onUpdate(payload) {
         this.results = payload
       },
-      onUpdate2 (payload) {
+      onUpdate2(payload) {
         this.results2 = payload
       }
     }
@@ -98,36 +152,39 @@
 
 <style lang="scss" scoped>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   height: 100%;
   min-height: 100%;
   padding: 1px;
+  font-size: 14px;
   &.dark {
     background-color: darken(#424242, 20%);
     h1 {
       color: rgba(255, 255, 255, 0.7);
     }
     header {
-      color: rgba(255, 255, 255, 0.70);
+      color: rgba(255, 255, 255, 0.7);
     }
   }
 }
 hr {
   border: 0;
-  border-top:  1px solid #ebebeb;
+  border-top: 1px solid #ebebeb;
 }
 .container {
-  width: 80%;
+  width: 70%;
   margin: 0 auto;
   text-align: center;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 .btn {
@@ -140,11 +197,12 @@ hr {
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   background-color: #96bf31;
-  color: #FFF;
+  color: #fff;
   font-weight: 500;
   &:hover {
     background-color: darken(#96bf31, 10%);
-    box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
+    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
+      0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
   &.option {
     background-color: #424242;
@@ -155,11 +213,12 @@ hr {
 }
 .component {
   padding: 10px;
-  background: #FFF;
+  background: #fff;
   border-radius: 4px;
   border: 1px solid #ebebeb;
   &:hover {
-    box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
+    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
+      0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
   &.options {
     margin-bottom: 20px;
@@ -168,25 +227,26 @@ hr {
 .component-container {
   margin: 0 10px 20px 10px;
   padding: 20px;
-  background: #FFF;
+  background: #fff;
   border-radius: 4px;
   border: 1px solid #ebebeb;
   min-width: 300px;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   flex: 1 0 48%;
   &:hover {
-    box-shadow: 0 0 8px 0 rgba(232,237,250,.6), 0 2px 4px 0 rgba(232,237,250,.5);
+    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
+      0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
   &.dark {
     background-color: darken(#424242, 10%);
-    color: #FFF;
+    color: #fff;
     textarea {
       background: #424242;
       color: dodgerblue;
     }
     .btn {
       &:hover {
-        box-shadow: 0 0 8px 0 rgba(0,0,0,.6), 0 2px 4px 0 rgba(0,0,0,.5);
+        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
       }
       &.option {
         background-color: #424242;
@@ -198,16 +258,38 @@ hr {
   }
 }
 .dark {
-  .component-container, .component {
+  .component-container,
+  .component {
     border: 1px solid #424242;
     background-color: darken(#424242, 10%);
     &:hover {
-      box-shadow: 0 0 8px 0 rgba(0,0,0,.6), 0 2px 4px 0 rgba(0,0,0,.5);
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     }
-    color: rgba(255, 255, 255, 0.70);
+    color: rgba(255, 255, 255, 0.7);
   }
   hr {
     border-color: #424242;
+  }
+}
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  display: block;
+  width: 100%;
+  overflow: auto;
+  margin-top: 0;
+  margin-bottom: 16px;
+  tr {
+    background-color: #fff;
+    border-top: 1px solid #c6cbd1;
+    th,
+    td {
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+    }
+    &:nth-child(2n) {
+      background-color: #f6f8fa;
+    }
   }
 }
 @media screen and (max-width: 1024px) {

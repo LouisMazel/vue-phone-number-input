@@ -156,7 +156,7 @@
 </script>
 <style lang="scss">
   @import "./assets/scss/flexbox-helper.scss";
-  @import "./assets/flags/flags.css";
+  @import "./assets/iti-flags/flags.css";
   *, *::before, *::after {
     box-sizing: border-box;
   }

@@ -19,17 +19,15 @@ module.exports = {
     'no-trailing-spaces': 'error',
     'no-debugger': 0,
     'no-extra-semi': 'error',
-    semi: [
-      'error',
-      'never'
-    ],
+    semi: ['error', 'never'],
+    quotes: ['error', 'single'],
     'no-var': 'error',
     'vue/attributes-order': 'error',
     'vue/no-confusing-v-for-v-if': 'error',
     'vue/no-v-html': 'error',
     'vue/order-in-components': 'error',
     'vue/this-in-template': 'error',
-    'vue/script-indent': 'error'
+    'vue/script-indent': 'error',
   },
 
   parserOptions: {
