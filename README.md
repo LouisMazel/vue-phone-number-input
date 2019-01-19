@@ -1,6 +1,6 @@
 # vue-phone-number-input
 
-> A beautiful input made with Vue JS
+> A beautiful text field to format phone numbers
 
 ![vue-phone-number-input](./public/vue-phone-number-input-demo.gif)
 
