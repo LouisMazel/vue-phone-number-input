@@ -63,6 +63,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | no-validator-state | Boolean`    | no       | false      |                |
 | no-use-browser-locale | Boolean    | no       | false      |                |
 | translations (3) | Object    | no       | null      |                |
+| no-flags | Boolean`    | no       | false      |                |
 
 
 (1) Ex : `default-country-code="FR"`
