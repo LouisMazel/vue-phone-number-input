@@ -24,7 +24,7 @@
     <input
       :id="id"
       ref="CountrySelector"
-      :value="selectedCountry.name"
+      :value="callingCode"
       :placeholder="label"
       :disabled="disabled"
       :style="[borderStyle]"
@@ -80,6 +80,7 @@
 
 <script>
   import { directive } from 'v-click-outside'
+  import { getCountryCallingCode } from 'libphonenumber-js'
   const itemHeight = 30 // if you modify this value, you should update the height property on css (.country-list-item)
 
   export default {
@@ -148,15 +149,16 @@
             ? this.countriesFiltered
             : this.countriesList
       },
-      selectedCountry () {
+      selectedCountryIndex () {
         return this.value
-          ? {
-            ...this.countriesSorted.find(country => country.iso2 === this.value),
-            index: this.countriesSorted.findIndex(c => c.iso2 === this.value)
-          } : {}
+          ? this.countriesSorted.findIndex(c => c.iso2 === this.value)
+          : null
       },
       tmpValueIndex () {
         return this.countriesSorted.findIndex(c => c.iso2 === this.tmpValue)
+      },
+      callingCode () {
+        return this.value ? `+${getCountryCallingCode(this.value)}` : null
       }
     },
     mounted () {
@@ -168,7 +170,7 @@
           this.$emit('focus')
           this.isFocus = true
           if (this.value) {
-            this.scrollToSelectedOnFocus(this.selectedCountry.index)
+            this.scrollToSelectedOnFocus(this.selectedCountryIndex)
           }
         }
       },

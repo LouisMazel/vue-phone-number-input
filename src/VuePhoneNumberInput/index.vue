@@ -29,8 +29,8 @@
         :id="`${id}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
-        :label="t.phoneNumberLabel"
-        :hint="countryCode && phoneNumber ? phoneFormatted : null"
+        :label="`${t.phoneNumberLabel} (ex : ${phoneNumberExample})`"
+        :hint="isValid ? phoneFormatted : null"
         :color="color"
         :dark="dark"
         :disabled="disabled"
@@ -45,7 +45,8 @@
 <script>
   /* eslint-disable */
   import CodesCountries from './assets/js/phoneCodeCountries.js'
-  import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js'
+  import examples from 'libphonenumber-js/examples.mobile.json'
+  import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
   import VueInputUI from 'vue-input-ui'
   import 'vue-input-ui/dist/vue-input-ui.css'
   import CountrySelector from './_subs/CountrySelector'
@@ -86,7 +87,7 @@
     mounted () {
       const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
       if (this.value && locale) {
-        this.emitValue({ phoneNumber: this.phoneNumber, countryCode: locale})
+        this.emitValues({ phoneNumber: this.value, countryCode: locale})
       }
     },
     computed: {
@@ -104,7 +105,7 @@
           return this.results.countryCode || this.defaultCountryCode
         },
         set (newCountry) { 
-          this.emitValue({countryCode: newCountry, phoneNumber: this.phoneNumber})
+          this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
           this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
         }
       },
@@ -113,22 +114,28 @@
           return this.value
         },
         set (newPhone) {
-          this.$emit('input', newPhone)
-          this.emitValue({countryCode: this.countryCode, phoneNumber: newPhone})
+          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone})
         }
       },
       shouldChooseCountry () {
         return !this.countryCode && !!this.phoneNumber
       },
       phoneFormatted () {
-        const asYouType = new AsYouType(this.countryCode).input(this.phoneNumber)
-        return this.isValid ? this.results.formatInternational : asYouType
+        return this.results.formatInternational
       },
       isValid () {
         return this.results.isValid
+      },
+      phoneNumberExample () {
+        const phoneNumber = getExampleNumber(this.countryCode, examples)
+        return this.countryCode ? phoneNumber.formatNational() : null
       }
     },
     methods: {
+      getAsYouTypeFormat (payload) {
+        const asYouType = new AsYouType(payload.countryCode)
+        return asYouType.input(payload.phoneNumber)
+      },
       getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
         const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
         return {
@@ -149,7 +156,9 @@
           )
         }
       },
-      emitValue (payload) {
+      emitValues (payload) {
+        const asYouType = this.getAsYouTypeFormat(payload)
+        this.$emit('input', asYouType)
         this.results = this.getParsePhoneNumberFromString(payload)
         this.$emit('update', this.results)
       }
@@ -166,10 +175,10 @@
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     .select-country-container {
-      flex: 0 0 130px;
-      width: 130px;
-      min-width: 130px;
-      max-width: 130px;
+      flex: 0 0 115px;
+      width: 115px;
+      min-width: 115px;
+      max-width: 115px;
     }
     .country-selector {
       cursor: pointer;
