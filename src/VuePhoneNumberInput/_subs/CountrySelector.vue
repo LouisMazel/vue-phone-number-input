@@ -208,12 +208,13 @@
             this.query = this.query.substring(0, this.query.length-1)
           } else if (/[a-zA-Z-e ]/.test(q)) {
             this.query += e.key
-            const resultIndex = this.countriesSorted.slice(this.preferredCountries.length).findIndex(c => {
+            const countries = this.preferredCountries ? this.countriesSorted.slice(this.preferredCountries.length) : this.countriesSorted
+            const resultIndex = countries.findIndex(c => {
               this.tmpValue = c.iso2
               return c.name.toLowerCase().startsWith(this.query)
             })
             if (resultIndex !== -1) {
-              this.scrollToSelectedOnFocus(resultIndex + this.preferredCountries.length)
+              this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))
             }
           }
         }
