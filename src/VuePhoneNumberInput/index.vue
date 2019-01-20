@@ -185,5 +185,10 @@
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
     }
+    .input-phone-number:not(.is-dark):not(.is-disabled) {
+      input {
+        background-color: transparent !important;
+      }
+    }
   }
 </style>

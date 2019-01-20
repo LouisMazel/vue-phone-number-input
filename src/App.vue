@@ -7,6 +7,22 @@
       VuePhoneNumberInput
     </h1>
     <div class="container">
+      <a
+        class="btn btn-dark margin-right"
+        target="_blank"
+        href="https://github.com/LouisMazel/vue-phone-number-input"
+      >
+        Github
+      </a>
+      <a
+        class="btn btn-danger"
+        target="_blank"
+        href="https://www.npmjs.com/package/vue-phone-number-input"
+      >
+        Npm
+      </a>
+    </div>
+    <div class="container">
       <button
         class="btn"
         @click="dark = !dark"
@@ -192,16 +208,19 @@ hr {
   padding: 10px 20px;
   margin-bottom: 20px;
   border: none;
+  display: inline-block;
   border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
   font-size: 12px;
   outline: none;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  background-color: #96bf31;
-  color: #fff;
+  background-color: dodgerblue;
+  color: white;
   font-weight: 500;
   &:hover {
-    background-color: darken(#96bf31, 10%);
+    background-color: darken(dodgerblue, 10%);
     box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
       0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
@@ -211,6 +230,21 @@ hr {
       background-color: darken(#424242, 10%);
     }
   }
+  &.btn-dark {
+    background-color: #424242;
+    &:hover {
+      background-color: darken(#424242, 10%);
+    }
+  }
+  &.btn-danger {
+    background-color: orangered;
+    &:hover {
+      background-color: darken(orangered, 10%);
+    }
+  }
+}
+.margin-right {
+  margin-right: 20px;
 }
 .component {
   padding: 10px;
@@ -245,31 +279,6 @@ hr {
       background: #424242;
       color: dodgerblue;
     }
-    .btn {
-      &:hover {
-        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-      }
-      &.option {
-        background-color: #424242;
-        &:hover {
-          background-color: lighten(#424242, 10%);
-        }
-      }
-    }
-  }
-}
-.dark {
-  .component-container,
-  .component {
-    border: 1px solid #424242;
-    background-color: darken(#424242, 10%);
-    &:hover {
-      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    }
-    color: rgba(255, 255, 255, 0.7);
-  }
-  hr {
-    border-color: #424242;
   }
 }
 table {
@@ -290,6 +299,36 @@ table {
     }
     &:nth-child(2n) {
       background-color: #f6f8fa;
+    }
+  }
+}
+.dark {
+  .component-container,
+  .component {
+    border: 1px solid #424242;
+    background-color: darken(#424242, 10%);
+    &:hover {
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    }
+    color: rgba(255, 255, 255, 0.7);
+  }
+  hr {
+    border-color: #424242;
+  }
+  .btn {
+    &:hover {
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.5) !important;
+    }
+  }
+  table tr {
+    background-color: #424242;
+    border-top: 1px solid #424242;
+    th,
+    td {
+      border: 1px solid #424242;
+    }
+    &:nth-child(2n) {
+      background-color: darken(#424242, 10%);
     }
   }
 }

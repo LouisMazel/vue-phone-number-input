@@ -48,31 +48,33 @@
     >
       {{ hint || label }}
     </label>
-    <div
-      v-show="isFocus"
-      ref="countriesList"
-      class="country-list"
-    >
+    <Transition name="slide">
       <div
-        v-for="item in countriesSorted"
-        :key="item.code"
-        :class="[
-          {'selected': value === item.iso2},
-          {'keyboard-selected': tmpValue === item.iso2}
-        ]"
-        class="flex align-center country-list-item"
-        :style="[value === item.iso2 ? bgStyle : null]"
-        @click.stop="updateValue(item.iso2)"
+        v-show="isFocus"
+        ref="countriesList"
+        class="country-list"
       >
         <div
-          v-if="!noFlags"
-          class="flag-container"
+          v-for="item in countriesSorted"
+          :key="item.code"
+          :class="[
+            {'selected': value === item.iso2},
+            {'keyboard-selected': tmpValue === item.iso2}
+          ]"
+          class="flex align-center country-list-item"
+          :style="[value === item.iso2 ? bgStyle : null]"
+          @click.stop="updateValue(item.iso2)"
         >
-          <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
+          <div
+            v-if="!noFlags"
+            class="flag-container"
+          >
+            <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
+          </div>
+          <div>{{ item.name }}</div>
         </div>
-        <div>{{ item.name }}</div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
@@ -522,6 +524,17 @@
           padding-top: 16px;
         }
       }
+    }
+    .slide-enter-active, .slide-leave-active {
+      opacity: 1;
+      z-index: 998;
+      transition: all 0.3s;
+      transform: translateY(0);
+    }
+    .slide-enter, .slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
+      opacity: 0;
+      z-index: 998;
+      transform: translateY(-20px);
     }
   }
 </style>
