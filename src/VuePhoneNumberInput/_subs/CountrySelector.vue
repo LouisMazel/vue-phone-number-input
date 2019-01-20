@@ -271,19 +271,19 @@
       height: 42px;
       min-height: 42px;
       padding-right: 18px;
-      padding-left: 12px;
+      padding-left: 10px;
       font-weight: 400;
       -webkit-appearance: none;
       outline: none;
       border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 4px;
-      font-size: 14px;
+      font-size: 13px;
       z-index: 0;
     }
     &-arrow {
       position: absolute;
       right: 0;
-      bottom: 10px;
+      top: calc(50% - 8px);
       width: 25px;
       color: #424242;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -336,7 +336,7 @@
     }
     &.no-flags {
       .field-input {
-        padding-left: 12px;
+        padding-left: 10px;
       }
     }
     .text-danger {
@@ -466,21 +466,6 @@
         }
       }
     }
-    &.lg {
-      .field-input {
-        height: 48px;
-        min-height: 48px;
-        font-size: 16px;
-      }
-      .field-label {
-        font-size: 14px;
-      }
-      &.has-value {
-        .field-input {
-          padding-top: 16px;
-        }
-      }
-    }
     &.sm {
       .field-input {
         height: 36px;
@@ -514,7 +499,7 @@
         font-size: 14px;
       }
       .field-country-flag {
-        top: 21px;
+        top: 25px;
         img {
           zoom: .45;
           -moz-transform: scale(.45);
@@ -523,7 +508,7 @@
       }
       &.has-value {
         .field-input {
-          padding-top: 16px;
+          padding-top: 18px;
         }
       }
     }

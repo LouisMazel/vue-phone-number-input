@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="{ 'dark': dark }"
+    :class="[{ 'dark': dark }, size]"
     class="vue-phone-number-input flex"
   >
     <div class="select-country-container">
@@ -29,7 +29,7 @@
         :id="`${id}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
-        :label="`${t.phoneNumberLabel} (ex : ${phoneNumberExample})`"
+        :label="inputLabel"
         :hint="isValid ? phoneFormatted : null"
         :color="color"
         :dark="dark"
@@ -96,6 +96,9 @@
           ...locales,
           ...this.translations
         }
+      },
+      inputLabel () {
+        return this.phoneNumberExample ? `${this.t.phoneNumberLabel} (ex : ${this.phoneNumberExample})` : this.t.phoneNumberLabel
       },
       codesCountries () {
         return CodesCountries
@@ -175,10 +178,22 @@
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     .select-country-container {
-      flex: 0 0 115px;
-      width: 115px;
-      min-width: 115px;
-      max-width: 115px;
+      flex: 0 0 120px;
+      width: 120px;
+      min-width: 120px;
+      max-width: 120px;
+    }
+    &.sm .select-country-container {
+      flex: 0 0 110px;
+      width: 110px;
+      min-width: 110px;
+      max-width: 110px;
+    }
+    &.lg .select-country-container {
+      flex: 0 0 130px;
+      width: 130px;
+      min-width: 130px;
+      max-width: 130px;
     }
     .country-selector {
       cursor: pointer;

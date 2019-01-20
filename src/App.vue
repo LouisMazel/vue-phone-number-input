@@ -6,7 +6,10 @@
     <h1 style="text-align: center;">
       VuePhoneNumberInput
     </h1>
-    <div class="container">
+    <div
+      v-if="!screenshotMode"
+      class="container"
+    >
       <a
         class="btn btn-dark margin-right"
         target="_blank"
@@ -22,7 +25,10 @@
         Npm
       </a>
     </div>
-    <div class="container">
+    <div
+      class="container"
+      :style="screenshotMode ? `width: 40%;` : null"
+    >
       <button
         class="btn"
         @click="dark = !dark"
@@ -32,6 +38,7 @@
       <div class="component-container">
         <div class="component">
           <VuePhoneNumberInput
+            v-if="!screenshotMode"
             id="phoneNumber1"
             v-model="phoneNumber"
             color="purple"
@@ -43,13 +50,22 @@
             :no-validator-state="false"
             @update="onUpdate"
           />
+          <VuePhoneNumberInput
+            v-else
+            id="phoneNumber1"
+            v-model="phoneNumber2"
+            :dark="dark"
+            @update="onUpdate"
+          />
         </div>
-        <br>
+        <br v-if="!screenshotMode">
         <div class="component">
-          <h3>Datas returned with "onUpdate" event</h3>
-          <hr>
-          <b>v-model</b> : {{ phoneNumber }}
-          <hr>
+          <div v-if="!screenshotMode">
+            <h3>Datas returned with "onUpdate" event</h3>
+            <hr>
+            <b>v-model</b> : {{ phoneNumber }}
+            <hr>
+          </div>
           <div class="flex flex-wrap">
             <div class="component">
               <table>
@@ -74,7 +90,10 @@
           </div>
         </div>
       </div>
-      <div class="component-container">
+      <div
+        v-if="!screenshotMode"
+        class="component-container"
+      >
         <div class="component">
           <b>With translations (FR) - No flags - Dark</b>
           <br>
@@ -132,6 +151,7 @@
     },
     data() {
       return {
+        screenshotMode: false,
         phoneNumber: '0665656565',
         phoneNumber2: null,
         defaultCountry: 'FR',
@@ -153,7 +173,7 @@
         return Object.keys(this.results)
       },
       resultsTable2 () {
-        return Object.keys(this.results)
+        return Object.keys(this.results2)
       }
     },
     methods: {
