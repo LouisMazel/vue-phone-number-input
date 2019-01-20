@@ -67,13 +67,13 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 
 (1) Ex : `default-country-code="FR"`
 (2) Ex : `preferred-countries="['FR', 'BE', 'DE']"` This countries will be at the top of the list
-(3) translations comes to replace default texts :
+(3) translations comes to replace default texts - Ex :
 ```
-translations: {
+translations="{
   countrySelectorLabel: 'Code pays',
   countrySelectorError: 'Choisir un pays',
   phoneNumberLabel: 'Numéro de téléphone'
-}
+}"
 ```
 
 ## Contribution
