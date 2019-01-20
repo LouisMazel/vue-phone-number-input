@@ -19,6 +19,7 @@
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
         :label="t.countrySelectorLabel"
+        :no-flags="noFlags"
         :size="size"
         class="input-country-selector"
       />
@@ -74,7 +75,8 @@
       ignoredCountries: { type: Array, default: Array },
       translations: { type: Object, default: Object },
       noValidatorState: { type: Boolean, default: false },
-      noUseBrowserLocale: { type: Boolean, default: false }
+      noUseBrowserLocale: { type: Boolean, default: false },
+      noFlags: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -101,7 +103,7 @@
         get () {
           return this.results.countryCode || this.defaultCountryCode
         },
-        set (newCountry) {
+        set (newCountry) { 
           this.emitValue({countryCode: newCountry, phoneNumber: this.phoneNumber})
           this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
         }

@@ -60,7 +60,7 @@
       </div>
       <div class="component-container">
         <div class="component">
-          <b>With translations (FR)</b>
+          <b>With translations (FR) - No flags - Dark</b>
           <br>
           <br>
           <VuePhoneNumberInput
@@ -68,6 +68,7 @@
             v-model="phoneNumber2"
             :translations="translations"
             dark
+            no-flags
             @update="onUpdate2"
           />
         </div>

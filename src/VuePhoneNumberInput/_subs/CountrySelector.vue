@@ -8,14 +8,15 @@
       'has-hint': hint,
       'has-error': error,
       'is-disabled': disabled,
-      'is-dark': dark
+      'is-dark': dark,
+      'no-flags': noFlags
     }, size]"
     class="field country-selector"
     @click="onFocus"
     @keydown="keyboardNav"
   >
     <div
-      v-if="value"
+      v-if="value && !noFlags"
       class="flag-container field-country-flag"
     >
       <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
@@ -63,7 +64,10 @@
         :style="[value === item.iso2 ? bgStyle : null]"
         @click.stop="updateValue(item.iso2)"
       >
-        <div class="flag-container">
+        <div
+          v-if="!noFlags"
+          class="flag-container"
+        >
           <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
         </div>
         <div>{{ item.name }}</div>
@@ -96,7 +100,8 @@
       items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
-      ignoredCountries: { type: Array, default: Array }
+      ignoredCountries: { type: Array, default: Array },
+      noFlags: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -323,6 +328,11 @@
       .field-label,
       .field-input {
         cursor: default;
+      }
+    }
+    &.no-flags {
+      .field-input {
+        padding-left: 12px;
       }
     }
     .text-danger {
