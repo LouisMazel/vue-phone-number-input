@@ -24,10 +24,11 @@ module.exports = {
     'no-var': 'error',
     'vue/attributes-order': 'error',
     'vue/no-confusing-v-for-v-if': 'error',
+    'no-unused-vars': 'error',
     'vue/no-v-html': 'error',
     'vue/order-in-components': 'error',
     'vue/this-in-template': 'error',
-    'vue/script-indent': 'error',
+    'vue/script-indent': 'error'
   },
 
   parserOptions: {

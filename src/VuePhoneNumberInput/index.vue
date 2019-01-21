@@ -10,6 +10,7 @@
         v-model="countryCode"
         :items="codesCountries"
         :color="color"
+        :valid-color="validColor"
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
         :dark="dark"
@@ -32,6 +33,7 @@
         :label="inputLabel"
         :hint="isValid ? phoneFormatted : null"
         :color="color"
+        :valid-color="validColor"
         :dark="dark"
         :disabled="disabled"
         :size="size"
@@ -67,6 +69,7 @@
       value: { type: String, default: null },
       id: { type: String, default: 'VuePhoneNumberInput' },
       color: { type: String, default: 'dodgerblue' },
+      validColor: { type: String, default: 'yellowgreen' },
       dark: { type: Boolean, default: Boolean },
       disabled: { type: Boolean, default: Boolean },
       defaultCountryCode: { type: String, default: null },
@@ -81,13 +84,14 @@
     },
     data () {
       return {
-        results: {}
+        results: {},
+        focusInput: false
       }
     },
     mounted () {
       const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-      if (this.value && locale) {
-        this.emitValues({ phoneNumber: this.value, countryCode: locale})
+      if (locale) {
+        this.countryCode = locale
       }
     },
     computed: {
@@ -109,7 +113,10 @@
         },
         set (newCountry) { 
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
-          this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
+          if (this.focusInput) {
+            this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
+          }
+          this.focusInput = true
         }
       },
       phoneNumber: {
@@ -130,8 +137,8 @@
         return this.results.isValid
       },
       phoneNumberExample () {
-        const phoneNumber = getExampleNumber(this.countryCode, examples)
-        return this.countryCode ? phoneNumber.formatNational() : null
+        const phoneNumber = this.countryCode ? getExampleNumber(this.countryCode, examples) : null
+        return phoneNumber ? phoneNumber.formatNational() : null
       }
     },
     methods: {

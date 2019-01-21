@@ -48,11 +48,13 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 ```
 
 ## Props API
+
 | Props      | Type       | Required | Default    | Options        |
 |------------|------------|----------|------------|----------------|
 | v-model    | String/Int | true     | -          | -              |
 | id      | String     | false    | VuePhoneNumberInput | -              |
 | color | String `HEX`   | no       | dogderblue      |                |
+| valid-color | String `HEX`   | no       | yellowgreen      |                |
 | disabled | Boolean    | no       | false      |                |
 | dark | Boolean    | no       | false      |                |
 | size | Boolean    | no       | false      |                |
@@ -63,15 +65,15 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | no-validator-state | Boolean`    | no       | false      |                |
 | no-use-browser-locale | Boolean    | no       | false      |                |
 | translations (3) | Object    | no       | null      |                |
-| no-flags | Boolean`    | no       | false      |                |
-
+| no-flags | Boolean    | no       | false      |                |
 
 (1) Ex : `default-country-code="FR"`
 
 (2) Ex : `preferred-countries="['FR', 'BE', 'DE']"` This countries will be at the top of the list
 
 (3) translations comes to replace default texts - Ex :
-```
+
+```html
 translations="{
   countrySelectorLabel: 'Code pays',
   countrySelectorError: 'Choisir un pays',
