@@ -1,11 +1,11 @@
 {
   "name": "vue-phone-number-input",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A phone number input made with Vue JS && libphonenumber-js",
   "author": "Louis Mazel <mazuel.loic@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve --mode development --open",
-    "build": "npm run lint && npm run build:lib && npm run build:docs",
+    "build": "npm run build:lib && npm run build:docs",
     "test": "vue-cli-service test:unit /test/specs",
     "lint": "vue-cli-service lint",
     "before-publish": "npm i && npm run lint && npm run build",
