@@ -46,7 +46,7 @@
 </template>
 <script>
   /* eslint-disable */
-  import CodesCountries from './assets/js/phoneCodeCountries.js'
+  import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
   import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
   import VueInputUI from 'vue-input-ui'
@@ -56,7 +56,11 @@
 
   const browserLocale = () => {
     const locale = window.navigator.userLanguage || window.navigator.language
-    return locale.substr(0, 2).toUpperCase()
+    return locale ? locale.substr(0, 2).toUpperCase() : null
+  }
+
+  const isCountryAvailable = (locale) => {
+    return countriesIso.includes(locale)
   }
 
   export default {
@@ -88,12 +92,6 @@
         focusInput: false
       }
     },
-    mounted () {
-      const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-      if (locale) {
-        this.countryCode = locale
-      }
-    },
     computed: {
       t () {
         return {
@@ -105,11 +103,23 @@
         return this.phoneNumberExample ? `${this.t.phoneNumberLabel} (ex : ${this.phoneNumberExample})` : this.t.phoneNumberLabel
       },
       codesCountries () {
-        return CodesCountries
+        return countries
+      },
+      locale () {
+        const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
+        const cond = isCountryAvailable(locale)
+        
+        if (cond && locale) {
+          this.countryCode = locale
+        } else if (!cond && this.defaultCountryCode) {
+          // If default country code is not available
+          window.console.warn(`The locale ${locale} is not available`)
+        }
+        return cond ? locale : null
       },
       countryCode: {
         get () {
-          return this.results.countryCode || this.defaultCountryCode
+          return this.results.countryCode || this.locale
         },
         set (newCountry) { 
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})

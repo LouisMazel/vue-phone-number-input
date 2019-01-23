@@ -95,7 +95,7 @@
         class="component-container"
       >
         <div class="component">
-          <b>With translations (FR) - No flags - Dark</b>
+          <b>With translations (FR) - No flags - Dark - No Use Browser Locale</b>
           <br>
           <br>
           <VuePhoneNumberInput
@@ -104,6 +104,7 @@
             :translations="translations"
             dark
             no-flags
+            no-use-browser-locale
             @update="onUpdate2"
           />
         </div>
