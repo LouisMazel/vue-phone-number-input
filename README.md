@@ -47,25 +47,51 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 </script>
 ```
 
+## Features List
+
+- You can set `preferred-countries`, `ignored-countries` or have `only-countries`
+- Validator State : input becomes green (you can modify this color with `valid-color` option) when the phone number is valid (can be disabled by `no-validator-state` attr)
+- Use browser locale to set the country calling code (can be disabled & you can use `default-country-code` option)
+- Phone number formatting while typing
+- You can search your country in list (open countries list & type your country name)
+- Keyboard accessibility (Arrow down, Arrow up : Countries list navigation -  Escape : Close countries list)
+- Phone number example for each country in placeholder/label
+- Auto focus phone number input after selecting country
+- Differents size of input (sm or lg)
+- You can disable the flags - `no-flags` props
+- Dark UI option
+- Disabled option
+- Set your translations
+
 ## Props API
 
-| Props      | Type       | Required | Default    | Options        |
-|------------|------------|----------|------------|----------------|
-| v-model    | String/Int | true     | -          | -              |
-| id      | String     | false    | VuePhoneNumberInput | -              |
-| color | String `HEX`   | no       | dogderblue      |                |
-| valid-color | String `HEX`   | no       | yellowgreen      |                |
-| disabled | Boolean    | no       | false      |                |
-| dark | Boolean    | no       | false      |                |
-| size | Boolean    | no       | false      |                |
-| default-country-code (1) | String    | no       | null      |                |
-| preferred-countries (2) | Array`<string>`    | no       | null      |                |
-| ignored-countries | Array`<string>`    | no       | null      |                |
-| only-countries | Array`<string>`    | no       | null      |                |
-| no-validator-state | Boolean`    | no       | false      |                |
-| no-use-browser-locale | Boolean    | no       | false      |                |
-| translations (3) | Object    | no       | null      |                |
-| no-flags | Boolean    | no       | false      |                |
+| Props      | Type       | Required | Default    |
+|------------|------------|----------|------------|
+| v-model    | String/Int | true     | -          |
+| id      | String     | false    | VuePhoneNumberInput |
+| color | String `HEX`   | no       | dogderblue      |
+| valid-color | String `HEX`   | no       | yellowgreen      |
+| size | String `sm|lg`   | no       | null      |
+| default-country-code (1) | String    | no       | null      |
+| preferred-countries (2) | Array`<string>`    | no       | null      |
+| ignored-countries | Array`<string>`    | no       | null      |
+| only-countries | Array`<string>`    | no       | null      |
+| no-validator-state | Boolean    | no       | false      |
+| no-use-browser-locale | Boolean    | no       | false      |
+| no-flags | Boolean    | no       | false      |
+| disabled | Boolean    | no       | false      |
+| dark | Boolean    | no       | false      |
+| translations (3) | Object    | no       | null      |
+
+## Keyboard accessibility
+
+| Props      | Action       |
+|------------|------------|
+| ArrowDown    | Navigation down in countries list |
+| ArrowUp    | Navigation up in countries list |
+| Escape    | Close countries list |
+| All letters characters    | Searching country name in countries list (should be open) |
+
 
 (1) Ex : `default-country-code="FR"`
 
