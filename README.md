@@ -83,16 +83,6 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | dark | Boolean    | no       | false      |
 | translations (3) | Object    | no       | null      |
 
-## Keyboard accessibility
-
-| Props      | Action       |
-|------------|------------|
-| ArrowDown    | Navigation down in countries list |
-| ArrowUp    | Navigation up in countries list |
-| Escape    | Close countries list |
-| All letters characters    | Searching country name in countries list (should be open) |
-
-
 (1) Ex : `default-country-code="FR"`
 
 (2) Ex : `preferred-countries="['FR', 'BE', 'DE']"` This countries will be at the top of the list
@@ -106,6 +96,15 @@ translations="{
   phoneNumberLabel: 'Numéro de téléphone'
 }"
 ```
+
+## Keyboard accessibility
+
+| Props      | Action       |
+|------------|------------|
+| ArrowDown    | Navigation down in countries list |
+| ArrowUp    | Navigation up in countries list |
+| Escape    | Close countries list |
+| All letters characters    | Searching country name in countries list (should be open) |
 
 ## Contribution
 
