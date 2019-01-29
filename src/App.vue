@@ -105,6 +105,7 @@
             dark
             no-flags
             no-use-browser-locale
+            required
             @update="onUpdate2"
           />
         </div>

@@ -81,6 +81,8 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | no-flags | Boolean    | no       | false      |
 | disabled | Boolean    | no       | false      |
 | dark | Boolean    | no       | false      |
+| required | Boolean    | no       | false      |
+| error | Boolean    | no       | false      |
 | translations (3) | Object    | no       | null      |
 
 (1) Ex : `default-country-code="FR"`
@@ -93,7 +95,8 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 translations="{
   countrySelectorLabel: 'Code pays',
   countrySelectorError: 'Choisir un pays',
-  phoneNumberLabel: 'Numéro de téléphone'
+  phoneNumberLabel: 'Numéro de téléphone',
+  example: 'Exemple :'
 }"
 ```
 
