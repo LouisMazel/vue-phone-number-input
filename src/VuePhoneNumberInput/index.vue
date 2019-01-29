@@ -30,14 +30,16 @@
         :id="`${id}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
-        :label="inputLabel"
-        :hint="isValid ? phoneFormatted : null"
+        :label="t.phoneNumberLabel"
+        :hint="hintValue"
         :color="color"
         :valid-color="validColor"
         :dark="dark"
         :disabled="disabled"
         :size="size"
+        :error="error"
         :valid="isValid && !noValidatorState"
+        :required="required"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
       />
@@ -84,7 +86,10 @@
       translations: { type: Object, default: Object },
       noValidatorState: { type: Boolean, default: false },
       noUseBrowserLocale: { type: Boolean, default: false },
-      noFlags: { type: Boolean, default: false }
+      noFlags: { type: Boolean, default: false },
+      error: { type: Boolean, default: false },
+      noExample: { type: Boolean, default: false },
+      required: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -98,9 +103,6 @@
           ...locales,
           ...this.translations
         }
-      },
-      inputLabel () {
-        return this.phoneNumberExample ? `${this.t.phoneNumberLabel} (ex : ${this.phoneNumberExample})` : this.t.phoneNumberLabel
       },
       codesCountries () {
         return countries
@@ -149,6 +151,14 @@
       phoneNumberExample () {
         const phoneNumber = this.countryCode ? getExampleNumber(this.countryCode, examples) : null
         return phoneNumber ? phoneNumber.formatNational() : null
+      },
+      hasEmptyPhone () {
+        return this.phoneNumber === '' || this.phoneNumber === null
+      },
+      hintValue () {
+        return this.noExample
+          ? null
+          : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       }
     },
     methods: {

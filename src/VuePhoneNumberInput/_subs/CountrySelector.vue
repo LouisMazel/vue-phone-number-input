@@ -193,7 +193,10 @@
       keyboardNav (e) {
         const code = e.keyCode
         if (code === 40 || code === 38) {
-          e.view.event.preventDefault()
+          if (e.view && e.view.event) {
+            // TODO : It's not compatible with FireFox
+            e.view.event.preventDefault()
+          }
           // down arrow
           let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
           if (index === -1 || index >= this.countriesSorted.length) {
