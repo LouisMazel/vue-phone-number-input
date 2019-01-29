@@ -162,7 +162,8 @@
         translations: {
           countrySelectorLabel: 'Code pays',
           countrySelectorError: 'Choisir un pays',
-          phoneNumberLabel: 'Numéro de téléphone'
+          phoneNumberLabel: 'Numéro de téléphone',
+          example: 'Exemple :'
         },
         results: {},
         results2: {},
