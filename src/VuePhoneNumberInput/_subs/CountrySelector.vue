@@ -71,7 +71,9 @@
           >
             <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
           </div>
-          <div>{{ item.name }}</div>
+          <div class="dots-text">
+            {{ item.name }}
+          </div>
         </div>
       </div>
     </Transition>
