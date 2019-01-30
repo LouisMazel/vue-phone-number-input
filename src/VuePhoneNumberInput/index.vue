@@ -57,8 +57,10 @@
   import locales from './assets/locales'
 
   const browserLocale = () => {
-    const locale = window.navigator.userLanguage || window.navigator.language
-    return locale ? locale.substr(0, 2).toUpperCase() : null
+    const browserLocale = window.navigator.userLanguage || window.navigator.language
+    let locale = browserLocale ? browserLocale.substr(3, 4).toUpperCase() : null
+    if (locale === '') locale = browserLocale.substr(0, 2).toUpperCase()
+    return locale
   }
 
   const isCountryAvailable = (locale) => {
