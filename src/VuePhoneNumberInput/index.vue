@@ -156,7 +156,7 @@
         return this.phoneNumber === '' || this.phoneNumber === null
       },
       hintValue () {
-        return this.noExample
+        return  this.noExample || this.phoneNumberExample === null
           ? null
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       }
