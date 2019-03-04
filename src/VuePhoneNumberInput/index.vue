@@ -182,7 +182,8 @@
               type: parsing.getType(),
               formatInternational: parsing.formatInternational(),
               formatNational: parsing.formatNational(),
-              uri: parsing.getURI()
+              uri: parsing.getURI(),
+              e164: parsing.format('E.164')
             }
             : null
           )
