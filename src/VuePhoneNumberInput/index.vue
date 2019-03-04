@@ -40,6 +40,7 @@
         :error="error"
         :valid="isValid && !noValidatorState"
         :required="required"
+        type="tel"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
       />
