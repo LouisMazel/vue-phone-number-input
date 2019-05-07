@@ -1,6 +1,6 @@
 {
   "name": "vue-phone-number-input",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A phone number input made with Vue JS && libphonenumber-js",
   "author": "Louis Mazel <mazuel.loic@gmail.com>",
   "scripts": {
@@ -29,11 +29,11 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
-    "@vue/cli-service": "^3.3.0",
+    "@vue/cli-service": "^3.7.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.12.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },

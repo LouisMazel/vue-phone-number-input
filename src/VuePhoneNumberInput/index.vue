@@ -113,15 +113,15 @@
       },
       locale () {
         const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-        const cond = isCountryAvailable(locale)
+        const countryAvailable = isCountryAvailable(locale)
         
-        if (cond && locale) {
+        if (countryAvailable && locale) {
           this.countryCode = locale
-        } else if (!cond && this.defaultCountryCode) {
+        } else if (!countryAvailable && this.defaultCountryCode) {
           // If default country code is not available
           console.warn(`The locale ${locale} is not available`)
         }
-        return cond ? locale : null
+        return countryAvailable ? locale : null
       },
       countryCode: {
         get () {
