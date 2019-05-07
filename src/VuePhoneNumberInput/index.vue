@@ -58,6 +58,7 @@
   import locales from './assets/locales'
 
   const browserLocale = () => {
+    if (!window) return
     const browserLocale = window.navigator.userLanguage || window.navigator.language
     let locale = browserLocale ? browserLocale.substr(3, 4).toUpperCase() : null
     if (locale === '') locale = browserLocale.substr(0, 2).toUpperCase()
@@ -112,15 +113,15 @@
       },
       locale () {
         const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-        const cond = isCountryAvailable(locale)
+        const countryAvailable = isCountryAvailable(locale)
         
-        if (cond && locale) {
+        if (countryAvailable && locale) {
           this.countryCode = locale
-        } else if (!cond && this.defaultCountryCode) {
+        } else if (!countryAvailable && this.defaultCountryCode) {
           // If default country code is not available
-          window.console.warn(`The locale ${locale} is not available`)
+          console.warn(`The locale ${locale} is not available`)
         }
-        return cond ? locale : null
+        return countryAvailable ? locale : null
       },
       countryCode: {
         get () {
