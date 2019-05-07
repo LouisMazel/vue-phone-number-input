@@ -231,13 +231,13 @@
       cursor: pointer;
     }
     .select-country-container {
-      margin-right: -1px;
       .input-country-selector input {
         border-top-right-radius: 0 !important; 
         border-bottom-right-radius: 0 !important;
       }
     }
     .input-phone-number input {
+      margin-left: -3px !important;
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
     }
