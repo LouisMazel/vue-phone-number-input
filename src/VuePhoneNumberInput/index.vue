@@ -203,10 +203,10 @@
 <style lang="scss">
   @import "./assets/scss/flexbox-helper.scss";
   @import "./assets/iti-flags/flags.css";
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
   .vue-phone-number-input {
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     .select-country-container {
