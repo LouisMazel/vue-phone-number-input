@@ -43,6 +43,7 @@
         type="tel"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
+        @blur="$emit('onBlur')"
       />
     </div>
   </div>
@@ -114,7 +115,7 @@
       locale () {
         const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
         const countryAvailable = isCountryAvailable(locale)
-        
+
         if (countryAvailable && locale) {
           this.countryCode = locale
         } else if (!countryAvailable && this.defaultCountryCode) {
@@ -127,7 +128,7 @@
         get () {
           return this.results.countryCode || this.locale
         },
-        set (newCountry) { 
+        set (newCountry) {
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
           if (this.focusInput) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
@@ -177,7 +178,7 @@
           countryCode: countryCode,
           isValid: false,
           ...( parsing
-            ? { 
+            ? {
               formattedNumber: parsing.number,
               nationalNumber: parsing.nationalNumber,
               isValid: parsing.isValid(),
@@ -232,7 +233,7 @@
     }
     .select-country-container {
       .input-country-selector input {
-        border-top-right-radius: 0 !important; 
+        border-top-right-radius: 0 !important;
         border-bottom-right-radius: 0 !important;
       }
     }
