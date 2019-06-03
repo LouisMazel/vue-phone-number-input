@@ -119,11 +119,13 @@
     computed: {
       borderStyle () {
         const cond = (this.isFocus && !this.error) || this.valid
-        return cond ? { border: `1px solid ${this.valid ? this.validColor : this.color} !important` } : null
+        const color = this.valid ? this.validColor : this.color
+        return cond ? { border: `1px solid ${color} !important` } : null
       },
       colorStyle () {
         const cond = this.isFocus || this.valid
-        return cond ? { color: `${this.valid ? this.validColor : this.color}` } : null
+        const color = this.valid ? this.validColor : this.color
+        return cond ? { color: `${color}` } : null
       },
       bgStyle () {
         return { backgroundColor: `${this.color}` }

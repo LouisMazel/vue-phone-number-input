@@ -30,10 +30,24 @@
       :style="screenshotMode ? `width: 40%;` : null"
     >
       <button
-        class="btn"
+        class="btn margin-right"
         @click="dark = !dark"
       >
-        Enable Dark Mode
+        Toggle Dark Mode
+      </button>
+
+      <button
+        class="btn btn-success margin-right"
+        @click="hasLoaderActive = !hasLoaderActive"
+      >
+        Toggle loader
+      </button>
+
+      <button
+        class="btn btn-danger"
+        @click="hasErrorActive = !hasErrorActive"
+      >
+        Toggle error
       </button>
       <div class="component-container">
         <div class="component">
@@ -47,7 +61,9 @@
             :default-country-code="defaultCountry"
             :ignored-countries="countriesIgnored"
             :preferred-countries="countriesList"
-            :no-validator-state="false"
+            :loader="hasLoaderActive"
+            :error="hasErrorActive"
+            clearable
             @update="onUpdate"
           />
           <VuePhoneNumberInput
@@ -55,6 +71,8 @@
             id="phoneNumber1"
             v-model="phoneNumber2"
             :dark="dark"
+            :loader="hasLoaderActive"
+            :error="hasErrorActive"
             @update="onUpdate"
           />
         </div>
@@ -106,6 +124,8 @@
             no-flags
             no-use-browser-locale
             required
+            :loader="hasLoaderActive"
+            :error="hasErrorActive"
             @update="onUpdate2"
           />
         </div>
@@ -168,7 +188,9 @@
         results: {},
         results2: {},
         dark: false,
-        disabled: false
+        disabled: false,
+        hasLoaderActive: false,
+        hasErrorActive: false
       }
     },
     computed: {
@@ -263,6 +285,12 @@ hr {
     background-color: orangered;
     &:hover {
       background-color: darken(orangered, 10%);
+    }
+  }
+  &.btn-success {
+    background-color: yellowgreen;
+    &:hover {
+      background-color: darken(yellowgreen, 10%);
     }
   }
 }
