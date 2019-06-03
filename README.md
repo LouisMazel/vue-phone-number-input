@@ -57,11 +57,18 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 - Keyboard accessibility (Arrow down, Arrow up : Countries list navigation -  Escape : Close countries list)
 - Phone number example for each country in placeholder/label
 - Auto focus phone number input after selecting country
-- Differents size of input (sm or lg)
 - You can disable the flags - `no-flags` props
-- Dark UI option
-- Disabled option
 - Set your translations
+
+### All options of [VueInputUi](https://github.com/LouisMazel/vue-input-ui) are availables
+
+- Differents size of input (sm or lg) `size="sm|lg"`
+- Disabled option (`disabled` prop)
+- Dark UI option (`dark` prop)
+- Active a clear button by the prop `clearable` (cf: [VueInputUi options](https://github.com/LouisMazel/vue-input-ui#props-api))
+- Active a loader progress bar by the prop `loader`  (cf: [VueInputUi options](https://github.com/LouisMazel/vue-input-ui#props-api))
+- And others
+`
 
 ## Props API
 
@@ -83,6 +90,8 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | dark | Boolean    | no       | false      |
 | required | Boolean    | no       | false      |
 | error | Boolean    | no       | false      |
+| clearable | Boolean    | no       | false      |
+| loader | Boolean    | no       | false      |
 | translations (3) | Object    | no       | null      |
 
 (1) Ex : `default-country-code="FR"`
