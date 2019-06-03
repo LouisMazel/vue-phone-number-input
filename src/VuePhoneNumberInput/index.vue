@@ -44,6 +44,7 @@
         v-bind="$attrs"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
+        @blur="$emit('blur')"
       />
     </div>
   </div>
