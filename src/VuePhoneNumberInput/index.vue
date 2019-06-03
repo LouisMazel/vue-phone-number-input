@@ -41,7 +41,7 @@
         :valid="isValid && !noValidatorState"
         :required="required"
         type="tel"
-        loader
+        v-bind="$attrs"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
       />
