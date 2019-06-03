@@ -41,8 +41,10 @@
         :valid="isValid && !noValidatorState"
         :required="required"
         type="tel"
+        v-bind="$attrs"
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
+        @blur="$emit('phone-number-blur')"
       />
     </div>
   </div>

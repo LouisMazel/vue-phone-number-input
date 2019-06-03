@@ -57,11 +57,18 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 - Keyboard accessibility (Arrow down, Arrow up : Countries list navigation -  Escape : Close countries list)
 - Phone number example for each country in placeholder/label
 - Auto focus phone number input after selecting country
-- Differents size of input (sm or lg)
 - You can disable the flags - `no-flags` props
-- Dark UI option
-- Disabled option
 - Set your translations
+
+### All options of [VueInputUi](https://github.com/LouisMazel/vue-input-ui) are availables
+
+- Differents size of input (sm or lg) `size="sm|lg"`
+- Disabled option (`disabled` prop)
+- Dark UI option (`dark` prop)
+- Active a clear button by the prop `clearable` (cf: [VueInputUi options](https://github.com/LouisMazel/vue-input-ui#props-api))
+- Active a loader progress bar by the prop `loader`  (cf: [VueInputUi options](https://github.com/LouisMazel/vue-input-ui#props-api))
+- And others
+`
 
 ## Props API
 
@@ -83,13 +90,17 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | dark | Boolean    | no       | false      |
 | required | Boolean    | no       | false      |
 | error | Boolean    | no       | false      |
-| translations (3) | Object    | no       | null      |
+| clearable | Boolean    | no       | false      |
+| loader (3) | Boolean    | no       | false      |
+| translations (4) | Object    | no       | null      |
 
 (1) Ex : `default-country-code="FR"`
 
 (2) Ex : `preferred-countries="['FR', 'BE', 'DE']"` This countries will be at the top of the list
 
-(3) translations comes to replace default texts - Ex :
+(3) Loader progress bar has the input color (`color` props)
+
+(4) translations comes to replace default texts - Ex :
 
 ```html
 translations="{
@@ -99,6 +110,15 @@ translations="{
   example: 'Exemple :'
 }"
 ```
+
+## Events API
+
+| Event      | Return       |
+|------------|------------|
+| phone-number-focused    | `-` (emit when phone number input is focused) |
+| phone-number-blur    | `-` (emit when phone number input is blur) |
+| input    | [AsYouType value](https://github.com/catamphetamine/libphonenumber-js#as-you-type-formatter) (emit when new value is enter on phone number input && when a country is choosed) |
+| update    | All values (cf values in table on [demo](https://louismazel.github.io/vue-phone-number-input/)) (emit when new value is enter on phone number input && when a country is choosed) |
 
 ## Keyboard accessibility
 
