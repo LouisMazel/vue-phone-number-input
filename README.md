@@ -91,14 +91,16 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | required | Boolean    | no       | false      |
 | error | Boolean    | no       | false      |
 | clearable | Boolean    | no       | false      |
-| loader | Boolean    | no       | false      |
-| translations (3) | Object    | no       | null      |
+| loader (3) | Boolean    | no       | false      |
+| translations (4) | Object    | no       | null      |
 
 (1) Ex : `default-country-code="FR"`
 
 (2) Ex : `preferred-countries="['FR', 'BE', 'DE']"` This countries will be at the top of the list
 
-(3) translations comes to replace default texts - Ex :
+(3) Loader progress bar has the input color (`color` props)
+
+(4) translations comes to replace default texts - Ex :
 
 ```html
 translations="{
@@ -108,6 +110,15 @@ translations="{
   example: 'Exemple :'
 }"
 ```
+
+## Events API
+
+| Event      | Return       |
+|------------|------------|
+| phone-number-focused    | `-` (emit when phone number input is focused) |
+| phone-number-blur    | `-` (emit when phone number input is blur) |
+| input    | [AsYouType value](https://github.com/catamphetamine/libphonenumber-js#as-you-type-formatter) (emit when new value is enter on phone number input && when a country is choosed) |
+| update    | All values (cf values in table on [demo](https://louismazel.github.io/vue-phone-number-input/)) (emit when new value is enter on phone number input && when a country is choosed) |
 
 ## Keyboard accessibility
 
