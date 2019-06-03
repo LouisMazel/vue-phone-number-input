@@ -41,6 +41,7 @@
         :valid="isValid && !noValidatorState"
         :required="required"
         type="tel"
+        loader
         class="input-phone-number"
         @focus="$emit('phone-number-focused')"
       />
