@@ -129,6 +129,12 @@ translations="{
 | Escape    | Close countries list |
 | All letters characters    | Searching country name in countries list (should be open) |
 
+## Named slots
+
+| Slot       | Action       |
+|------------|------------|
+| arrow    | Override the default arrow character for toggling the list of countries |
+
 ## Contribution
 
 ### Project setup
