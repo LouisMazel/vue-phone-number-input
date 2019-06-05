@@ -10,6 +10,7 @@
         v-model="countryCode"
         :items="codesCountries"
         :color="color"
+        :countries-height="countriesHeight"
         :valid-color="validColor"
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
@@ -95,7 +96,8 @@
       noFlags: { type: Boolean, default: false },
       error: { type: Boolean, default: false },
       noExample: { type: Boolean, default: false },
-      required: { type: Boolean, default: false }
+      required: { type: Boolean, default: false },
+      countriesHeight: { type: Number, default: 30}
     },
     data () {
       return {
