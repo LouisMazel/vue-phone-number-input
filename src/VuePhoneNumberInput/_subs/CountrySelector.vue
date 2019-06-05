@@ -34,9 +34,13 @@
       @click="$emit('click')"
     >
     <div
-      class="country-selector-arrow"
+      class="country-selector-toggle"
     >
-      ▼
+      <slot name="arrow">
+        <div class="country-selector-arrow">
+          ▼
+        </div>
+      </slot>
     </div>
     <label
       ref="label"
@@ -287,18 +291,20 @@
       font-size: 13px;
       z-index: 0;
     }
-    &-arrow {
+    &-toggle {
       position: absolute;
-      right: 0;
+      right: 10px;
       top: calc(50% - 8px);
-      width: 25px;
-      color: #424242;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-      font-size: 15px;
-      transform: scaleY(0.5);
       text-align: center;
       display: inline-block;
     }
+    &-arrow {
+      color: #424242;
+      font-size: 15px;
+      transform: scaleY(0.5);
+    }
+
     &.has-error {
       .field-input {
         border-color: orangered !important;
@@ -328,8 +334,8 @@
       }
     }
     &.is-focused {
-      .country-selector-arrow {
-        transform: scaleY(0.5) rotate(-180deg);
+      .country-selector-toggle {
+        transform: rotate(-180deg);
       }
     }
     &.is-disabled {

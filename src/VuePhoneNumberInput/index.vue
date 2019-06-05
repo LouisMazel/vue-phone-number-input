@@ -23,7 +23,12 @@
         :no-flags="noFlags"
         :size="size"
         class="input-country-selector"
-      />
+      >
+        <slot
+          slot="arrow"
+          name="arrow"
+        />
+      </CountrySelector>
     </div>
     <div class="flex-1">
       <VueInputUI
