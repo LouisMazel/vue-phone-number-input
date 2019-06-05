@@ -113,7 +113,7 @@ translations="{
 ```
 
 (5) height in px of the rows included in the dropdown. Ex:
-countries.height: 40
+countries-height: 40
 
 ## Events API
 
