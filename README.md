@@ -93,6 +93,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | clearable | Boolean    | no       | false      |
 | loader (3) | Boolean    | no       | false      |
 | translations (4) | Object    | no       | null      |
+| countries-height (5) | Number    | no       | 30      |
 
 (1) Ex : `default-country-code="FR"`
 
@@ -110,6 +111,9 @@ translations="{
   example: 'Exemple :'
 }"
 ```
+
+(5) height in px of the rows included in the dropdown. Ex:
+countries.height: 40
 
 ## Events API
 
