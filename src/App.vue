@@ -58,6 +58,7 @@
             color="purple"
             :dark="dark"
             :disabled="disabled"
+            :country-list="ctr"
             :default-country-code="defaultCountry"
             :ignored-countries="countriesIgnored"
             :preferred-countries="countriesList"
@@ -165,6 +166,7 @@
 
 <script>
   import VuePhoneNumberInput from './VuePhoneNumberInput'
+  import { allCountries } from './assets/js/phoneCodeCountries'
 
   export default {
     name: 'App',
@@ -173,6 +175,7 @@
     },
     data() {
       return {
+        ctr: allCountries,
         screenshotMode: false,
         phoneNumber: '0665656565',
         phoneNumber2: null,

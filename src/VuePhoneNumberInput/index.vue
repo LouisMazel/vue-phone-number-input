@@ -51,7 +51,7 @@
 </template>
 <script>
   /* eslint-disable */
-  import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
+  import { allCountries } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
   import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
   import VueInputUI from 'vue-input-ui'
@@ -67,10 +67,6 @@
     return locale
   }
 
-  const isCountryAvailable = (locale) => {
-    return countriesIso.includes(locale)
-  }
-
   export default {
     name: 'VuePhoneNumberInput',
     components: {
@@ -78,6 +74,7 @@
       CountrySelector
     },
     props: {
+      countryList: { type: Array, default: () => { return allCountries }},
       value: { type: String, default: null },
       id: { type: String, default: 'VuePhoneNumberInput' },
       color: { type: String, default: 'dodgerblue' },
@@ -110,13 +107,25 @@
           ...this.translations
         }
       },
+      countries () {
+        return this.countryList.map(country => ({
+          name: country[0],
+          iso2: country[1].toUpperCase(),
+          dialCode: country[2],
+          priority: country[3] || 0,
+          areaCodes: country[4] || null
+        }))
+      },
+      countriesIso () {
+        return this.countryList.map(country => country[1].toUpperCase())
+      },
       codesCountries () {
-        return countries
+        return this.countries
       },
       locale () {
         const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-        const countryAvailable = isCountryAvailable(locale)
-        
+        const countryAvailable = this.isCountryAvailable(locale)
+
         if (countryAvailable && locale) {
           this.countryCode = locale
         } else if (!countryAvailable && this.defaultCountryCode) {
@@ -129,7 +138,7 @@
         get () {
           return this.results.countryCode || this.locale
         },
-        set (newCountry) { 
+        set (newCountry) {
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
           if (this.focusInput) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
@@ -168,6 +177,9 @@
       }
     },
     methods: {
+      isCountryAvailable (locale) {
+        return this.countriesIso.includes(locale)
+      },
       getAsYouTypeFormat (payload) {
         const asYouType = new AsYouType(payload.countryCode)
         return asYouType.input(payload.phoneNumber)
@@ -179,7 +191,7 @@
           countryCode: countryCode,
           isValid: false,
           ...( parsing
-            ? { 
+            ? {
               formattedNumber: parsing.number,
               nationalNumber: parsing.nationalNumber,
               isValid: parsing.isValid(),
@@ -234,7 +246,7 @@
     }
     .select-country-container {
       .input-country-selector input {
-        border-top-right-radius: 0 !important; 
+        border-top-right-radius: 0 !important;
         border-bottom-right-radius: 0 !important;
       }
     }
