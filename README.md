@@ -79,6 +79,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | color | String `HEX`   | no       | dogderblue      |
 | valid-color | String `HEX`   | no       | yellowgreen      |
 | size | String `sm|lg`   | no       | null      |
+| country-list | Array | no | phoneCodeCountries.js |
 | default-country-code (1) | String    | no       | null      |
 | preferred-countries (2) | Array`<string>`    | no       | null      |
 | ignored-countries | Array`<string>`    | no       | null      |
