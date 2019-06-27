@@ -1,8 +1,8 @@
 {
-  "name": "vue-phone-number-input",
-  "version": "0.2.0",
+  "name": "vue-phone-number-input-countrylist",
+  "version": "0.3.0",
   "description": "A phone number input made with Vue JS && libphonenumber-js",
-  "author": "Louis Mazel <mazuel.loic@gmail.com>",
+  "author": "Aureolebigben <aureolebigben@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve --mode development --open",
     "build": "npm run build:lib && npm run build:docs",
@@ -62,11 +62,11 @@
   "main": "dist/vue-phone-number-input.common.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LouisMazel/vue-phone-number-input.git"
+    "url": "git+https://github.com/aureolebigben/vue-phone-number-input.git"
   },
   "bugs": {
-    "url": "https://github.com/LouisMazel/vue-phone-number-input/issues"
+    "url": "https://github.com/aureolebigben/vue-phone-number-input/issues"
   },
-  "homepage": "https://github.com/LouisMazel/vue-phone-number-input#readme",
+  "homepage": "https://github.com/aureolebigben/vue-phone-number-input#readme",
   "types": "dist/index.d.ts"
 }
