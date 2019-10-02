@@ -60,7 +60,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 - You can disable the flags - `no-flags` props
 - Set your translations
 
-### All options of [VueInputUi](https://github.com/LouisMazel/vue-input-ui) are availables
+### All options of [VueInputUi](https://github.com/LouisMazel/vue-input-ui) are available
 
 - Differents size of input (sm or lg) `size="sm|lg"`
 - Disabled option (`disabled` prop)
