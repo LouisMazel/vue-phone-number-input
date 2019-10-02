@@ -84,13 +84,13 @@
       CountrySelector
     },
     props: {
-      value: { type: String, default: null },
+      value: { type: String, default: String },
       id: { type: String, default: 'VuePhoneNumberInput' },
       color: { type: String, default: 'dodgerblue' },
       validColor: { type: String, default: 'yellowgreen' },
       dark: { type: Boolean, default: Boolean },
       disabled: { type: Boolean, default: Boolean },
-      defaultCountryCode: { type: String, default: null },
+      defaultCountryCode: { type: String, default: String },
       size: { type: String, default: String },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
@@ -102,12 +102,13 @@
       error: { type: Boolean, default: false },
       noExample: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
-      countriesHeight: { type: Number, default: 30}
+      countriesHeight: { type: Number, default: 30 }
     },
     data () {
       return {
         results: {},
-        focusInput: false
+        focusInput: false,
+        userLocale: this.defaultCountryCode
       }
     },
     computed: {
@@ -120,23 +121,11 @@
       codesCountries () {
         return countries
       },
-      locale () {
-        const locale = this.defaultCountryCode || (!this.noUseBrowserLocale ? browserLocale() : null)
-        const countryAvailable = isCountryAvailable(locale)
-        
-        if (countryAvailable && locale) {
-          this.countryCode = locale
-        } else if (!countryAvailable && this.defaultCountryCode) {
-          // If default country code is not available
-          console.warn(`The locale ${locale} is not available`)
-        }
-        return countryAvailable ? locale : null
-      },
       countryCode: {
         get () {
-          return this.results.countryCode || this.locale
+          return this.results.countryCode || this.userLocale
         },
-        set (newCountry) { 
+        set (newCountry) {
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
           if (this.focusInput) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
@@ -205,6 +194,23 @@
         this.$emit('input', asYouType)
         this.results = this.getParsePhoneNumberFromString(payload)
         this.$emit('update', this.results)
+      },
+      locale (newLocale) {
+        const locale = newLocale || (!this.noUseBrowserLocale ? browserLocale() : null)
+        const countryAvailable = isCountryAvailable(locale)
+        if (countryAvailable && locale) {
+          this.countryCode = locale
+        } else if (!countryAvailable && newLocale) {
+          // If default country code is not available
+          console.warn(`The locale ${locale} is not available`)
+        }
+        this.userLocale = countryAvailable ? locale : null
+      }
+    },
+    watch: {
+      defaultCountryCode (newValue, oldValue) {
+        if (newValue === oldValue) return
+        this.locale(newValue)
       }
     }
   }
