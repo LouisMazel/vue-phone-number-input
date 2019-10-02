@@ -66,7 +66,7 @@
             {'keyboard-selected': tmpValue === item.iso2}
           ]"
           class="flex align-center country-list-item"
-          :style="[value === item.iso2 ? bgStyle : null]"
+          :style="[value === item.iso2 ? bgStyle : null, itemHeight]"
           @click.stop="updateValue(item.iso2)"
         >
           <div
@@ -87,7 +87,6 @@
 <script>
   import { directive } from 'v-click-outside'
   import { getCountryCallingCode } from 'libphonenumber-js'
-  const itemHeight = 30 // if you modify this value, you should update the height property on css (.country-list-item)
 
   export default {
     name: 'CountrySelector',
@@ -95,6 +94,7 @@
       clickOutside: directive
     },
     props: {
+      countriesHeight: { type: Number, required: false, default: 30},
       value: { type: [String, Object], required: false, default: null },
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
@@ -136,7 +136,7 @@
       },
       itemHeight () {
         return {
-          height: `${this.itemHeight}px`
+          height: `${this.countriesHeight}px`
         }
       },
       countriesList () {
@@ -193,7 +193,7 @@
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
-          this.$refs.countriesList.scrollTop = arrayIndex * itemHeight - (itemHeight * 3)
+          this.$refs.countriesList.scrollTop = arrayIndex * this.countriesHeight - (this.countriesHeight * 3)
         })
       },
       keyboardNav (e) {
@@ -375,7 +375,6 @@
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
       &-item {
         padding: 0 10px;
-        height: 30px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
