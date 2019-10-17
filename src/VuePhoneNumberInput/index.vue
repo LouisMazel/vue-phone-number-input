@@ -49,6 +49,7 @@
         type="tel"
         v-bind="$attrs"
         class="input-phone-number"
+        @keydown="(e) => { lastKeyPressed = e.keyCode }"
         @focus="$emit('phone-number-focused')"
         @blur="$emit('phone-number-blur')"
       />
@@ -107,8 +108,9 @@
     data () {
       return {
         results: {},
-        focusInput: false,
-        userLocale: this.defaultCountryCode
+        inputFocused: false,
+        userLocale: this.defaultCountryCode,
+        lastKeyPressed: null
       }
     },
     computed: {
@@ -127,10 +129,10 @@
         },
         set (newCountry) {
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
-          if (this.focusInput) {
+          if (this.inputFocused) {
             this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
           }
-          this.focusInput = true
+          this.inputFocused = true
         }
       },
       phoneNumber: {
@@ -171,10 +173,13 @@
       getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
         const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
         return {
-          phoneNumber: phoneNumber ? phoneNumber : null,
           countryCode: countryCode,
           isValid: false,
-          ...( parsing
+          ...(phoneNumber && (phoneNumber !== '')
+            ? { phoneNumber : phoneNumber }
+            : null
+          ),
+          ...(parsing
             ? { 
               formattedNumber: parsing.number,
               nationalNumber: parsing.nationalNumber,
@@ -190,10 +195,21 @@
         }
       },
       emitValues (payload) {
-        const asYouType = this.getAsYouTypeFormat(payload)
-        this.$emit('input', asYouType)
-        this.results = this.getParsePhoneNumberFromString(payload)
-        this.$emit('update', this.results)
+        let asYouType = this.getAsYouTypeFormat(payload)
+        const backSpacePressed = this.lastKeyPressed === 8
+
+        this.$nextTick(() => {
+          const lastCharacOfPhoneNumber = this.phoneNumber ? this.phoneNumber.trim().slice(-1) : false
+          if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
+            asYouType = this.phoneNumber.slice(0, -2)
+            payload.phoneNumber = this.phoneNumber.slice(0, -2)
+          }  
+
+          this.results = this.getParsePhoneNumberFromString(payload)
+          this.$emit('update', this.results)
+          this.$emit('input', asYouType)
+        })
+
       },
       locale (newLocale) {
         const locale = newLocale || (!this.noUseBrowserLocale ? browserLocale() : null)
