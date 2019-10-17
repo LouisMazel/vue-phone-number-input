@@ -24,7 +24,7 @@
     "libphonenumber-js": "^1.7.7",
     "v-click-outside": "^2.0.2",
     "vue": "^2.5.21",
-    "vue-input-ui": "^0.2.7"
+    "vue-input-ui": "^0.2.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
