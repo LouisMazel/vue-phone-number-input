@@ -64,8 +64,8 @@
             :loader="hasLoaderActive"
             :error="hasErrorActive"
             clearable
-            @update="onUpdate"
             :auto-fetch-country="true"
+            @update="onUpdate"
           />
           <VuePhoneNumberInput
             v-else
@@ -127,6 +127,7 @@
             required
             :loader="hasLoaderActive"
             :error="hasErrorActive"
+            :auto-fetch-country="false"
             @update="onUpdate2"
           />
         </div>
