@@ -94,6 +94,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | loader (3) | Boolean    | no       | false      |
 | translations (4) | Object    | no       | null      |
 | countries-height (5) | Number    | no       | 30      |
+| auto-fetch-country (6) | Boolean    | no       | true      |
 
 (1) Ex : `default-country-code="FR"`
 
@@ -114,6 +115,8 @@ translations="{
 
 (5) height in px of the rows included in the dropdown. Ex:
 countries-height: 40
+
+(6) auto fetch country code via https://ip2c.org/s
 
 ## Events API
 
