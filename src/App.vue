@@ -65,6 +65,7 @@
             :error="hasErrorActive"
             clearable
             @update="onUpdate"
+            :auto-fetch-country="true"
           />
           <VuePhoneNumberInput
             v-else

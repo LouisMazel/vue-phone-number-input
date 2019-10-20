@@ -103,14 +103,16 @@
       error: { type: Boolean, default: false },
       noExample: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
-      countriesHeight: { type: Number, default: 30 }
+      countriesHeight: { type: Number, default: 30 },
+      autoFetchCountry: {type: Boolean, default: true}
     },
     data () {
       return {
         results: {},
         inputFocused: false,
         userLocale: this.defaultCountryCode,
-        lastKeyPressed: null
+        lastKeyPressed: null,
+        finishMounted: false
       }
     },
     computed: {
@@ -221,12 +223,36 @@
           console.warn(`The locale ${locale} is not available`)
         }
         this.userLocale = countryAvailable ? locale : null
+      },
+      fetchCountryCode () {
+        return fetch('https://ip2c.org/s')
+          .then(response => response.text());
       }
     },
     watch: {
       defaultCountryCode (newValue, oldValue) {
         if (newValue === oldValue) return
         this.locale(newValue)
+      }
+    },
+    mounted() {
+      if (this.autoFetchCountry) {
+          this.fetchCountryCode()
+            .then((response) => {
+              const result = (response || '').toString();
+              if (result && result[0] === '1') {
+                const countryCode = result.substr(2, 2);
+                if (isCountryAvailable(countryCode)) {
+                  this.countryCode = countryCode;
+                }
+              }
+            })
+            .catch(console.error)
+            .finally(() => {
+              this.finishMounted = true;
+            });
+      } else {
+        this.finishMounted = true;
       }
     }
   }
