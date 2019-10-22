@@ -123,7 +123,7 @@
             dark
             no-flags
             required
-            no-use-browser-country
+            no-use-browser-locale
             :loader="hasLoaderActive"
             :error="hasErrorActive"
             @update="onUpdate2"

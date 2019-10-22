@@ -47,16 +47,11 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 </script>
 ```
 
-## ChangeLog
-
-[0.2.5] - 10-22-2019 :
-Rename prop option `no-use-browser-locale` to `no-use-browser-country`
-
 ## Features List
 
 - You can set `preferred-countries`, `ignored-countries` or have `only-countries`
 - Validator State : input becomes green (you can modify this color with `valid-color` option) when the phone number is valid (can be disabled by `no-validator-state` attr)
-- Multi options to getting country code : By default the component get the country code via the browser (disable it with `no-use-browser-country`) or you can use `fetch-country` to get the country code via [https://ip2c.org/s](https://ip2c.org/s) (network needed) - you can use `default-country-code` option instead to set one
+- Multi options to getting country code : By default the component get the country code via the browser (disable it with `no-use-browser-locale`) or you can use `fetch-country` to get the country code via [https://ip2c.org/s](https://ip2c.org/s) (network needed) - you can use `default-country-code` option instead to set one
 - Phone number formatting while typing
 - You can search your country in list (open countries list & type your country name)
 - Keyboard accessibility (Arrow down, Arrow up : Countries list navigation -  Escape : Close countries list)
@@ -97,7 +92,7 @@ Rename prop option `no-use-browser-locale` to `no-use-browser-country`
 | loader (3) | Boolean    | no       | false      |
 | translations (4) | Object    | no       | null      |
 | countries-height (5) | Number    | no       | 30      |
-| no-use-browser-country (6) | Boolean    | no       | false      |
+| no-use-browser-locale (6) | Boolean    | no       | false      |
 | fetch-country (7) | Boolean    | no       | false      |
 
 (1) Ex : `default-country-code="FR"`
@@ -120,7 +115,7 @@ translations="{
 (5) height in px of the rows included in the dropdown. Ex:
 countries-height: 40
 
-(6) By default the component get country code via browser - No network needed but not work on SSR with NuxtJS (disable it with `no-use-browser-country`)
+(6) By default the component get country code via browser - No network needed but not work on SSR with NuxtJS (disable it with `no-use-browser-locale`)
 
 (7) Fetch country code via [https://ip2c.org/s](https://ip2c.org/s) - Network needed - (Do not use it with `default-country-code` options)
 

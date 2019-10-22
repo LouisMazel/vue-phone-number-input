@@ -103,7 +103,7 @@
       noExample: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
       countriesHeight: { type: Number, default: 30 },
-      noUseBrowserCountry: { type: Boolean, default: false },
+      noUseBrowserLocale: { type: Boolean, default: false },
       fetchCountry: { type: Boolean, default: false }
     },
     data () {
@@ -170,13 +170,13 @@
       try {
         if (this.defaultCountryCode && this.fetchCountry)
           throw new Error(`VuePhoneNumberInput: Do not use 'fetch-country' and 'default-country-code' options in the same time`)
-        if (this.defaultCountryCode && this.noUseBrowserCountry)
-          throw new Error(`VuePhoneNumberInput: If you use a 'default-country-code', do not use 'no-use-browser-country' options`)
+        if (this.defaultCountryCode && this.noUseBrowserLocale)
+          throw new Error(`VuePhoneNumberInput: If you use a 'default-country-code', do not use 'no-use-browser-locale' options`)
         if (this.defaultCountryCode) return
 
         this.fetchCountry
           ? this.fetchCountryCode()
-          : !this.noUseBrowserCountry
+          : !this.noUseBrowserLocale
             ? this.setLocale(browserLocale())
             : null
       } catch (err) {
