@@ -98,12 +98,13 @@
       ignoredCountries: { type: Array, default: Array },
       translations: { type: Object, default: Object },
       noValidatorState: { type: Boolean, default: false },
-      noUseBrowserLocale: { type: Boolean, default: false },
       noFlags: { type: Boolean, default: false },
       error: { type: Boolean, default: false },
       noExample: { type: Boolean, default: false },
       required: { type: Boolean, default: false },
-      countriesHeight: { type: Number, default: 30 }
+      countriesHeight: { type: Number, default: 30 },
+      noUseBrowserLocale: { type: Boolean, default: false },
+      fetchCountry: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -167,9 +168,19 @@
     },
     async mounted () {
       try {
-        this.locale()
-      } catch {
-        console.war('Error while getting locale on mount')
+        if (this.defaultCountryCode && this.fetchCountry)
+          throw new Error(`VuePhoneNumberInput: Do not use 'fetch-country' and 'default-country-code' options in the same time`)
+        if (this.defaultCountryCode && this.noUseBrowserLocale)
+          throw new Error(`VuePhoneNumberInput: If you use a 'default-country-code', do not use 'no-use-browser-locale' options`)
+        if (this.defaultCountryCode) return
+
+        this.fetchCountry
+          ? this.fetchCountryCode()
+          : !this.noUseBrowserLocale
+            ? this.setLocale(browserLocale())
+            : null
+      } catch (err) {
+        console.error(err)
       }
     },
     methods: {
@@ -216,24 +227,32 @@
           this.$emit('update', this.results)
           this.$emit('input', asYouType)
         })
-
       },
-      locale (newLocale) {
-        const locale = newLocale || (!this.noUseBrowserLocale ? browserLocale() : null)
+      setLocale (locale) {
         const countryAvailable = isCountryAvailable(locale)
         if (countryAvailable && locale) {
           this.countryCode = locale
-        } else if (!countryAvailable && newLocale) {
+        } else if (!countryAvailable && locale) {
           // If default country code is not available
           console.warn(`The locale ${locale} is not available`)
         }
         this.userLocale = countryAvailable ? locale : null
+      },
+      async fetchCountryCode () {
+        try {
+          const response  = await fetch('https://ip2c.org/s')
+          const responseText = await response.text()
+          const result = (responseText || '').toString()
+          if (result && result[0] === '1') this.setLocale(result.substr(2, 2))
+        } catch (err) {
+          console.error(err)
+        }
       }
     },
     watch: {
       defaultCountryCode (newValue, oldValue) {
         if (newValue === oldValue) return
-        this.locale(newValue)
+        this.setLocale(newValue)
       }
     }
   }

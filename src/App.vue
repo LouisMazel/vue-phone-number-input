@@ -58,10 +58,10 @@
             color="purple"
             :dark="dark"
             :disabled="disabled"
-            :default-country-code="defaultCountry"
             :ignored-countries="countriesIgnored"
             :preferred-countries="countriesList"
             :loader="hasLoaderActive"
+            :default-country-code="defaultCountry"
             :error="hasErrorActive"
             clearable
             @update="onUpdate"
@@ -122,8 +122,8 @@
             :translations="translations"
             dark
             no-flags
-            no-use-browser-locale
             required
+            no-use-browser-locale
             :loader="hasLoaderActive"
             :error="hasErrorActive"
             @update="onUpdate2"
