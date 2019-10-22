@@ -22,7 +22,7 @@
         target="_blank"
         href="https://www.npmjs.com/package/vue-phone-number-input"
       >
-        Npm
+        NPM
       </a>
     </div>
     <div
@@ -79,7 +79,7 @@
         <br v-if="!screenshotMode">
         <div class="component">
           <div v-if="!screenshotMode">
-            <h3>Datas returned with "onUpdate" event</h3>
+            <h3>Datas returned with "update" event</h3>
             <hr>
             <b>v-model</b> : {{ phoneNumber }}
             <hr>
@@ -131,7 +131,7 @@
         </div>
         <br>
         <div class="component">
-          <h3>Datas returned with "onUpdate" event</h3>
+          <h3>Datas returned with "update" event</h3>
           <hr>
           <b>v-model</b> : {{ phoneNumber }}
           <hr>

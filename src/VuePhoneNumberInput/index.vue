@@ -165,6 +165,13 @@
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       }
     },
+    async mounted () {
+      try {
+        this.locale()
+      } catch {
+        console.war('Error while getting locale on mount')
+      }
+    },
     methods: {
       getAsYouTypeFormat (payload) {
         const asYouType = new AsYouType(payload.countryCode)
