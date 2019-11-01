@@ -206,6 +206,7 @@
           ),
           ...(parsing
             ? { 
+              countryCallingCode: parsing.countryCallingCode,
               formattedNumber: parsing.number,
               nationalNumber: parsing.nationalNumber,
               isValid: parsing.isValid(),

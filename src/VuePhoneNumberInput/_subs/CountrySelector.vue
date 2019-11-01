@@ -144,7 +144,7 @@
       },
       countriesFiltered () {
         const countries = this.onlyCountries || this.preferredCountries
-        return this.countriesList.filter(item => countries.find(country => item.iso2.includes(country)))
+        return countries.map(country => this.countriesList.find(item => item.iso2.includes(country)))
       },
       otherCountries () {
         return this.countriesList.filter(item => !this.preferredCountries.includes(item.iso2))
