@@ -108,6 +108,7 @@
       id: { type: String, default: 'CountrySelector' },
       items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
+      keepPreferredOrOnlyCountrySort: { type: Boolean, default: false },
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array },
       noFlags: { type: Boolean, default: false }
@@ -144,7 +145,7 @@
       },
       countriesFiltered () {
         const countries = this.onlyCountries || this.preferredCountries
-        return this.countriesList.filter(item => countries.find(country => item.iso2.includes(country)))
+        return this.keepPreferredOrOnlyCountrySort ? countries.map(country => this.countriesList.find(item => item.iso2.includes(country))) : this.countriesList.filter(item => countries.find(country => item.iso2.includes(country)))
       },
       otherCountries () {
         return this.countriesList.filter(item => !this.preferredCountries.includes(item.iso2))

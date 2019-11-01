@@ -63,6 +63,7 @@
             :loader="hasLoaderActive"
             :default-country-code="defaultCountry"
             :error="hasErrorActive"
+            :keep-preferred-or-only-country-sort="true"
             clearable
             @update="onUpdate"
           />

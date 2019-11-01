@@ -18,6 +18,7 @@
         :disabled="disabled"
         :valid="isValid && !noValidatorState"
         :preferred-countries="preferredCountries"
+        :keep-preferred-or-only-country-sort="keepPreferredOrOnlyCountrySort"
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
         :label="t.countrySelectorLabel"
@@ -95,6 +96,7 @@
       size: { type: String, default: String },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
+      keepPreferredOrOnlyCountrySort: { type: Boolean, default: false },
       ignoredCountries: { type: Array, default: Array },
       translations: { type: Object, default: Object },
       noValidatorState: { type: Boolean, default: false },
@@ -199,6 +201,7 @@
           ),
           ...(parsing
             ? { 
+              countryCallingCode: parsing.countryCallingCode,
               formattedNumber: parsing.number,
               nationalNumber: parsing.nationalNumber,
               isValid: parsing.isValid(),

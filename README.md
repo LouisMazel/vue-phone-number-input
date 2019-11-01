@@ -82,6 +82,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | preferred-countries (2) | Array`<string>`    | no       | null      |
 | ignored-countries | Array`<string>`    | no       | null      |
 | only-countries | Array`<string>`    | no       | null      |
+| keep-preferred-or-only-country-sort (8) | Boolean    | no       | false      |
 | no-validator-state | Boolean    | no       | false      |
 | no-flags | Boolean    | no       | false      |
 | disabled | Boolean    | no       | false      |
