@@ -113,9 +113,7 @@
         class="component-container"
       >
         <div class="component">
-          <b>With translations (FR) - No flags - Dark - No Use Browser Locale</b>
-          <br>
-          <br>
+          <h3>With translations (FR) - No flags - Dark - No Use Browser Locale</h3>
           <VuePhoneNumberInput
             id="phoneNumber2"
             v-model="phoneNumber2"
@@ -159,6 +157,52 @@
           </div>
         </div>
       </div>
+      <div
+        v-if="!screenshotMode"
+        class="component-container"
+      >
+        <div class="component">
+          <h3>No country chooser (use `default-country-code` to set the country)</h3>
+          <p>Current country code : {{ defaultCountry }}</p>
+          <VuePhoneNumberInput
+            id="phoneNumber3"
+            v-model="phoneNumber3"
+            :loader="hasLoaderActive"
+            :error="hasErrorActive"
+            no-country-selector
+            @update="onUpdate3"
+          />
+        </div>
+        <br>
+        <div class="component">
+          <h3>Datas returned with "update" event</h3>
+          <hr>
+          <b>v-model</b> : {{ phoneNumber3 }}
+          <hr>
+          <div class="flex flex-wrap">
+            <div class="component">
+              <table>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+                <tr
+                  v-for="item in resultsTable3"
+                  :key="item"
+                >
+                  <td align="left">
+                    {{ item }}
+                  </td>
+                  <td>{{ results3[item] }}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="component flex-1">
+              {{ results3 }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -176,6 +220,7 @@
         screenshotMode: false,
         phoneNumber: '0665656565',
         phoneNumber2: null,
+        phoneNumber3: '0665656565',
         defaultCountry: 'FR',
         countriesList: ['FR', 'BE', 'DE'],
         countriesIgnored: ['AF', 'AD', 'AL'],
@@ -187,6 +232,7 @@
         },
         results: {},
         results2: {},
+        results3: {},
         dark: false,
         disabled: false,
         hasLoaderActive: false,
@@ -199,14 +245,20 @@
       },
       resultsTable2 () {
         return Object.keys(this.results2)
+      },
+      resultsTable3 () {
+        return Object.keys(this.results3)
       }
     },
     methods: {
-      onUpdate(payload) {
+      onUpdate (payload) {
         this.results = payload
       },
-      onUpdate2(payload) {
+      onUpdate2 (payload) {
         this.results2 = payload
+      },
+      onUpdate3 (payload) {
+        this.results3 = payload
       }
     }
   }
@@ -214,7 +266,7 @@
 
 <style lang="scss" scoped>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;

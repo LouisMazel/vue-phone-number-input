@@ -255,7 +255,7 @@
       margin: auto 0;
       position: absolute;
       top: 21px;
-      left: 13px;
+      left: 11px;
       z-index: 1;
       img {
         position: absolute;
@@ -265,7 +265,7 @@
       position: absolute;
       top: 3px;
       cursor: pointer;
-      left: 13px;
+      left: 11px;
       -webkit-transform: translateY(25%);
       transform: translateY(25%);
       opacity: 0;

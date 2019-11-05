@@ -94,6 +94,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | countries-height (5) | Number    | no       | 30      |
 | no-use-browser-locale (6) | Boolean    | no       | false      |
 | fetch-country (7) | Boolean    | no       | false      |
+| no-country-selector (8) | Boolean    | no       | false      |
 
 (1) Ex : `default-country-code="FR"`
 
@@ -118,6 +119,8 @@ countries-height: 40
 (6) By default the component get country code via browser - No network needed but not work on SSR with NuxtJS (disable it with `no-use-browser-locale`)
 
 (7) Fetch country code via [https://ip2c.org/s](https://ip2c.org/s) - Network needed - (Do not use it with `default-country-code` options)
+
+(8) The country selector is not shown, you can validate your phone number with the country code set
 
 ## Events API
 

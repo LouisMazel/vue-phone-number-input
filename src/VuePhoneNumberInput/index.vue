@@ -3,7 +3,10 @@
     :class="[{ 'dark': dark }, size]"
     class="vue-phone-number-input flex"
   >
-    <div class="select-country-container">
+    <div
+      v-if="!noCountrySelector"
+      class="select-country-container"
+    >
       <CountrySelector
         :id="`${id}_country_selector`"
         ref="CountrySelector"
@@ -49,6 +52,7 @@
         type="tel"
         v-bind="$attrs"
         class="input-phone-number"
+        :class="{ 'with-chooser': !noCountrySelector }"
         @keydown="(e) => { lastKeyPressed = e.keyCode }"
         @focus="$emit('phone-number-focused')"
         @blur="$emit('phone-number-blur')"
@@ -104,7 +108,8 @@
       required: { type: Boolean, default: false },
       countriesHeight: { type: Number, default: 30 },
       noUseBrowserLocale: { type: Boolean, default: false },
-      fetchCountry: { type: Boolean, default: false }
+      fetchCountry: { type: Boolean, default: false },
+      noCountrySelector: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -269,8 +274,7 @@
       box-sizing: border-box;
     }
 
-    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
-        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
     .select-country-container {
       flex: 0 0 120px;
@@ -297,7 +301,7 @@
       cursor: pointer;
     }
 
-    .input-phone-number input {
+    .input-phone-number.with-chooser input {
       margin-left: -2px !important;
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
