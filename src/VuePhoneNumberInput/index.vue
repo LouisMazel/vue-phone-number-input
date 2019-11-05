@@ -168,6 +168,8 @@
     },
     async mounted () {
       try {
+        if (this.phoneNumber && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.phoneNumber})
+
         if (this.defaultCountryCode && this.fetchCountry)
           throw new Error(`VuePhoneNumberInput: Do not use 'fetch-country' and 'default-country-code' options in the same time`)
         if (this.defaultCountryCode && this.noUseBrowserLocale)
@@ -260,44 +262,47 @@
 <style lang="scss">
   @import "./assets/scss/flexbox-helper.scss";
   @import "./assets/iti-flags/flags.css";
+
   .vue-phone-number-input {
+
     *, *::before, *::after {
       box-sizing: border-box;
     }
+
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
         Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
     .select-country-container {
       flex: 0 0 120px;
       width: 120px;
       min-width: 120px;
       max-width: 120px;
     }
+
     &.sm .select-country-container {
       flex: 0 0 110px;
       width: 110px;
       min-width: 110px;
       max-width: 110px;
     }
+
     &.lg .select-country-container {
       flex: 0 0 130px;
       width: 130px;
       min-width: 130px;
       max-width: 130px;
     }
+
     .country-selector {
       cursor: pointer;
     }
-    .select-country-container {
-      .input-country-selector input {
-        border-top-right-radius: 0 !important; 
-        border-bottom-right-radius: 0 !important;
-      }
-    }
+
     .input-phone-number input {
-      margin-left: -3px !important;
+      margin-left: -2px !important;
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
     }
+
     .input-phone-number:not(.is-dark):not(.is-disabled) {
       input {
         background-color: transparent !important;

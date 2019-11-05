@@ -94,8 +94,8 @@
       clickOutside: directive
     },
     props: {
-      countriesHeight: { type: Number, required: false, default: 30},
-      value: { type: [String, Object], required: false, default: null },
+      countriesHeight: { type: Number, default: 30},
+      value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
       size: { type: String, default: String },
@@ -124,7 +124,7 @@
       borderStyle () {
         const cond = (this.isFocus && !this.error) || this.valid
         const color = this.valid ? this.validColor : this.color
-        return cond ? { border: `1px solid ${color} !important` } : null
+        return cond ? { border: `1px solid ${color}` } : null
       },
       colorStyle () {
         const cond = this.isFocus || this.valid
@@ -290,6 +290,8 @@
       border-radius: 4px;
       font-size: 13px;
       z-index: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
     }
     &-toggle {
       position: absolute;
