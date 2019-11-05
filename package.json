@@ -23,7 +23,7 @@
     "nuxt/"
   ],
   "dependencies": {
-    "libphonenumber-js": "^1.7.7",
+    "libphonenumber-js": "^1.7.26",
     "v-click-outside": "^2.0.2",
     "vue": "^2.5.21",
     "vue-input-ui": "^0.2.12"
