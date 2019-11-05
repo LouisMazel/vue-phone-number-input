@@ -5,6 +5,7 @@
   "author": "Louis Mazel <mazuel.loic@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve --mode development --open",
+    "serve:nuxt": "nuxt src",
     "build": "npm run build:lib && npm run build:docs",
     "test": "vue-cli-service test:unit /test/specs",
     "lint": "vue-cli-service lint",
@@ -18,13 +19,14 @@
     "ui": "vue ui"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "nuxt/"
   ],
   "dependencies": {
     "libphonenumber-js": "^1.7.7",
     "v-click-outside": "^2.0.2",
     "vue": "^2.5.21",
-    "vue-input-ui": "^0.2.9"
+    "vue-input-ui": "^0.2.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
@@ -34,7 +36,10 @@
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.12.0",
+    "nuxt": "^2.9.2",
+    "path": "^0.12.7",
     "sass-loader": "^7.1.0",
+    "vue-server-renderer": "^2.6.9",
     "vue-template-compiler": "^2.5.21"
   },
   "postcss": {
