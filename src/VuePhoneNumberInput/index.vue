@@ -303,7 +303,7 @@
     }
 
     .input-phone-number.with-chooser input {
-      margin-left: -2px !important;
+      margin-left: -1px !important;
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
     }

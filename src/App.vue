@@ -3,90 +3,80 @@
     id="app"
     :class="{ 'dark': dark }"
   >
-    <h1 style="text-align: center;">
+    <h1 class="text-center my-3">
       VuePhoneNumberInput
     </h1>
-    <div
-      v-if="!screenshotMode"
-      class="container"
-    >
-      <a
-        class="btn btn-dark margin-right"
-        target="_blank"
-        href="https://github.com/LouisMazel/vue-phone-number-input"
-      >
-        Github
-      </a>
-      <a
-        class="btn btn-danger"
-        target="_blank"
-        href="https://www.npmjs.com/package/vue-phone-number-input"
-      >
-        NPM
-      </a>
+    <div class="container mb-3 flex flex-direction-column">
+      <div class="flex align-center justify-content-center mb-3">
+        <a
+          class="btn btn-dark mr-2 btn-sm"
+          target="_blank"
+          href="https://github.com/LouisMazel/vue-phone-number-input"
+        >
+          Github
+        </a>
+        <a
+          class="btn btn-danger btn-sm"
+          target="_blank"
+          href="https://www.npmjs.com/package/vue-phone-number-input"
+        >
+          NPM
+        </a>
+      </div>
+      <div class="flex align-center justify-content-center">
+        <button
+          class="btn btn-sm mr-2"
+          @click="dark = !dark"
+        >
+          Toggle Dark Mode
+        </button>
+
+        <button
+          class="btn btn-success btn-sm mr-2"
+          @click="hasLoaderActive = !hasLoaderActive"
+        >
+          Toggle loader
+        </button>
+
+        <button
+          class="btn btn-danger btn-sm"
+          @click="hasErrorActive = !hasErrorActive"
+        >
+          Toggle error
+        </button>
+      </div>
     </div>
-    <div
-      class="container"
-      :style="screenshotMode ? `width: 40%;` : null"
-    >
-      <button
-        class="btn margin-right"
-        @click="dark = !dark"
-      >
-        Toggle Dark Mode
-      </button>
-
-      <button
-        class="btn btn-success margin-right"
-        @click="hasLoaderActive = !hasLoaderActive"
-      >
-        Toggle loader
-      </button>
-
-      <button
-        class="btn btn-danger"
-        @click="hasErrorActive = !hasErrorActive"
-      >
-        Toggle error
-      </button>
-      <div class="component-container">
-        <div class="component">
-          <VuePhoneNumberInput
-            v-if="!screenshotMode"
-            id="phoneNumber1"
-            v-model="phoneNumber"
-            color="purple"
-            :dark="dark"
-            :disabled="disabled"
-            :ignored-countries="countriesIgnored"
-            :preferred-countries="countriesList"
-            :loader="hasLoaderActive"
-            :default-country-code="defaultCountry"
-            :error="hasErrorActive"
-            clearable
-            @update="onUpdate"
-          />
-          <VuePhoneNumberInput
-            v-else
-            id="phoneNumber1"
-            v-model="phoneNumber2"
-            :dark="dark"
-            :loader="hasLoaderActive"
-            :error="hasErrorActive"
-            @update="onUpdate"
-          />
-        </div>
-        <br v-if="!screenshotMode">
-        <div class="component">
-          <div v-if="!screenshotMode">
-            <h3>Datas returned with "update" event</h3>
-            <hr>
+    <div class="container mb-3">
+      <div class="flex flex-wrap">
+        <div class="component-container">
+          <h3 class="mb-2">
+            Basic usage
+          </h3>
+          <div class="component mb-2">
+            <VuePhoneNumberInput
+              id="phoneNumber1"
+              v-model="phoneNumber"
+              color="dodgerblue"
+              :dark="dark"
+              :disabled="disabled"
+              :ignored-countries="countriesIgnored"
+              :preferred-countries="countriesList"
+              :loader="hasLoaderActive"
+              :default-country-code="defaultCountry"
+              :error="hasErrorActive"
+              clearable
+              class="mb-2"
+              @update="onUpdate"
+            />
             <b>v-model</b> : {{ phoneNumber }}
-            <hr>
           </div>
-          <div class="flex flex-wrap">
-            <div class="component">
-              <table>
+
+          <div class="component">
+            <h4 class="mb-2">
+              Datas returned with "update" event
+            </h4>
+            <div class="flex flex-wrap">
+              <table class="mr-2">
                 <tr>
                   <th>Key</th>
                   <th>Value</th>
@@ -94,6 +84,7 @@
                 <tr
                   v-for="item in resultsTable"
                   :key="item"
+                  class="w-100"
                 >
                   <td align="left">
                     {{ item }}
@@ -101,41 +92,39 @@
                   <td>{{ results[item] }}</td>
                 </tr>
               </table>
-            </div>
-            <div class="component flex-1">
-              {{ results }}
+              <div class="flex flex-direction-column flex-1">
+                <b>Payload:</b>
+                {{ results }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        v-if="!screenshotMode"
-        class="component-container"
-      >
-        <div class="component">
-          <h3>With translations (FR) - No flags - Dark - No Use Browser Locale</h3>
-          <VuePhoneNumberInput
-            id="phoneNumber2"
-            v-model="phoneNumber2"
-            :translations="translations"
-            dark
-            no-flags
-            required
-            no-use-browser-locale
-            :loader="hasLoaderActive"
-            :error="hasErrorActive"
-            @update="onUpdate2"
-          />
-        </div>
-        <br>
-        <div class="component">
-          <h3>Datas returned with "update" event</h3>
-          <hr>
-          <b>v-model</b> : {{ phoneNumber }}
-          <hr>
-          <div class="flex flex-wrap">
-            <div class="component">
-              <table>
+        <div class="component-container">
+          <h3 class="mb-2">
+            With translations (FR) - No flags - Dark - No Use Browser Locale
+          </h3>
+          <div class="component mb-2">
+            <VuePhoneNumberInput
+              id="phoneNumber2"
+              v-model="phoneNumber2"
+              :translations="translations"
+              dark
+              no-flags
+              required
+              no-use-browser-locale
+              :loader="hasLoaderActive"
+              :error="hasErrorActive"
+              class="mb-2"
+              @update="onUpdate2"
+            />
+            <b>v-model</b> : {{ phoneNumber2 }}
+          </div>
+          <div class="component">
+            <h4 class="mb-2">
+              Datas returned with "update" event
+            </h4>
+            <div class="flex flex-wrap">
+              <table class="mr-2">
                 <tr>
                   <th>Key</th>
                   <th>Value</th>
@@ -143,6 +132,7 @@
                 <tr
                   v-for="item in resultsTable2"
                   :key="item"
+                  class="w-100"
                 >
                   <td align="left">
                     {{ item }}
@@ -150,54 +140,57 @@
                   <td>{{ results2[item] }}</td>
                 </tr>
               </table>
-            </div>
-            <div class="component flex-1">
-              {{ results2 }}
+              <div class="flex flex-direction-column  flex-1">
+                <b>Payload:</b>
+                {{ results2 }}
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        v-if="!screenshotMode"
-        class="component-container"
-      >
-        <div class="component">
-          <h3>No country chooser (use `default-country-code` to set the country)</h3>
-          <p>Current country code : {{ defaultCountry }}</p>
+      <div class="component-container">
+        <h3 class="mb-2">
+          No country chooser (use `default-country-code` to set the country)
+        </h3>
+        <div class="component mb-2">
           <VuePhoneNumberInput
             id="phoneNumber3"
             v-model="phoneNumber3"
             :loader="hasLoaderActive"
             :error="hasErrorActive"
+            :dark="dark"
+            :default-country-code="defaultCountry"
             no-country-selector
+            class="mb-2"
             @update="onUpdate3"
           />
+          <b>v-model</b> : {{ phoneNumber2 }}
+          <br>
+          <b>Current country code</b> : {{ defaultCountry }}
         </div>
-        <br>
         <div class="component">
-          <h3>Datas returned with "update" event</h3>
-          <hr>
-          <b>v-model</b> : {{ phoneNumber3 }}
-          <hr>
+          <h4 class="mb-2">
+            Datas returned with "update" event
+          </h4>
           <div class="flex flex-wrap">
-            <div class="component">
-              <table>
-                <tr>
-                  <th>Key</th>
-                  <th>Value</th>
-                </tr>
-                <tr
-                  v-for="item in resultsTable3"
-                  :key="item"
-                >
-                  <td align="left">
-                    {{ item }}
-                  </td>
-                  <td>{{ results3[item] }}</td>
-                </tr>
-              </table>
-            </div>
-            <div class="component flex-1">
+            <table class="mr-2">
+              <tr>
+                <th>Key</th>
+                <th>Value</th>
+              </tr>
+              <tr
+                v-for="item in resultsTable3"
+                :key="item"
+                class="w-100"
+              >
+                <td align="left">
+                  {{ item }}
+                </td>
+                <td>{{ results3[item] }}</td>
+              </tr>
+            </table>
+            <div class="flex flex-direction-column flex-1">
+              <b>Payload:</b>
               {{ results3 }}
             </div>
           </div>
@@ -217,8 +210,7 @@
     },
     data() {
       return {
-        screenshotMode: false,
-        phoneNumber: '0665656565',
+        phoneNumber: null,
         phoneNumber2: null,
         phoneNumber3: '0665656565',
         defaultCountry: 'FR',
@@ -265,8 +257,9 @@
 </script>
 
 <style lang="scss" scoped>
+@import 'style-helpers';
 #app {
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -284,70 +277,22 @@
     }
   }
 }
+
+h1, h2, h3, h4, h5, h6 {
+  color: dodgerblue;
+}
+
 hr {
   border: 0;
   border-top: 1px solid #ebebeb;
-}
-.container {
-  width: 70%;
-  margin: 0 auto;
-  text-align: center;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-.btn {
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 12px;
-  outline: none;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  background-color: dodgerblue;
-  color: white;
-  font-weight: 500;
-  &:hover {
-    background-color: darken(dodgerblue, 10%);
-    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
-      0 2px 4px 0 rgba(232, 237, 250, 0.5);
-  }
-  &.option {
-    background-color: #424242;
-    &:hover {
-      background-color: darken(#424242, 10%);
-    }
-  }
-  &.btn-dark {
-    background-color: #424242;
-    &:hover {
-      background-color: darken(#424242, 10%);
-    }
-  }
-  &.btn-danger {
-    background-color: orangered;
-    &:hover {
-      background-color: darken(orangered, 10%);
-    }
-  }
-  &.btn-success {
-    background-color: yellowgreen;
-    &:hover {
-      background-color: darken(yellowgreen, 10%);
-    }
-  }
-}
-.margin-right {
-  margin-right: 20px;
+a.btn {
+  line-height: 36px;
 }
 .component {
   padding: 10px;
@@ -388,7 +333,6 @@ table {
   border-spacing: 0;
   border-collapse: collapse;
   display: block;
-  width: 100%;
   overflow: auto;
   margin-top: 0;
   margin-bottom: 16px;

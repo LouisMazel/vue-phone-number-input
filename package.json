@@ -39,6 +39,7 @@
     "nuxt": "^2.9.2",
     "path": "^0.12.7",
     "sass-loader": "^7.1.0",
+    "style-helpers": "^0.2.5",
     "vue-server-renderer": "^2.6.9",
     "vue-template-compiler": "^2.5.21"
   },
