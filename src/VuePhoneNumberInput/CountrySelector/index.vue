@@ -11,13 +11,13 @@
       'is-dark': dark,
       'no-flags': noFlags
     }, size]"
-    class="field country-selector"
+    class="country-selector"
     @click="onFocus"
     @keydown="keyboardNav"
   >
     <div
       v-if="value && !noFlags"
-      class="flag-container field-country-flag"
+      class="country-selector__country-flag"
     >
       <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
     </div>
@@ -28,16 +28,16 @@
       :placeholder="label"
       :disabled="disabled"
       :style="[borderStyle]"
-      class="field-input"
+      class="country-selector__input"
       readonly
       @focus="onFocus"
       @click="$emit('click')"
     >
     <div
-      class="country-selector-toggle"
+      class="country-selector__toggle"
     >
       <slot name="arrow">
-        <div class="country-selector-arrow">
+        <div class="country-selector__toggle__arrow">
           ▼
         </div>
       </slot>
@@ -47,7 +47,7 @@
       :for="id"
       :class="error ? 'text-danger' : null"
       :style="[colorStyle]"
-      class="field-label"
+      class="country-selector__label"
       @click="onFocus"
     >
       {{ hint || label }}
@@ -56,7 +56,7 @@
       <div
         v-show="isFocus"
         ref="countriesList"
-        class="country-list"
+        class="country-selector__list"
       >
         <div
           v-for="item in countriesSorted"
@@ -65,13 +65,13 @@
             {'selected': value === item.iso2},
             {'keyboard-selected': tmpValue === item.iso2}
           ]"
-          class="flex align-center country-list-item"
+          class="flex align-center country-selector__list__item"
           :style="[value === item.iso2 ? bgStyle : null, itemHeight]"
           @click.stop="updateValue(item.iso2)"
         >
           <div
             v-if="!noFlags"
-            class="flag-container"
+            class="country-selector__list__item__flag-container"
           >
             <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
           </div>
@@ -244,24 +244,26 @@
 </script>
 
 <style lang="scss" scoped>
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
+  $primary-color: var(--primary-color);
+  $primary-color-transparency: var(--primary-color-transparency);
+  $error-color-transparency: var(--error-color-transparency);
+  $second-color: var(--second-color);
+  $third-color: var(--third-color);
+  $muted-color: var(--muted-color);
+  $hover-color: var(--hover-color);
+  $bg-color: var(--bg-color);
+  $valid-color: var(--valid-color);
+  $valid-color-transparency: var(--valid-color-transparency);
+  $border-radius: var(--border-radius);
+  $error-color: orangered;
+  $disabled-color: #747474;
+
   .country-selector {
     position: relative;
-    .field-country-flag {
-      margin: auto 0;
-      position: absolute;
-      top: 21px;
-      left: 11px;
-      z-index: 1;
-      img {
-        position: absolute;
-      }
-    }
-    .field-label {
+    height: 42px;
+    min-height: 42px;
+
+    &__label {
       position: absolute;
       top: 3px;
       cursor: pointer;
@@ -271,11 +273,12 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: rgba(0, 0, 0, 0.54);
+      color: $second-color;
     }
-    .field-input {
+
+    &__input {
       cursor: pointer;
-      background-color: transparent;
+      background-color: $bg-color;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       position: relative;
       width: 100%;
@@ -286,82 +289,72 @@
       font-weight: 400;
       -webkit-appearance: none;
       outline: none;
-      border: 1px solid rgba(0, 0, 0, 0.2);
+      border: 1px solid $third-color;
       border-radius: 4px;
       font-size: 13px;
       z-index: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
+      padding-left: 40px;
+      color: $second-color;
+
+      &::-webkit-input-placeholder {
+        color: $second-color;
+      }
+
+      &::-moz-placeholder {
+        color: $second-color;
+      }
+
+      &:-ms-input-placeholder {
+        color: $second-color;
+      }
+
+      &::-ms-input-placeholder {
+        color: $second-color;
+      }
+
+      &:-moz-placeholder {
+        color: $second-color;
+      }
+
+      &::placeholder {
+        color: $second-color;
+      }
     }
-    &-toggle {
+
+    &__toggle {
       position: absolute;
       right: 10px;
       top: calc(50% - 8px);
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       text-align: center;
       display: inline-block;
-    }
-    &-arrow {
-      color: #424242;
-      font-size: 15px;
-      transform: scaleY(0.5);
+
+      &__arrow {
+        color: $second-color;
+        font-size: 15px;
+        transform: scaleY(0.5);
+      }
     }
 
-    &.has-error {
-      .field-input {
-        border-color: orangered !important;
+    &__country-flag {
+      margin: auto 0;
+      position: absolute;
+      top: 21px;
+      left: 11px;
+      z-index: 1;
+
+      img {
+        position: absolute;
       }
     }
-    &.has-value {
-      .field-label {
-        opacity: 1;
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-        font-size: 11px;
-      }
-      .field-input {
-        padding-top: 14px;
-        padding-left: 40px;
-      }
-    }
-    &.has-hint {
-      .field-label {
-        opacity: 1;
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-        font-size: 11px;
-      }
-      .field-input {
-        padding-top: 14px;
-      }
-    }
-    &.is-focused {
-      .country-selector-toggle {
-        transform: rotate(-180deg);
-      }
-    }
-    &.is-disabled {
-      .field-input {
-        border-color: #ccc;
-        background-color: #f2f2f2;
-      }
-      .field-label,
-      .field-input {
-        cursor: default;
-      }
-    }
-    &.no-flags {
-      .field-input {
-        padding-left: 10px;
-      }
-    }
-    .text-danger {
-      color: orangered !important;
-    }
-    .country-list {
+
+    &__list {
+      border-radius: $border-radius;
+      background-color: $bg-color;
       padding: 0;
       list-style: none;
-      background: #fff;
       height: 210px;
       max-height: 210px;
       overflow-y: auto;
@@ -371,169 +364,206 @@
       max-width: 100%;
       position: absolute;
       top: 100%;
-      border-radius: 4px;
       width: 100%;
       min-width: 230px;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-      &-item {
+
+      &__item {
         padding: 0 10px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
         font-size: 12px;
         cursor: pointer;
-        &:hover, &.keyboard-selected {
-          background-color: #f2f2f2;
-        }
-        &.selected {
-          color: #fff;
-          font-weight: 600;
-        }
-        .flag-container {
+
+        &__flag-container {
           margin-right: 10px;
         }
-      }
-    }
-    &.is-dark {
-      .field-label {
-        color: rgba(255, 255, 255, 0.7);
-      }
-      .field-input {
-        background-color: #424242;
-        border-color: rgba(255, 255, 255, 0.7);
-        color: rgba(255, 255, 255, 0.7);
-      }
-      .country-list {
-        background-color: #424242;
-        color: rgba(255, 255, 255, 0.7);
-        &-item:hover, &-item.keyboard-selected {
-          background-color: darken(#424242, 5%);
+
+        &:hover,
+        &.keyboard-selected {
+          background-color: $hover-color;
         }
-      }
-      .country-selector-arrow {
-        color: rgba(255, 255, 255, 0.7);
-      }
-      &.is-disabled {
-        .field-label,
-        .field-input {
-          color: #000;
-        }
-      }
-      ::-webkit-input-placeholder {
-        /* WebKit, Blink, Edge */
-        color: rgba(255, 255, 255, 0.7);
-      }
-      :-moz-placeholder {
-        /* Mozilla Firefox 4 to 18 */
-        color: rgba(255, 255, 255, 0.7);
-        opacity: 1;
-      }
-      ::-moz-placeholder {
-        /* Mozilla Firefox 19+ */
-        color: rgba(255, 255, 255, 0.7);
-        opacity: 1;
-      }
-      :-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: rgba(255, 255, 255, 0.7);
-      }
-      ::-ms-input-placeholder {
-        /* Microsoft Edge */
-        color: rgba(255, 255, 255, 0.7);
-      }
-      ::placeholder {
-        /* Most modern browsers support this now. */
-        color: rgba(255, 255, 255, 0.7);
-      }
-      &.is-disabled {
-        .field-input {
-          border-color: #ccc;
-          background-color: #f2f2f2;
-        }
-        .country-selector-arrow {
-          color: #888;
-        }
-        ::-webkit-input-placeholder {
-          /* WebKit, Blink, Edge */
-          color: #424242;
-        }
-        :-moz-placeholder {
-          /* Mozilla Firefox 4 to 18 */
-          color: #424242;
-          opacity: 1;
-        }
-        ::-moz-placeholder {
-          /* Mozilla Firefox 19+ */
-          color: #424242;
-          opacity: 1;
-        }
-        :-ms-input-placeholder {
-          /* Internet Explorer 10-11 */
-          color: #424242;
-        }
-        ::-ms-input-placeholder {
-          /* Microsoft Edge */
-          color: #424242;
-        }
-        ::placeholder {
-          /* Most modern browsers support this now. */
-          color: #424242;
+
+        &.selected {
+          color: #FFF;
+          background-color: $primary-color;
+          font-weight: 600;
         }
       }
     }
+
+    &.has-error {
+      .country-selector__input {
+        border-color: $error-color;
+      }
+
+      .country-selector__label {
+        color: $error-color;
+      }
+    }
+
+    &.has-value,
+    &.has-hint {
+      .country-selector__label {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 11px;
+      }
+
+      .country-selector__input {
+        padding-top: 14px;
+      }
+    }
+
+    &.is-focused {
+      .country-selector {
+        &__toggle {
+          transform: rotate(180deg);
+        }
+
+        &__input {
+          border-color: $primary-color;
+          box-shadow: 0 0 0 0.2rem $primary-color-transparency;
+        }
+
+        &__label {
+          color: $primary-color;
+        }
+      }
+    }
+
+    &.is-dark:not(.is-disabled) {
+      .country-selector__input,
+      .country-selector__list {
+        color: $second-color;
+      }
+    }
+
+    &.is-disabled {
+      .country-selector {
+        cursor: not-allowed;
+
+        &__input {
+          border-color: #CCC;
+          background-color: #F2F2F2;
+
+          color: $disabled-color;
+
+          &::-webkit-input-placeholder {
+            color: $disabled-color;
+          }
+
+          &::-moz-placeholder {
+            color: $disabled-color;
+          }
+
+          &:-ms-input-placeholder {
+            color: $disabled-color;
+          }
+
+          &::-ms-input-placeholder {
+            color: $disabled-color;
+          }
+
+          &:-moz-placeholder {
+            color: $disabled-color;
+          }
+
+          &::placeholder {
+            color: $disabled-color;
+          }
+        }
+
+        &__label,
+        &__input,
+        &__toggle__arrow
+        &__country-flag
+        &__country-flag > div {
+          cursor: not-allowed;
+          color: $disabled-color;
+        }
+      }
+    }
+
+    &.no-flags {
+      .country-selector__input {
+        padding-left: 10px;
+      }
+    }
+
     &.sm {
-      .field-input {
+      height: 36px;
+      min-height: 36px;
+
+      .country-selector__input {
         height: 36px;
         min-height: 36px;
         font-size: 12px;
       }
-      .field-label {
+
+      .country-selector__label {
         font-size: 10px;
       }
-      .field-country-flag {
+
+      .country-selector__country-flag {
         top: 16px;
+
         img {
-          zoom: .3;
-          -moz-transform: scale(.3);
+          zoom: 0.3;
+          -moz-transform: scale(0.3);
           -moz-transform-origin: 0 0;
         }
       }
+
       &.has-value {
-        .field-input {
+        .country-selector__input {
           padding-top: 12px;
         }
       }
     }
+
     &.lg {
-      .field-input {
+      height: 48px;
+      min-height: 48px;
+
+      .country-selector__input {
         height: 48px;
         min-height: 48px;
         font-size: 16px;
       }
-      .field-label {
+
+      .country-selector__label {
         font-size: 14px;
       }
-      .field-country-flag {
+
+      .country-selector__country-flag {
         top: 25px;
+
         img {
-          zoom: .45;
-          -moz-transform: scale(.45);
+          zoom: 0.45;
+          -moz-transform: scale(0.45);
           -moz-transform-origin: 0 0;
         }
       }
+
       &.has-value {
-        .field-input {
+        .country-selector__input {
           padding-top: 18px;
         }
       }
     }
-    .slide-enter-active, .slide-leave-active {
+
+    .slide-enter-active,
+    .slide-leave-active {
       opacity: 1;
       z-index: 998;
       transition: all 0.3s;
       transform: translateY(0);
     }
-    .slide-enter, .slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+    .slide-enter,
+    .slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
       opacity: 0;
       z-index: 998;
       transform: translateY(-20px);

@@ -86,6 +86,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | no-flags | Boolean    | no       | false      |
 | disabled | Boolean    | no       | false      |
 | dark | Boolean    | no       | false      |
+| dark-color                   | String (hex)      | no       | #424242  |
 | required | Boolean    | no       | false      |
 | error | Boolean    | no       | false      |
 | clearable | Boolean    | no       | false      |
@@ -95,6 +96,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | no-use-browser-locale (6) | Boolean    | no       | false      |
 | fetch-country (7) | Boolean    | no       | false      |
 | no-country-selector (8) | Boolean    | no       | false      |
+| border-radius                   | Number           | no       | 4 |
 
 (1) Ex : `default-country-code="FR"`
 

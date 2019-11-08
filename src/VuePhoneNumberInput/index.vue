@@ -1,6 +1,7 @@
 <template>
   <div
     :class="[{ 'dark': dark }, size]"
+    :style="[colorVars]"
     class="vue-phone-number-input flex"
   >
     <div
@@ -67,8 +68,10 @@
   import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
   import VueInputUI from 'vue-input-ui'
   import 'vue-input-ui/dist/vue-input-ui.css'
-  import CountrySelector from './_subs/CountrySelector'
+  import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
+
+  import getTheme from './themes'
 
   const browserLocale = () => {
     if (!window) return null
@@ -89,14 +92,15 @@
       CountrySelector
     },
     props: {
-      value: { type: String, default: String },
+      value: { type: String, default: null },
       id: { type: String, default: 'VuePhoneNumberInput' },
       color: { type: String, default: 'dodgerblue' },
       validColor: { type: String, default: 'yellowgreen' },
       dark: { type: Boolean, default: Boolean },
+      darkColor: { type: String, default: '#424242' },
       disabled: { type: Boolean, default: Boolean },
-      defaultCountryCode: { type: String, default: String },
-      size: { type: String, default: String },
+      defaultCountryCode: { type: String, default: null },
+      size: { type: String, default: null },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array },
@@ -109,7 +113,8 @@
       countriesHeight: { type: Number, default: 30 },
       noUseBrowserLocale: { type: Boolean, default: false },
       fetchCountry: { type: Boolean, default: false },
-      noCountrySelector: { type: Boolean, default: false }
+      noCountrySelector: { type: Boolean, default: false },
+      borderRadius: { type: Number, default: 4 }
     },
     data () {
       return {
@@ -120,6 +125,19 @@
       }
     },
     computed: {
+      colorVars () {
+        const { dark, color, darkColor, validColor, borderRadius } = this
+        return getTheme(
+          {
+            dark,
+            color,
+            darkColor,
+            validColor,
+            borderRadius,
+            lightColor: '#FFFFFF'
+          }
+        )
+      },
       t () {
         return {
           ...locales,
@@ -266,15 +284,25 @@
   }
 </script>
 <style lang="scss">
-  @import "./assets/scss/flexbox-helper.scss";
-  @import "./assets/iti-flags/flags.css";
+  @import 'style-helpers';
+  @import './assets/iti-flags/flags.css';
+  @import 'style-helpers';
+
+  $primary-color: var(--primary-color);
+  $primary-color-transparency: var(--primary-color-transparency);
+  $error-color-transparency: var(--error-color-transparency);
+  $second-color: var(--second-color);
+  $third-color: var(--third-color);
+  $muted-color: var(--muted-color);
+  $hover-color: var(--hover-color);
+  $bg-color: var(--bg-color);
+  $valid-color: var(--valid-color);
+  $valid-color-transparency: var(--valid-color-transparency);
+  $border-radius: var(--border-radius);
+  $error-color: orangered;
+  $disabled-color: #747474;
 
   .vue-phone-number-input {
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
     .select-country-container {
@@ -296,10 +324,6 @@
       width: 130px;
       min-width: 130px;
       max-width: 130px;
-    }
-
-    .country-selector {
-      cursor: pointer;
     }
 
     .input-phone-number.with-chooser input {

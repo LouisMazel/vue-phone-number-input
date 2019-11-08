@@ -1,0 +1,22 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-order"
+  ],
+  "rules": {
+    "color-hex-case": "upper",
+    "string-quotes": "single",
+    "no-empty-source": null,
+    "unit-case": "lower",
+    "property-case": "lower",
+    "property-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "at-rule-no-unknown": null,
+    "order/order": [
+			"custom-properties",
+			"declarations"
+    ],
+    "no-descending-specificity": null
+  }
+}
