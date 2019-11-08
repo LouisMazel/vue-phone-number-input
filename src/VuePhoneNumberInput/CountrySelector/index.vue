@@ -268,7 +268,6 @@
       top: 3px;
       cursor: pointer;
       left: 11px;
-      -webkit-transform: translateY(25%);
       transform: translateY(25%);
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -285,9 +284,8 @@
       height: 42px;
       min-height: 42px;
       padding-right: 18px;
-      padding-left: 10px;
       font-weight: 400;
-      -webkit-appearance: none;
+      appearance: none;
       outline: none;
       border: 1px solid $third-color;
       border-radius: $border-radius;
@@ -447,7 +445,6 @@
         &__input {
           border-color: #CCC;
           background-color: #F2F2F2;
-
           color: $disabled-color;
 
           &::-webkit-input-placeholder {
@@ -477,9 +474,7 @@
 
         &__label,
         &__input,
-        &__toggle__arrow
-        &__country-flag
-        &__country-flag > div {
+        &__toggle__arrow &__country-flag &__country-flag > div {
           cursor: not-allowed;
           color: $disabled-color;
         }
@@ -511,8 +506,11 @@
 
         img {
           zoom: 0.3;
+          color: red;
+          /* stylelint-disable */
           -moz-transform: scale(0.3);
           -moz-transform-origin: 0 0;
+          /* stylelint-enable */
         }
       }
 
@@ -542,8 +540,10 @@
 
         img {
           zoom: 0.45;
+          /* stylelint-disable */
           -moz-transform: scale(0.45);
           -moz-transform-origin: 0 0;
+          /* stylelint-enable */
         }
       }
 

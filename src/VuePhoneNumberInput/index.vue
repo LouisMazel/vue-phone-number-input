@@ -287,7 +287,6 @@
 <style lang="scss">
   @import 'style-helpers';
   @import './assets/iti-flags/flags.css';
-  @import 'style-helpers';
 
   $primary-color: var(--primary-color);
   $primary-color-transparency: var(--primary-color-transparency);

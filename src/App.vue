@@ -115,6 +115,7 @@
               :loader="hasLoaderActive"
               :error="hasErrorActive"
               class="mb-2"
+              clearable
               :border-radius="8"
               @update="onUpdate2"
             />
@@ -262,8 +263,6 @@
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   color: #2C3E50;
   height: 100%;
   min-height: 100%;
@@ -415,11 +414,7 @@ table {
 
 @media screen and (max-width: 1024px) {
   .components-container.flex {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    flex-flow: column;
-    -moz-flex-direction: column;
   }
 }
 </style>
