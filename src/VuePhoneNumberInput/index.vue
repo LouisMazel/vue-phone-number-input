@@ -54,6 +54,7 @@
         v-bind="$attrs"
         class="input-phone-number"
         :class="{ 'with-chooser': !noCountrySelector }"
+        :border-radius="borderRadius"
         @keydown="(e) => { lastKeyPressed = e.keyCode }"
         @focus="$emit('phone-number-focused')"
         @blur="$emit('phone-number-blur')"

@@ -115,6 +115,7 @@
               :loader="hasLoaderActive"
               :error="hasErrorActive"
               class="mb-2"
+              :border-radius="8"
               @update="onUpdate2"
             />
             <b>v-model</b> : {{ phoneNumber2 }}

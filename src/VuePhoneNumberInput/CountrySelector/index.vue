@@ -290,7 +290,7 @@
       -webkit-appearance: none;
       outline: none;
       border: 1px solid $third-color;
-      border-radius: 4px;
+      border-radius: $border-radius;
       font-size: 13px;
       z-index: 0;
       border-top-right-radius: 0;
