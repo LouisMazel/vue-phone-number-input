@@ -26,6 +26,7 @@
   ],
   "dependencies": {
     "libphonenumber-js": "^1.7.26",
+    "style-helpers": "^0.2.8",
     "v-click-outside": "^2.1.5",
     "vue": "^2.6.10",
     "vue-input-ui": "^1.0.1"
@@ -41,7 +42,6 @@
     "nuxt": "^2.9.2",
     "path": "^0.12.7",
     "sass-loader": "^7.1.0",
-    "style-helpers": "^0.2.8",
     "stylelint": "^11.1.1",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
