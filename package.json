@@ -25,6 +25,7 @@
     "nuxt/"
   ],
   "dependencies": {
+    "css-vars-ponyfill": "^2.1.2",
     "libphonenumber-js": "^1.7.26",
     "style-helpers": "^0.2.8",
     "v-click-outside": "^2.1.5",

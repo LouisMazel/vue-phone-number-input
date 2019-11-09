@@ -9,7 +9,8 @@
       'has-error': error,
       'is-disabled': disabled,
       'is-dark': dark,
-      'no-flags': noFlags
+      'no-flags': noFlags,
+      'is-valid': valid
     }, size]"
     class="country-selector"
     @click="onFocus"
@@ -427,6 +428,12 @@
 
         &__label {
           color: $primary-color;
+        }
+      }
+      &.is-valid {
+        .country-selector__input {
+          border-color: $valid-color;
+          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
         }
       }
     }

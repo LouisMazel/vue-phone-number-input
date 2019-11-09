@@ -1,7 +1,8 @@
 <template>
   <div
+    :id="uniqueId"
+    :style="[cssTheme]"
     :class="[{ 'dark': dark }, size]"
-    :style="[colorVars]"
     class="vue-phone-number-input flex"
   >
     <div
@@ -71,7 +72,8 @@
   import 'vue-input-ui/dist/vue-input-ui.css'
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
-
+  import cssVars from 'css-vars-ponyfill'
+  
   import getTheme from './themes'
 
   const browserLocale = () => {
@@ -126,18 +128,8 @@
       }
     },
     computed: {
-      colorVars () {
-        const { dark, color, darkColor, validColor, borderRadius } = this
-        return getTheme(
-          {
-            dark,
-            color,
-            darkColor,
-            validColor,
-            borderRadius,
-            lightColor: '#FFFFFF'
-          }
-        )
+      uniqueId () {
+        return `${this.id}-${this._uid}`
       },
       t () {
         return {
@@ -188,10 +180,24 @@
         return  this.noExample || !this.phoneNumberExample
           ? null
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
+      },
+      cssTheme () {
+        const { dark, color, darkColor, validColor, borderRadius } = this
+        return getTheme(
+          {
+            dark,
+            color,
+            darkColor,
+            validColor,
+            borderRadius,
+            lightColor: '#FFFFFF'
+          }
+        )
       }
     },
     async mounted () {
       try {
+        this.setCssVars()
         if (this.phoneNumber && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.phoneNumber})
 
         if (this.defaultCountryCode && this.fetchCountry)
@@ -274,12 +280,20 @@
         } catch (err) {
           console.error(err)
         }
+      },
+      setCssVars () {
+        cssVars({
+          variables: this.cssTheme
+        })
       }
     },
     watch: {
       defaultCountryCode (newValue, oldValue) {
         if (newValue === oldValue) return
         this.setLocale(newValue)
+      },
+      dark () {
+        this.setCssVars()
       }
     }
   }
