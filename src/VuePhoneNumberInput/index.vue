@@ -299,9 +299,6 @@
   }
 </script>
 <style lang="scss">
-  @import 'style-helpers';
-  @import './assets/iti-flags/flags.css';
-
   $primary-color: var(--primary-color);
   $primary-color-transparency: var(--primary-color-transparency);
   $error-color-transparency: var(--error-color-transparency);
@@ -317,6 +314,9 @@
   $disabled-color: #747474;
 
   .vue-phone-number-input {
+    @import 'style-helpers';
+    @import './assets/iti-flags/flags.css';
+
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
     .select-country-container {
@@ -344,12 +344,6 @@
       margin-left: -1px !important;
       border-top-left-radius: 0 !important;
       border-bottom-left-radius: 0 !important;
-    }
-
-    .input-phone-number:not(.is-dark):not(.is-disabled) {
-      input {
-        background-color: transparent !important;
-      }
     }
   }
 </style>
