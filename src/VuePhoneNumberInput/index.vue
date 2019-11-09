@@ -299,17 +299,17 @@
   }
 </script>
 <style lang="scss">
-  $primary-color: var(--primary-color);
-  $primary-color-transparency: var(--primary-color-transparency);
-  $error-color-transparency: var(--error-color-transparency);
-  $second-color: var(--second-color);
-  $third-color: var(--third-color);
-  $muted-color: var(--muted-color);
-  $hover-color: var(--hover-color);
-  $bg-color: var(--bg-color);
-  $valid-color: var(--valid-color);
-  $valid-color-transparency: var(--valid-color-transparency);
-  $border-radius: var(--border-radius);
+  $primary-color: var(--phone-number-primary-color);
+  $primary-color-transparency: var(--phone-number-primary-color-transparency);
+  $error-color-transparency: var(--phone-number-error-color-transparency);
+  $second-color: var(--phone-number-second-color);
+  $third-color: var(--phone-number-third-color);
+  $muted-color: var(--phone-number-muted-color);
+  $hover-color: var(--phone-number-hover-color);
+  $bg-color: var(--phone-number-bg-color);
+  $valid-color: var(--phone-number-valid-color);
+  $valid-color-transparency: var(--phone-number-valid-color-transparency);
+  $border-radius: var(--phone-number-border-radius);
   $error-color: orangered;
   $disabled-color: #747474;
 
