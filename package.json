@@ -30,13 +30,14 @@
     "style-helpers": "^0.2.8",
     "v-click-outside": "^2.1.5",
     "vue": "^2.6.10",
-    "vue-input-ui": "^1.0.2"
+    "vue-input-ui": "^1.0.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
     "@vue/cli-plugin-eslint": "^3.3.0",
     "@vue/cli-service": "^3.7.0",
     "babel-eslint": "^10.0.1",
+    "color-transformer-ui": "^0.0.2",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.12.0",

@@ -1,4 +1,4 @@
-import { ShadeColor, HexToRgba, isColorName, colorNameToHex } from '@/utils/ColorTransfomer'
+import { ShadeColor, HexToRgba, isColorName, colorNameToHex } from 'color-transformer-ui'
 
 export default ({ color, lightColor, darkColor, validColor, borderRadius, errorColor }) => {
   return {
@@ -12,7 +12,7 @@ export default ({ color, lightColor, darkColor, validColor, borderRadius, errorC
     '--phone-number-error-color': errorColor,
     '--phone-number-valid-color': validColor,
     '--phone-number-hover-color-light': ShadeColor(lightColor, -8),
-    '--phone-number-hover-color-dark': ShadeColor(darkColor, 20),
+    '--phone-number-hover-color-dark': ShadeColor(darkColor, 50),
     '--phone-number-muted-color-light': '#747474',
     '--phone-number-muted-color-dark': 'rgba(255, 255, 255, 0.3)',
     '--phone-number-primary-color-transparency': isColorName(color) ? HexToRgba(colorNameToHex(color), 0.7) : HexToRgba(color, 0.7),

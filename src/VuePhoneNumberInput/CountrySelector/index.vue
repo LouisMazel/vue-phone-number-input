@@ -28,7 +28,6 @@
       :value="callingCode"
       :placeholder="label"
       :disabled="disabled"
-      :style="[borderStyle]"
       class="country-selector__input"
       readonly
       @focus="onFocus"
@@ -47,7 +46,6 @@
       ref="label"
       :for="id"
       :class="error ? 'text-danger' : null"
-      :style="[colorStyle]"
       class="country-selector__label"
       @click="onFocus"
     >
@@ -64,10 +62,10 @@
           :key="item.code"
           :class="[
             {'selected': value === item.iso2},
-            {'keyboard-selected': tmpValue === item.iso2}
+            {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
           ]"
           class="flex align-center country-selector__list__item"
-          :style="[value === item.iso2 ? bgStyle : null, itemHeight]"
+          :style="[itemHeight]"
           @click.stop="updateValue(item.iso2)"
         >
           <div
@@ -122,19 +120,6 @@
       }
     },
     computed: {
-      borderStyle () {
-        const cond = (this.isFocus && !this.error) || this.valid
-        const color = this.valid ? this.validColor : this.color
-        return cond ? { border: `1px solid ${color}` } : null
-      },
-      colorStyle () {
-        const cond = this.isFocus || this.valid
-        const color = this.valid ? this.validColor : this.color
-        return cond ? { color: `${color}` } : null
-      },
-      bgStyle () {
-        return { backgroundColor: `${this.color}` }
-      },
       itemHeight () {
         return {
           height: `${this.countriesHeight}px`
@@ -266,6 +251,7 @@
 
   // Light Theme
   .country-selector {
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     position: relative;
     height: 42px;
     min-height: 42px;
@@ -398,54 +384,8 @@
       }
     }
 
-    &.has-error {
-      .country-selector__input {
-        border-color: $error-color;
-      }
-
-      .country-selector__label {
-        color: $error-color;
-      }
-    }
-
-    &.has-value,
-    &.has-hint {
-      .country-selector__label {
-        opacity: 1;
-        transform: translateY(0);
-        font-size: 11px;
-      }
-
-      .country-selector__input {
-        padding-top: 14px;
-      }
-    }
-
-    &.is-focused {
-      .country-selector {
-        &__toggle {
-          transform: rotate(180deg);
-        }
-
-        &__input {
-          border-color: $primary-color;
-          box-shadow: 0 0 0 0.2rem $primary-color-transparency;
-        }
-
-        &__label {
-          color: $primary-color;
-        }
-      }
-      &.is-valid {
-        .country-selector__input {
-          border-color: $valid-color;
-          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
-        }
-      }
-    }
-
     // Dark Theme
-    &.is-dark:not(.is-disabled) {
+    &.is-dark {
       .country-selector {
         &__label {
           color: $second-color-dark;
@@ -505,6 +445,52 @@
       }
     }
 
+    &.is-focused {
+      .country-selector {
+        &__toggle {
+          transform: rotate(180deg);
+        }
+
+        &__input {
+          border-color: $primary-color;
+          box-shadow: 0 0 0 0.2rem $primary-color-transparency;
+        }
+
+        &__label {
+          color: $primary-color;
+        }
+      }
+      &.is-valid {
+        .country-selector__input {
+          border-color: $valid-color;
+          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
+        }
+      }
+    }
+
+    &.has-error {
+      .country-selector__input {
+        border-color: $error-color;
+      }
+
+      .country-selector__label {
+        color: $error-color;
+      }
+    }
+
+    &.has-value,
+    &.has-hint {
+      .country-selector__label {
+        opacity: 1;
+        transform: translateY(0);
+        font-size: 11px;
+      }
+
+      .country-selector__input {
+        padding-top: 14px;
+      }
+    }
+
     // Disable theme
     &.is-disabled {
       .country-selector {
@@ -542,7 +528,7 @@
 
         &__label,
         &__input,
-        &__toggle__arrow &__country-flag &__country-flag > div {
+        &__toggle__arrow, &__country-flag, &__country-flag > div {
           cursor: not-allowed;
           color: $disabled-color;
         }
