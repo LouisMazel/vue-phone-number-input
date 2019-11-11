@@ -9,7 +9,8 @@
       'has-error': error,
       'is-disabled': disabled,
       'is-dark': dark,
-      'no-flags': noFlags
+      'no-flags': noFlags,
+      'is-valid': valid
     }, size]"
     class="country-selector"
     @click="onFocus"
@@ -27,7 +28,6 @@
       :value="callingCode"
       :placeholder="label"
       :disabled="disabled"
-      :style="[borderStyle]"
       class="country-selector__input"
       readonly
       @focus="onFocus"
@@ -46,7 +46,6 @@
       ref="label"
       :for="id"
       :class="error ? 'text-danger' : null"
-      :style="[colorStyle]"
       class="country-selector__label"
       @click="onFocus"
     >
@@ -63,10 +62,10 @@
           :key="item.code"
           :class="[
             {'selected': value === item.iso2},
-            {'keyboard-selected': tmpValue === item.iso2}
+            {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
           ]"
           class="flex align-center country-selector__list__item"
-          :style="[value === item.iso2 ? bgStyle : null, itemHeight]"
+          :style="[itemHeight]"
           @click.stop="updateValue(item.iso2)"
         >
           <div
@@ -121,19 +120,6 @@
       }
     },
     computed: {
-      borderStyle () {
-        const cond = (this.isFocus && !this.error) || this.valid
-        const color = this.valid ? this.validColor : this.color
-        return cond ? { border: `1px solid ${color}` } : null
-      },
-      colorStyle () {
-        const cond = this.isFocus || this.valid
-        const color = this.valid ? this.validColor : this.color
-        return cond ? { color: `${color}` } : null
-      },
-      bgStyle () {
-        return { backgroundColor: `${this.color}` }
-      },
       itemHeight () {
         return {
           height: `${this.countriesHeight}px`
@@ -244,21 +230,28 @@
 </script>
 
 <style lang="scss" scoped>
-  $primary-color: var(--primary-color);
-  $primary-color-transparency: var(--primary-color-transparency);
-  $error-color-transparency: var(--error-color-transparency);
-  $second-color: var(--second-color);
-  $third-color: var(--third-color);
-  $muted-color: var(--muted-color);
-  $hover-color: var(--hover-color);
-  $bg-color: var(--bg-color);
-  $valid-color: var(--valid-color);
-  $valid-color-transparency: var(--valid-color-transparency);
-  $border-radius: var(--border-radius);
-  $error-color: orangered;
+  $primary-color: var(--phone-number-primary-color);
+  $second-color-light: var(--phone-number-second-color-light);
+  $second-color-dark: var(--phone-number-second-color-dark);
+  $third-color-light: var(--phone-number-third-color-light);
+  $third-color-dark: var(--phone-number-third-color-dark);
+  $muted-color-light: var(--phone-number-muted-color-light);
+  $muted-color-dark: var(--phone-number-muted-color-dark);
+  $hover-color-light: var(--phone-number-hover-color-light);
+  $hover-color-dark: var(--phone-number-hover-color-dark);
+  $bg-color-light: var(--phone-number-bg-color-light);
+  $bg-color-dark: var(--phone-number-bg-color-dark);
+  $valid-color: var(--phone-number-valid-color);
+  $error-color: var(--phone-number-error-color);
+  $error-color-transparency: var(--phone-number-error-color-transparency);
+  $primary-color-transparency: var(--phone-number-primary-color-transparency);
+  $valid-color-transparency: var(--phone-number-valid-color-transparency);
+  $border-radius: var(--phone-number-border-radius);
   $disabled-color: #747474;
 
+  // Light Theme
   .country-selector {
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     position: relative;
     height: 42px;
     min-height: 42px;
@@ -272,12 +265,12 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color;
+      color: $second-color-light;
     }
 
     &__input {
       cursor: pointer;
-      background-color: $bg-color;
+      background-color: $bg-color-light;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       position: relative;
       width: 100%;
@@ -287,37 +280,37 @@
       font-weight: 400;
       appearance: none;
       outline: none;
-      border: 1px solid $third-color;
+      border: 1px solid $third-color-light;
       border-radius: $border-radius;
       font-size: 13px;
       z-index: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       padding-left: 40px;
-      color: $second-color;
+      color: $second-color-light;
 
       &::-webkit-input-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &::-moz-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &:-ms-input-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &::-ms-input-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &:-moz-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &::placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
     }
 
@@ -330,7 +323,7 @@
       display: inline-block;
 
       &__arrow {
-        color: $second-color;
+        color: $second-color-light;
         font-size: 15px;
         transform: scaleY(0.5);
       }
@@ -350,7 +343,7 @@
 
     &__list {
       border-radius: $border-radius;
-      background-color: $bg-color;
+      background-color: $bg-color-light;
       padding: 0;
       list-style: none;
       height: 210px;
@@ -380,13 +373,97 @@
 
         &:hover,
         &.keyboard-selected {
-          background-color: $hover-color;
+          background-color: $hover-color-light;
         }
 
         &.selected {
           color: #FFF;
           background-color: $primary-color;
           font-weight: 600;
+        }
+      }
+    }
+
+    // Dark Theme
+    &.is-dark {
+      .country-selector {
+        &__label {
+          color: $second-color-dark;
+        }
+
+        &__input {
+          cursor: pointer;
+          background-color: $bg-color-dark;
+          border: 1px solid $third-color-dark;
+          color: $second-color-dark;
+
+          &::-webkit-input-placeholder {
+            color: $second-color-dark;
+          }
+
+          &::-moz-placeholder {
+            color: $second-color-dark;
+          }
+
+          &:-ms-input-placeholder {
+            color: $second-color-dark;
+          }
+
+          &::-ms-input-placeholder {
+            color: $second-color-dark;
+          }
+
+          &:-moz-placeholder {
+            color: $second-color-dark;
+          }
+
+          &::placeholder {
+            color: $second-color-dark;
+          }
+        }
+
+        &__toggle {
+          &__arrow {
+            color: $second-color-dark;
+          }
+        }
+
+        &__list {
+          background-color: $bg-color-dark;
+
+          &__item {
+            &:hover,
+            &.keyboard-selected {
+              background-color: $hover-color-dark;
+            }
+          }
+        }
+      }
+      .country-selector__input,
+      .country-selector__list {
+        color: $second-color-dark;
+      }
+    }
+
+    &.is-focused {
+      .country-selector {
+        &__toggle {
+          transform: rotate(180deg);
+        }
+
+        &__input {
+          border-color: $primary-color;
+          box-shadow: 0 0 0 0.2rem $primary-color-transparency;
+        }
+
+        &__label {
+          color: $primary-color;
+        }
+      }
+      &.is-valid {
+        .country-selector__input {
+          border-color: $valid-color;
+          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
         }
       }
     }
@@ -414,30 +491,7 @@
       }
     }
 
-    &.is-focused {
-      .country-selector {
-        &__toggle {
-          transform: rotate(180deg);
-        }
-
-        &__input {
-          border-color: $primary-color;
-          box-shadow: 0 0 0 0.2rem $primary-color-transparency;
-        }
-
-        &__label {
-          color: $primary-color;
-        }
-      }
-    }
-
-    &.is-dark:not(.is-disabled) {
-      .country-selector__input,
-      .country-selector__list {
-        color: $second-color;
-      }
-    }
-
+    // Disable theme
     &.is-disabled {
       .country-selector {
         cursor: not-allowed;
@@ -474,7 +528,7 @@
 
         &__label,
         &__input,
-        &__toggle__arrow &__country-flag &__country-flag > div {
+        &__toggle__arrow, &__country-flag, &__country-flag > div {
           cursor: not-allowed;
           color: $disabled-color;
         }

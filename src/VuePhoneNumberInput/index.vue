@@ -1,8 +1,9 @@
 <template>
   <div
+    :id="uniqueId"
     :class="[{ 'dark': dark }, size]"
-    :style="[colorVars]"
     class="vue-phone-number-input flex"
+    :style="[cssTheme]"
   >
     <div
       v-if="!noCountrySelector"
@@ -36,25 +37,21 @@
       </CountrySelector>
     </div>
     <div class="flex-1">
-      <VueInputUI
+      <InputTel
         :id="`${id}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
         :label="t.phoneNumberLabel"
         :hint="hintValue"
-        :color="color"
-        :valid-color="validColor"
         :dark="dark"
         :disabled="disabled"
         :size="size"
         :error="error"
         :valid="isValid && !noValidatorState"
         :required="required"
-        type="tel"
+        :no-country-selector="noCountrySelector"
         v-bind="$attrs"
         class="input-phone-number"
-        :class="{ 'with-chooser': !noCountrySelector }"
-        :border-radius="borderRadius"
         @keydown="(e) => { lastKeyPressed = e.keyCode }"
         @focus="$emit('phone-number-focused')"
         @blur="$emit('phone-number-blur')"
@@ -63,15 +60,16 @@
   </div>
 </template>
 <script>
+  import 'style-helpers'
   /* eslint-disable */
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
   import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
-  import VueInputUI from 'vue-input-ui'
-  import 'vue-input-ui/dist/vue-input-ui.css'
+  import InputTel from './InputTel'
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
-
+  import cssVars from 'css-vars-ponyfill'
+  
   import getTheme from './themes'
 
   const browserLocale = () => {
@@ -89,7 +87,7 @@
   export default {
     name: 'VuePhoneNumberInput',
     components: {
-      VueInputUI,
+      InputTel,
       CountrySelector
     },
     props: {
@@ -126,18 +124,8 @@
       }
     },
     computed: {
-      colorVars () {
-        const { dark, color, darkColor, validColor, borderRadius } = this
-        return getTheme(
-          {
-            dark,
-            color,
-            darkColor,
-            validColor,
-            borderRadius,
-            lightColor: '#FFFFFF'
-          }
-        )
+      uniqueId () {
+        return `${this.id}-${this._uid}`
       },
       t () {
         return {
@@ -188,10 +176,25 @@
         return  this.noExample || !this.phoneNumberExample
           ? null
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
+      },
+      cssTheme () {
+        const { dark, color, darkColor, validColor, borderRadius } = this
+        return getTheme(
+          {
+            dark,
+            color,
+            darkColor,
+            validColor,
+            borderRadius,
+            lightColor: '#FFFFFF',
+            errorColor: 'orangered'
+          }
+        )
       }
     },
     async mounted () {
       try {
+        this.setCssVars()
         if (this.phoneNumber && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.phoneNumber})
 
         if (this.defaultCountryCode && this.fetchCountry)
@@ -274,37 +277,27 @@
         } catch (err) {
           console.error(err)
         }
+      },
+      setCssVars () {
+        cssVars({
+          variables: this.cssTheme
+        })
       }
     },
     watch: {
       defaultCountryCode (newValue, oldValue) {
         if (newValue === oldValue) return
         this.setLocale(newValue)
+      },
+      dark () {
+        this.setCssVars()
       }
     }
   }
 </script>
-<style lang="scss">
-  @import 'style-helpers';
+<style lang="scss" scoped>
   @import './assets/iti-flags/flags.css';
-
-  $primary-color: var(--primary-color);
-  $primary-color-transparency: var(--primary-color-transparency);
-  $error-color-transparency: var(--error-color-transparency);
-  $second-color: var(--second-color);
-  $third-color: var(--third-color);
-  $muted-color: var(--muted-color);
-  $hover-color: var(--hover-color);
-  $bg-color: var(--bg-color);
-  $valid-color: var(--valid-color);
-  $valid-color-transparency: var(--valid-color-transparency);
-  $border-radius: var(--border-radius);
-  $error-color: orangered;
-  $disabled-color: #747474;
-
   .vue-phone-number-input {
-    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-
     .select-country-container {
       flex: 0 0 120px;
       width: 120px;
@@ -324,18 +317,6 @@
       width: 130px;
       min-width: 130px;
       max-width: 130px;
-    }
-
-    .input-phone-number.with-chooser input {
-      margin-left: -1px !important;
-      border-top-left-radius: 0 !important;
-      border-bottom-left-radius: 0 !important;
-    }
-
-    .input-phone-number:not(.is-dark):not(.is-disabled) {
-      input {
-        background-color: transparent !important;
-      }
     }
   }
 </style>

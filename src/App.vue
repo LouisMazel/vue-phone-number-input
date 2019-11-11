@@ -116,6 +116,8 @@
               :error="hasErrorActive"
               class="mb-2"
               clearable
+              color="tomato"
+              dark-color="#21222e"
               :border-radius="8"
               @update="onUpdate2"
             />
