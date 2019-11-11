@@ -230,6 +230,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import './assets/iti-flags/flags.css';
+
   $primary-color: var(--phone-number-primary-color);
   $second-color-light: var(--phone-number-second-color-light);
   $second-color-dark: var(--phone-number-second-color-dark);
@@ -439,6 +441,7 @@
           }
         }
       }
+
       .country-selector__input,
       .country-selector__list {
         color: $second-color-dark;
@@ -460,6 +463,7 @@
           color: $primary-color;
         }
       }
+
       &.is-valid {
         .country-selector__input {
           border-color: $valid-color;
@@ -528,7 +532,9 @@
 
         &__label,
         &__input,
-        &__toggle__arrow, &__country-flag, &__country-flag > div {
+        &__toggle__arrow,
+        &__country-flag,
+        &__country-flag > div {
           cursor: not-allowed;
           color: $disabled-color;
         }

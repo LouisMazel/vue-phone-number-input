@@ -296,7 +296,6 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import './assets/iti-flags/flags.css';
   .vue-phone-number-input {
     .select-country-container {
       flex: 0 0 120px;

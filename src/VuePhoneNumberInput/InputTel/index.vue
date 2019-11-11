@@ -479,7 +479,6 @@
 
       .input-tel__input {
         font-size: 16px;
-
         height: 48px;
         min-height: 48px;
       }
