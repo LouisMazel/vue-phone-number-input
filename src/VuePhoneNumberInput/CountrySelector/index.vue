@@ -246,19 +246,25 @@
 
 <style lang="scss" scoped>
   $primary-color: var(--phone-number-primary-color);
-  $primary-color-transparency: var(--phone-number-primary-color-transparency);
-  $error-color-transparency: var(--phone-number-error-color-transparency);
-  $second-color: var(--phone-number-second-color);
-  $third-color: var(--phone-number-third-color);
-  $muted-color: var(--phone-number-muted-color);
-  $hover-color: var(--phone-number-hover-color);
-  $bg-color: var(--phone-number-bg-color);
+  $second-color-light: var(--phone-number-second-color-light);
+  $second-color-dark: var(--phone-number-second-color-dark);
+  $third-color-light: var(--phone-number-third-color-light);
+  $third-color-dark: var(--phone-number-third-color-dark);
+  $muted-color-light: var(--phone-number-muted-color-light);
+  $muted-color-dark: var(--phone-number-muted-color-dark);
+  $hover-color-light: var(--phone-number-hover-color-light);
+  $hover-color-dark: var(--phone-number-hover-color-dark);
+  $bg-color-light: var(--phone-number-bg-color-light);
+  $bg-color-dark: var(--phone-number-bg-color-dark);
   $valid-color: var(--phone-number-valid-color);
+  $error-color: var(--phone-number-error-color);
+  $error-color-transparency: var(--phone-number-error-color-transparency);
+  $primary-color-transparency: var(--phone-number-primary-color-transparency);
   $valid-color-transparency: var(--phone-number-valid-color-transparency);
   $border-radius: var(--phone-number-border-radius);
-  $error-color: orangered;
   $disabled-color: #747474;
 
+  // Light Theme
   .country-selector {
     position: relative;
     height: 42px;
@@ -273,12 +279,12 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color;
+      color: $second-color-light;
     }
 
     &__input {
       cursor: pointer;
-      background-color: $bg-color;
+      background-color: $bg-color-light;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       position: relative;
       width: 100%;
@@ -288,37 +294,37 @@
       font-weight: 400;
       appearance: none;
       outline: none;
-      border: 1px solid $third-color;
+      border: 1px solid $third-color-light;
       border-radius: $border-radius;
       font-size: 13px;
       z-index: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       padding-left: 40px;
-      color: $second-color;
+      color: $second-color-light;
 
       &::-webkit-input-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &::-moz-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &:-ms-input-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &::-ms-input-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &:-moz-placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
 
       &::placeholder {
-        color: $second-color;
+        color: $second-color-light;
       }
     }
 
@@ -331,7 +337,7 @@
       display: inline-block;
 
       &__arrow {
-        color: $second-color;
+        color: $second-color-light;
         font-size: 15px;
         transform: scaleY(0.5);
       }
@@ -351,7 +357,7 @@
 
     &__list {
       border-radius: $border-radius;
-      background-color: $bg-color;
+      background-color: $bg-color-light;
       padding: 0;
       list-style: none;
       height: 210px;
@@ -381,7 +387,7 @@
 
         &:hover,
         &.keyboard-selected {
-          background-color: $hover-color;
+          background-color: $hover-color-light;
         }
 
         &.selected {
@@ -438,13 +444,68 @@
       }
     }
 
+    // Dark Theme
     &.is-dark:not(.is-disabled) {
+      .country-selector {
+        &__label {
+          color: $second-color-dark;
+        }
+
+        &__input {
+          cursor: pointer;
+          background-color: $bg-color-dark;
+          border: 1px solid $third-color-dark;
+          color: $second-color-dark;
+
+          &::-webkit-input-placeholder {
+            color: $second-color-dark;
+          }
+
+          &::-moz-placeholder {
+            color: $second-color-dark;
+          }
+
+          &:-ms-input-placeholder {
+            color: $second-color-dark;
+          }
+
+          &::-ms-input-placeholder {
+            color: $second-color-dark;
+          }
+
+          &:-moz-placeholder {
+            color: $second-color-dark;
+          }
+
+          &::placeholder {
+            color: $second-color-dark;
+          }
+        }
+
+        &__toggle {
+          &__arrow {
+            color: $second-color-dark;
+          }
+        }
+
+        &__list {
+          background-color: $bg-color-dark;
+
+          &__item {
+            &:hover,
+            &.keyboard-selected {
+              background-color: $hover-color-dark;
+            }
+          }
+        }
+      }
       .country-selector__input,
       .country-selector__list {
-        color: $second-color;
+        color: $second-color-dark;
       }
     }
 
+    // Disable theme
     &.is-disabled {
       .country-selector {
         cursor: not-allowed;

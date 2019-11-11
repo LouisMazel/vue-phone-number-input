@@ -116,6 +116,7 @@
               :error="hasErrorActive"
               class="mb-2"
               clearable
+              color="purple"
               :border-radius="8"
               @update="onUpdate2"
             />

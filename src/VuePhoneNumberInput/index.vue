@@ -1,7 +1,6 @@
 <template>
   <div
     :id="uniqueId"
-    :style="[cssTheme]"
     :class="[{ 'dark': dark }, size]"
     class="vue-phone-number-input flex"
   >
@@ -190,7 +189,8 @@
             darkColor,
             validColor,
             borderRadius,
-            lightColor: '#FFFFFF'
+            lightColor: '#FFFFFF',
+            errorColor: 'orangered'
           }
         )
       }
@@ -299,20 +299,6 @@
   }
 </script>
 <style lang="scss">
-  $primary-color: var(--phone-number-primary-color);
-  $primary-color-transparency: var(--phone-number-primary-color-transparency);
-  $error-color-transparency: var(--phone-number-error-color-transparency);
-  $second-color: var(--phone-number-second-color);
-  $third-color: var(--phone-number-third-color);
-  $muted-color: var(--phone-number-muted-color);
-  $hover-color: var(--phone-number-hover-color);
-  $bg-color: var(--phone-number-bg-color);
-  $valid-color: var(--phone-number-valid-color);
-  $valid-color-transparency: var(--phone-number-valid-color-transparency);
-  $border-radius: var(--phone-number-border-radius);
-  $error-color: orangered;
-  $disabled-color: #747474;
-
   .vue-phone-number-input {
     @import 'style-helpers';
     @import './assets/iti-flags/flags.css';
