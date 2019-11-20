@@ -60,7 +60,6 @@
   </div>
 </template>
 <script>
-  import 'style-helpers'
   /* eslint-disable */
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
@@ -296,6 +295,8 @@
   }
 </script>
 <style lang="scss" scoped>
+  @import 'style-helpers';
+
   .vue-phone-number-input {
     .select-country-container {
       flex: 0 0 120px;

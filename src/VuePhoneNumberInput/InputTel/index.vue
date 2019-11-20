@@ -137,6 +137,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import 'style-helpers';
+
   $primary-color: var(--phone-number-primary-color);
   $second-color-light: var(--phone-number-second-color-light);
   $second-color-dark: var(--phone-number-second-color-dark);

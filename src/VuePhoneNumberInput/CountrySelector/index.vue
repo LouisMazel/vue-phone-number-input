@@ -230,6 +230,7 @@
 </script>
 
 <style lang="scss" scoped>
+  @import 'style-helpers';
   @import './assets/iti-flags/flags.css';
 
   $primary-color: var(--phone-number-primary-color);
