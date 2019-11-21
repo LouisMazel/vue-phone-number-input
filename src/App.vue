@@ -119,6 +119,7 @@
               color="tomato"
               dark-color="#21222e"
               :border-radius="8"
+              show-calling-code-on-list
               @update="onUpdate2"
             />
             <b>v-model</b> : {{ phoneNumber2 }}
