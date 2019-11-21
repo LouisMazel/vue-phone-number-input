@@ -1,5 +1,13 @@
 # vue-phone-number-input
 
+[![license](https://img.shields.io/github/license/LouisMazel/vue-phone-number-input.svg?style=flat-square)](https://github.com/LouisMazel/vue-phone-number-input/blob/master/LICENSE)
+[![vue 2](https://img.shields.io/badge/vue-2-42b983.svg?style=flat-square)](https://vuejs.org)
+[![npm](https://img.shields.io/npm/v/vue-phone-number-input.svg?style=flat-square)](https://www.npmjs.com/package/vue-phone-number-input)
+[![npm](https://img.shields.io/npm/dt/vue-phone-number-input.svg?style=flat-square)](https://www.npmjs.com/package/vue-phone-number-input)
+[![Codacy grade](https://img.shields.io/codacy/grade/3d15a7c11bfe47c69a2aed93cc67cc29.svg?style=flat-square)](https://www.codacy.com/app/LouisMazel/vue-phone-number-input)
+
+[![npm](https://nodei.co/npm/vue-phone-number-input.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/vue-phone-number-input)
+
 > A beautiful text field to format phone numbers made with VueJS
 
 ![vue-phone-number-input](./public/vue-phone-number-input-demo.gif)
