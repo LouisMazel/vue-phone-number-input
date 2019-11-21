@@ -290,7 +290,6 @@
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       padding-left: 40px;
-      color: $second-color-light;
 
       &::-webkit-input-placeholder {
         color: $second-color-light;
@@ -467,19 +466,28 @@
 
       &.is-valid {
         .country-selector__input {
-          border-color: $valid-color;
           box-shadow: 0 0 0 0.2rem $valid-color-transparency;
         }
       }
     }
 
-    &.has-error {
+    &.has-error:not(.is-valid) {
       .country-selector__input {
         border-color: $error-color;
       }
 
       .country-selector__label {
         color: $error-color;
+      }
+    }
+
+    &.is-valid {
+      .country-selector__input {
+        border-color: $valid-color;
+      }
+
+      .country-selector__label {
+        color: $valid-color;
       }
     }
 
