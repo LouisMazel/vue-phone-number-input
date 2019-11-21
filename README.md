@@ -97,6 +97,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | fetch-country (7) | Boolean    | no       | false      |
 | no-country-selector (8) | Boolean    | no       | false      |
 | border-radius                   | Number           | no       | 4 |
+| show-code-on-list          | Boolean    | no       | false      |
 
 (1) Ex : `default-country-code="FR"`
 
