@@ -56,6 +56,7 @@
         v-show="isFocus"
         ref="countriesList"
         class="country-selector__list"
+        :class="{ 'has-calling-code': showCallingCodeOnList }"
       >
         <div
           v-for="item in countriesSorted"
@@ -74,6 +75,10 @@
           >
             <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
           </div>
+          <span
+            v-if="showCallingCodeOnList"
+            class="country-selector__list__item__calling-code flex-fixed"
+          >+{{ item.dialCode }}</span>
           <div class="dots-text">
             {{ item.name }}
           </div>
@@ -109,7 +114,8 @@
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array },
-      noFlags: { type: Boolean, default: false }
+      noFlags: { type: Boolean, default: false },
+      showCallingCodeOnList: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -361,6 +367,10 @@
       min-width: 230px;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 
+      &.has-calling-code {
+        min-width: 270px;
+      }
+
       &__item {
         padding: 0 10px;
         text-overflow: ellipsis;
@@ -373,6 +383,11 @@
           margin-right: 10px;
         }
 
+        &__calling-code {
+          width: 45px;
+          color: var(--phone-number-muted-color-light);
+        }
+
         &:hover,
         &.keyboard-selected {
           background-color: $hover-color-light;
@@ -382,6 +397,10 @@
           color: #FFF;
           background-color: $primary-color;
           font-weight: 600;
+
+          .country-selector__list__item__calling-code {
+            color: #FFF;
+          }
         }
       }
     }
@@ -437,6 +456,10 @@
             &:hover,
             &.keyboard-selected {
               background-color: $hover-color-dark;
+            }
+
+            &__calling-code {
+              color: var(--phone-number-muted-color-dark);
             }
           }
         }
