@@ -203,7 +203,6 @@
         if (this.defaultCountryCode && this.noUseBrowserLocale)
           throw new Error(`VuePhoneNumberInput: If you use a 'default-country-code', do not use 'no-use-browser-locale' options`)
         if (this.defaultCountryCode) return
-
         this.fetchCountry
           ? this.fetchCountryCode()
           : !this.noUseBrowserLocale

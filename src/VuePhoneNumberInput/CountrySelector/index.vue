@@ -280,12 +280,11 @@
     &__input {
       cursor: pointer;
       background-color: $bg-color-light;
-      transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       position: relative;
       width: 100%;
       height: 42px;
       min-height: 42px;
-      padding-right: 18px;
+      padding-right: 22px;
       font-weight: 400;
       appearance: none;
       outline: none;
@@ -295,7 +294,7 @@
       z-index: 0;
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
-      padding-left: 40px;
+      padding-left: 8px;
 
       &::-webkit-input-placeholder {
         color: $second-color-light;
@@ -511,6 +510,12 @@
 
       .country-selector__label {
         color: $valid-color;
+      }
+    }
+
+    &.has-value {
+      .country-selector__input {
+        padding-left: 40px;
       }
     }
 
