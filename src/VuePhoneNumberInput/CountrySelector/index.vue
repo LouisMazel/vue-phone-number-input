@@ -56,7 +56,7 @@
         v-show="isFocus"
         ref="countriesList"
         class="country-selector__list"
-        :class="{ 'has-calling-code': showCallingCodeOnList }"
+        :class="{ 'has-calling-code': showCodeOnList }"
       >
         <div
           v-for="item in countriesSorted"
@@ -76,7 +76,7 @@
             <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
           </div>
           <span
-            v-if="showCallingCodeOnList"
+            v-if="showCodeOnList"
             class="country-selector__list__item__calling-code flex-fixed"
           >+{{ item.dialCode }}</span>
           <div class="dots-text">
@@ -115,7 +115,7 @@
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array },
       noFlags: { type: Boolean, default: false },
-      showCallingCodeOnList: { type: Boolean, default: false }
+      showCodeOnList: { type: Boolean, default: false }
     },
     data () {
       return {
