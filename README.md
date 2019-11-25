@@ -106,6 +106,7 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 | no-country-selector (8) | Boolean    | no       | false      |
 | border-radius                   | Number           | no       | 4 |
 | show-code-on-list          | Boolean    | no       | false      |
+| no-example          | Boolean    | no       | false      |
 
 (1) Ex : `default-country-code="FR"`
 
