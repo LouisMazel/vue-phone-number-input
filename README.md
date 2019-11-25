@@ -79,34 +79,34 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 
 ## Props API
 
-| Props      | Type       | Required | Default    |
-|------------|------------|----------|------------|
-| v-model    | String/Int | true     | -          |
-| id      | String     | false    | VuePhoneNumberInput |
-| color | String `HEX`   | no       | dogderblue      |
-| valid-color | String `HEX`   | no       | yellowgreen      |
-| size | String `sm|lg`   | no       | null      |
-| default-country-code (1) | String    | no       | null      |
-| preferred-countries (2) | Array`<string>`    | no       | null      |
-| ignored-countries | Array`<string>`    | no       | null      |
-| only-countries | Array`<string>`    | no       | null      |
-| no-validator-state | Boolean    | no       | false      |
-| no-flags | Boolean    | no       | false      |
-| disabled | Boolean    | no       | false      |
-| dark | Boolean    | no       | false      |
-| dark-color                   | String (hex)      | no       | #424242  |
-| required | Boolean    | no       | false      |
-| error | Boolean    | no       | false      |
-| clearable | Boolean    | no       | false      |
-| loader (3) | Boolean    | no       | false      |
-| translations (4) | Object    | no       | null      |
-| countries-height (5) | Number    | no       | 30      |
-| no-use-browser-locale (6) | Boolean    | no       | false      |
-| fetch-country (7) | Boolean    | no       | false      |
-| no-country-selector (8) | Boolean    | no       | false      |
-| border-radius                   | Number           | no       | 4 |
-| show-code-on-list          | Boolean    | no       | false      |
-| no-example          | Boolean    | no       | false      |
+| Props                     | Type            | Required | Default             |
+|---------------------------|-----------------|----------|---------------------|
+| v-model                   | String/Int      | true     | -                   |
+| id                        | String          | false    | VuePhoneNumberInput |
+| color                     | String `HEX`    | no       | dogderblue          |
+| valid-color               | String `HEX`    | no       | yellowgreen         |
+| size                      | String `sm|lg`  | no       | null                |
+| default-country-code (1)  | String          | no       | null                |
+| preferred-countries (2)   | Array`<string>` | no       | null                |
+| ignored-countries         | Array`<string>` | no       | null                |
+| only-countries            | Array`<string>` | no       | null                |
+| no-validator-state        | Boolean         | no       | false               |
+| no-flags                  | Boolean         | no       | false               |
+| disabled                  | Boolean         | no       | false               |
+| dark                      | Boolean         | no       | false               |
+| dark-color                | String (hex)    | no       | #424242             |
+| required                  | Boolean         | no       | false               |
+| error                     | Boolean         | no       | false               |
+| clearable                 | Boolean         | no       | false               |
+| loader (3)                | Boolean         | no       | false               |
+| translations (4)          | Object          | no       | null                |
+| countries-height (5)      | Number          | no       | 30                  |
+| no-use-browser-locale (6) | Boolean         | no       | false               |
+| fetch-country (7)         | Boolean         | no       | false               |
+| no-country-selector (8)   | Boolean         | no       | false               |
+| border-radius             | Number          | no       | 4                   |
+| show-code-on-list         | Boolean         | no       | false               |
+| no-example                | Boolean         | no       | false               |
 
 (1) Ex : `default-country-code="FR"`
 
@@ -136,27 +136,27 @@ countries-height: 40
 
 ## Events API
 
-| Event      | Return       |
-|------------|------------|
-| phone-number-focused    | `-` (emit when phone number input is focused) |
-| phone-number-blur    | `-` (emit when phone number input is blur) |
-| input    | [AsYouType value](https://github.com/catamphetamine/libphonenumber-js#as-you-type-formatter) (emit when new value is enter on phone number input && when a country is choosed) |
-| update    | All values (cf values in table on [demo](https://louismazel.github.io/vue-phone-number-input/)) (emit when new value is enter on phone number input && when a country is choosed) |
+| Event                | Return                                                                                                                                                                            |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| phone-number-focused | `-` (emit when phone number input is focused)                                                                                                                                     |
+| phone-number-blur    | `-` (emit when phone number input is blur)                                                                                                                                        |
+| input                | [AsYouType value](https://github.com/catamphetamine/libphonenumber-js#as-you-type-formatter) (emit when new value is enter on phone number input && when a country is choosed)    |
+| update               | All values (cf values in table on [demo](https://louismazel.github.io/vue-phone-number-input/)) (emit when new value is enter on phone number input && when a country is choosed) |
 
 ## Keyboard accessibility
 
-| Props      | Action       |
-|------------|------------|
-| ArrowDown    | Navigation down in countries list |
-| ArrowUp    | Navigation up in countries list |
-| Escape    | Close countries list |
-| All letters characters    | Searching country name in countries list (should be open) |
+| Props                  | Action                                                    |
+|------------------------|-----------------------------------------------------------|
+| ArrowDown              | Navigation down in countries list                         |
+| ArrowUp                | Navigation up in countries list                           |
+| Escape                 | Close countries list                                      |
+| All letters characters | Searching country name in countries list (should be open) |
 
 ## Named slots
 
-| Slot       | Action       |
-|------------|------------|
-| arrow    | Override the default arrow character for toggling the list of countries |
+| Slot  | Action                                                                  |
+|-------|-------------------------------------------------------------------------|
+| arrow | Override the default arrow character for toggling the list of countries |
 
 ## Contribution
 
