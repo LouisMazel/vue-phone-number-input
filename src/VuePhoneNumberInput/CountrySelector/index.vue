@@ -13,7 +13,7 @@
       'is-valid': valid
     }, size]"
     class="country-selector"
-    @click="onFocus"
+    @click.prevent="onFocus"
     @keydown="keyboardNav"
   >
     <div
@@ -30,7 +30,6 @@
       :disabled="disabled"
       class="country-selector__input"
       readonly
-      @focus="onFocus"
       @click="$emit('click')"
     >
     <div
@@ -47,7 +46,6 @@
       :for="id"
       :class="error ? 'text-danger' : null"
       class="country-selector__label"
-      @click="onFocus"
     >
       {{ hint || label }}
     </label>
@@ -169,8 +167,8 @@
       onFocus () {
         if (!this.disabled) {
           this.$emit('focus')
-          this.isFocus = true
-          if (this.value) {
+          this.isFocus = !this.isFocus
+          if (this.value && this.isFocus) {
             this.scrollToSelectedOnFocus(this.selectedCountryIndex)
           }
         }
@@ -265,6 +263,7 @@
     position: relative;
     height: 42px;
     min-height: 42px;
+    z-index: 0;
 
     &__label {
       position: absolute;
