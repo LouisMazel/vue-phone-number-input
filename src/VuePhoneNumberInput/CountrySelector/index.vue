@@ -107,6 +107,7 @@
       disabled: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
       validColor: { type: String, default: 'yellowgreen' },
+      errorColor: { type: String, default: 'orangered' },
       color: { type: String, default: String },
       dark: { type: Boolean, default: false },
       id: { type: String, default: 'CountrySelector' },
