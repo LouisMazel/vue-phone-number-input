@@ -17,6 +17,7 @@
         :color="color"
         :countries-height="countriesHeight"
         :valid-color="validColor"
+        :error-color="errorColor"
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
         :dark="dark"
@@ -95,6 +96,7 @@
       id: { type: String, default: 'VuePhoneNumberInput' },
       color: { type: String, default: 'dodgerblue' },
       validColor: { type: String, default: 'yellowgreen' },
+      errorColor: { type: String, default: 'orangered' },
       dark: { type: Boolean, default: Boolean },
       darkColor: { type: String, default: '#424242' },
       disabled: { type: Boolean, default: Boolean },
@@ -179,7 +181,7 @@
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       },
       cssTheme () {
-        const { dark, color, darkColor, validColor, borderRadius } = this
+        const { dark, color, darkColor, validColor, errorColor, borderRadius } = this
         return getTheme(
           {
             dark,
@@ -188,7 +190,7 @@
             validColor,
             borderRadius,
             lightColor: '#FFFFFF',
-            errorColor: 'orangered'
+            errorColor
           }
         )
       }
