@@ -140,15 +140,15 @@
   @import 'style-helpers';
 
   $primary-color: var(--phone-number-primary-color);
-  $second-color-light: var(--phone-number-second-color-light);
+  $second-color: var(--phone-number-second-color);
   $second-color-dark: var(--phone-number-second-color-dark);
-  $third-color-light: var(--phone-number-third-color-light);
+  $third-color: var(--phone-number-third-color);
   $third-color-dark: var(--phone-number-third-color-dark);
-  $muted-color-light: var(--phone-number-muted-color-light);
+  $muted-color: var(--phone-number-muted-color);
   $muted-color-dark: var(--phone-number-muted-color-dark);
-  $hover-color-light: var(--phone-number-hover-color-light);
+  $hover-color: var(--phone-number-hover-color);
   $hover-color-dark: var(--phone-number-hover-color-dark);
-  $bg-color-light: var(--phone-number-bg-color-light);
+  $bg-color: var(--phone-number-bg-color);
   $bg-color-dark: var(--phone-number-bg-color-dark);
   $valid-color: var(--phone-number-valid-color);
   $error-color: var(--phone-number-error-color);
@@ -163,6 +163,7 @@
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     height: 42px;
     min-height: 42px;
+    z-index: 0;
 
     &__label {
       position: absolute;
@@ -173,12 +174,12 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color-light;
+      color: $second-color;
     }
 
     &__input {
       cursor: pointer;
-      background-color: $bg-color-light;
+      background-color: $bg-color;
       transition-duration: 0.3s;
       position: relative;
       width: 100%;
@@ -186,7 +187,7 @@
       font-weight: 400;
       appearance: none;
       outline: none;
-      border: 1px solid $third-color-light;
+      border: 1px solid $third-color;
       border-radius: $border-radius;
       font-size: 14px;
       z-index: 0;
@@ -201,35 +202,35 @@
       }
 
       &::-webkit-input-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &::-moz-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &:-ms-input-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &::-ms-input-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &:-moz-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &::placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &__input:-webkit-autofill,
       &__input:-webkit-autofill:hover,
       &__input:-webkit-autofill:focus,
       &__input:-webkit-autofill:active {
-        box-shadow: 0 0 0 1000px $bg-color-light inset !important;
-        -webkit-text-fill-color: $second-color-light !important;
+        box-shadow: 0 0 0 1000px $bg-color inset !important;
+        -webkit-text-fill-color: $second-color !important;
       }
     }
 
@@ -246,7 +247,7 @@
       appearance: none;
       border: none;
       background: transparent;
-      color: $second-color-light;
+      color: $second-color;
       border-radius: $clear-size;
       cursor: pointer;
       font-size: 12px;
@@ -268,7 +269,7 @@
         bottom: 0;
         width: $clear-size;
         height: $clear-size;
-        background-color: $muted-color-light;
+        background-color: $muted-color;
         border-radius: $clear-size;
         transform: scale(0);
         transition: transform 200ms;
@@ -343,6 +344,8 @@
     }
 
     &.is-focused {
+      z-index: 1;
+
       .input-tel {
         &__input {
           border-color: $primary-color;

@@ -1,9 +1,10 @@
 <template>
   <div
     ref="parent"
-    v-click-outside="onBlur"
+    v-click-outside="closeList"
     :class="[{
       'is-focused': isFocus,
+      'has-list-open': hasListOpen,
       'has-value': value,
       'has-hint': hint,
       'has-error': error,
@@ -13,7 +14,7 @@
       'is-valid': valid
     }, size]"
     class="country-selector"
-    @click.prevent="onFocus"
+    @click.prevent="toggleList"
     @keydown="keyboardNav"
   >
     <div
@@ -30,15 +31,29 @@
       :disabled="disabled"
       class="country-selector__input"
       readonly
-      @click="$emit('click')"
+      @focus="isFocus = true"
+      @blur="isFocus = false"
     >
     <div
       class="country-selector__toggle"
     >
       <slot name="arrow">
-        <div class="country-selector__toggle__arrow">
-          ▼
-        </div>
+        <svg
+          mlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          class="country-selector__toggle__arrow"
+        >
+          <path
+            class="arrow"
+            d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
+          />
+          <path
+            fill="none"
+            d="M0 0h24v24H0V0z"
+          />
+        </svg>
       </slot>
     </div>
     <label
@@ -51,7 +66,7 @@
     </label>
     <Transition name="slide">
       <div
-        v-show="isFocus"
+        v-show="hasListOpen"
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
@@ -99,26 +114,24 @@
       countriesHeight: { type: Number, default: 30},
       value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
-      hint: { type: String, default: String },
-      size: { type: String, default: String },
-      error: { type: Boolean, default: Boolean },
+      hint: { type: String, default: null },
+      size: { type: String, default: null },
+      error: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
-      validColor: { type: String, default: 'yellowgreen' },
-      errorColor: { type: String, default: 'orangered' },
-      color: { type: String, default: String },
       dark: { type: Boolean, default: false },
       id: { type: String, default: 'CountrySelector' },
-      items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
-      ignoredCountries: { type: Array, default: Array },
+      items: { type: Array, required: true },
+      ignoredCountries: { type: Array, default: null },
       noFlags: { type: Boolean, default: false },
       showCodeOnList: { type: Boolean, default: false }
     },
     data () {
       return {
         isFocus: false,
+        hasListOpen: false,
         selectedIndex: null,
         tmpValue: this.value,
         query: ''
@@ -161,24 +174,33 @@
       }
     },
     mounted () {
-      this.$parent.$on('phone-number-focused', () => { this.isFocus = false })
+      this.$parent.$on('phone-number-focused', this.closeList)
     },
     methods: {
-      onFocus () {
+      toggleList () {
+        this.hasListOpen ? this.closeList() : this.openList()
+      },
+      openList () {
         if (!this.disabled) {
           this.$emit('focus')
-          this.isFocus = !this.isFocus
-          if (this.value && this.isFocus) {
+          this.isFocus = true
+          if (this.value) {
             this.scrollToSelectedOnFocus(this.selectedCountryIndex)
           }
+          this.hasListOpen = true
+          this.$emit('focus')
+          if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedCountryIndex)
         }
       },
-      onBlur () {
-        this.$emit('blur')
-        this.isFocus = false
+      closeList () {
+        if (this.hasListOpen) {
+          this.isFocus = false
+          this.hasListOpen = false
+          this.$emit('blur')
+        }
       },
       updateValue (iso2) {
-        this.isFocus = false
+        this.closeList()
         this.tmpValue = iso2
         this.$emit('input', iso2)
       },
@@ -190,11 +212,12 @@
       keyboardNav (e) {
         const code = e.keyCode
         if (code === 40 || code === 38) {
+          // arrow up down
           if (e.view && e.view.event) {
             // TODO : It's not compatible with FireFox
             e.view.event.preventDefault()
           }
-          // down arrow
+          if (!this.hasListOpen) this.openList()
           let index = code === 40 ? this.tmpValueIndex + 1 : this.tmpValueIndex - 1
           if (index === -1 || index >= this.countriesSorted.length) {
             index = index === -1
@@ -205,9 +228,10 @@
           this.scrollToSelectedOnFocus(index)
         } else if (code === 13) {
           // enter key
-          this.updateValue(this.tmpValue)
+          this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
         } else if (code === 27) {
-          this.onBlur()
+          // escapt
+          this.closeList()
         } else {
           // typing a country's name
           clearTimeout(this.queryTimer)
@@ -239,15 +263,15 @@
   @import './assets/iti-flags/flags.css';
 
   $primary-color: var(--phone-number-primary-color);
-  $second-color-light: var(--phone-number-second-color-light);
+  $second-color: var(--phone-number-second-color);
   $second-color-dark: var(--phone-number-second-color-dark);
-  $third-color-light: var(--phone-number-third-color-light);
+  $third-color: var(--phone-number-third-color);
   $third-color-dark: var(--phone-number-third-color-dark);
-  $muted-color-light: var(--phone-number-muted-color-light);
+  $muted-color: var(--phone-number-muted-color);
   $muted-color-dark: var(--phone-number-muted-color-dark);
-  $hover-color-light: var(--phone-number-hover-color-light);
+  $hover-color: var(--phone-number-hover-color);
   $hover-color-dark: var(--phone-number-hover-color-dark);
-  $bg-color-light: var(--phone-number-bg-color-light);
+  $bg-color: var(--phone-number-bg-color);
   $bg-color-dark: var(--phone-number-bg-color-dark);
   $valid-color: var(--phone-number-valid-color);
   $error-color: var(--phone-number-error-color);
@@ -274,12 +298,14 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color-light;
+      color: $second-color;
+      z-index: 0;
+      user-select: none;
     }
 
     &__input {
       cursor: pointer;
-      background-color: $bg-color-light;
+      background-color: $bg-color;
       position: relative;
       width: 100%;
       height: 42px;
@@ -288,7 +314,7 @@
       font-weight: 400;
       appearance: none;
       outline: none;
-      border: 1px solid $third-color-light;
+      border: 1px solid $third-color;
       border-radius: $border-radius;
       font-size: 13px;
       z-index: 0;
@@ -297,43 +323,46 @@
       padding-left: 8px;
 
       &::-webkit-input-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &::-moz-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &:-ms-input-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &::-ms-input-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &:-moz-placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
 
       &::placeholder {
-        color: $second-color-light;
+        color: $second-color;
       }
     }
 
     &__toggle {
       position: absolute;
-      right: 10px;
-      top: calc(50% - 8px);
+      right: 5px;
+      top: calc(50% - 10px);
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       text-align: center;
       display: inline-block;
       cursor: pointer;
+      height: 24px;
 
       &__arrow {
-        color: $second-color-light;
-        font-size: 15px;
-        transform: scaleY(0.5);
+        color: $second-color;
+
+        path.arrow {
+          fill: $second-color;
+        }
       }
     }
 
@@ -343,6 +372,7 @@
       top: 21px;
       left: 11px;
       z-index: 1;
+      cursor: pointer;
 
       img {
         position: absolute;
@@ -351,7 +381,7 @@
 
     &__list {
       border-radius: $border-radius;
-      background-color: $bg-color-light;
+      background-color: $bg-color;
       padding: 0;
       list-style: none;
       height: 210px;
@@ -385,12 +415,12 @@
 
         &__calling-code {
           width: 45px;
-          color: var(--phone-number-muted-color-light);
+          color: var(--phone-number-muted-color);
         }
 
         &:hover,
         &.keyboard-selected {
-          background-color: $hover-color-light;
+          background-color: $hover-color;
         }
 
         &.selected {
@@ -446,6 +476,10 @@
         &__toggle {
           &__arrow {
             color: $second-color-dark;
+
+            path.arrow {
+              fill: $second-color-dark;
+            }
           }
         }
 
@@ -471,12 +505,18 @@
       }
     }
 
-    &.is-focused {
+    &.has-list-open {
       .country-selector {
         &__toggle {
           transform: rotate(180deg);
         }
+      }
+    }
 
+    &.is-focused {
+      z-index: 1;
+
+      .country-selector {
         &__input {
           border-color: $primary-color;
           box-shadow: 0 0 0 0.2rem $primary-color-transparency;

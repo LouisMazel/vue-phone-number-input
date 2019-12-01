@@ -14,10 +14,7 @@
         ref="CountrySelector"
         v-model="countryCode"
         :items="codesCountries"
-        :color="color"
         :countries-height="countriesHeight"
-        :valid-color="validColor"
-        :error-color="errorColor"
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
         :dark="dark"
@@ -70,7 +67,7 @@
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
   import cssVars from 'css-vars-ponyfill'
-  
+
   import getTheme from './themes'
 
   const browserLocale = () => {
@@ -97,15 +94,15 @@
       color: { type: String, default: 'dodgerblue' },
       validColor: { type: String, default: 'yellowgreen' },
       errorColor: { type: String, default: 'orangered' },
-      dark: { type: Boolean, default: Boolean },
+      dark: { type: Boolean, default: false },
       darkColor: { type: String, default: '#424242' },
-      disabled: { type: Boolean, default: Boolean },
+      disabled: { type: Boolean, default: false },
       defaultCountryCode: { type: String, default: null },
       size: { type: String, default: null },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: Array },
-      translations: { type: Object, default: Object },
+      translations: { type: Object, default: null },
       noValidatorState: { type: Boolean, default: false },
       noFlags: { type: Boolean, default: false },
       error: { type: Boolean, default: false },
@@ -229,7 +226,7 @@
             : null
           ),
           ...(parsing
-            ? { 
+            ? {
               countryCallingCode: parsing.countryCallingCode,
               formattedNumber: parsing.number,
               nationalNumber: parsing.nationalNumber,
@@ -253,7 +250,7 @@
           if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
             asYouType = this.phoneNumber.slice(0, -2)
             payload.phoneNumber = this.phoneNumber.slice(0, -2)
-          }  
+          }
 
           this.results = this.getParsePhoneNumberFromString(payload)
           this.$emit('update', this.results)
