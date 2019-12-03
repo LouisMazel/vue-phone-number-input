@@ -289,6 +289,14 @@
     min-height: 42px;
     z-index: 0;
 
+    &:hover {
+      z-index: 1;
+
+      .country-selector__input {
+        border-color: $primary-color !important;
+      }
+    }
+
     &__label {
       position: absolute;
       top: 3px;
