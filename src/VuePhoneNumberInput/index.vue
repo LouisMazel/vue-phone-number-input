@@ -253,8 +253,9 @@
           }
 
           this.results = this.getParsePhoneNumberFromString(payload)
+          console.log('results', this.results)
           this.$emit('update', this.results)
-          this.$emit('input', asYouType)
+          this.$emit('input', this.results.isValid ? this.results.e164 : asYouType)
         })
       },
       setLocale (locale) {
