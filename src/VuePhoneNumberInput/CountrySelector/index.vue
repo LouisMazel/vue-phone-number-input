@@ -1,21 +1,19 @@
 <template>
   <div
     ref="parent"
-    v-click-outside="closeList"
     :class="[{
       'is-focused': isFocus,
-      'has-list-open': hasListOpen,
       'has-value': value,
       'has-hint': hint,
       'has-error': error,
       'is-disabled': disabled,
       'is-dark': dark,
       'no-flags': noFlags,
+      'has-list-open': hasListOpen,
       'is-valid': valid
     }, size]"
     class="country-selector"
-    @click.prevent="toggleList"
-    @keydown="keyboardNav"
+    @blur.capture="handleBlur"
   >
     <div
       v-if="value && !noFlags"
@@ -32,10 +30,12 @@
       class="country-selector__input"
       readonly
       @focus="isFocus = true"
-      @blur="isFocus = false"
+      @keydown="keyboardNav"
+      @click.stop="toggleList"
     >
     <div
       class="country-selector__toggle"
+      @click.stop="toggleList"
     >
       <slot name="arrow">
         <svg
@@ -102,28 +102,24 @@
 </template>
 
 <script>
-  import { directive } from 'v-click-outside'
   import { getCountryCallingCode } from 'libphonenumber-js'
 
   export default {
     name: 'CountrySelector',
-    directives: {
-      clickOutside: directive
-    },
     props: {
-      countriesHeight: { type: Number, default: 30},
+      countriesHeight: { type: Number, default: 35 },
       value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
-      hint: { type: String, default: null },
-      size: { type: String, default: null },
+      hint: { type: String, default: String },
+      size: { type: String, default: String },
       error: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
       id: { type: String, default: 'CountrySelector' },
+      items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
-      items: { type: Array, required: true },
       ignoredCountries: { type: Array, default: null },
       noFlags: { type: Boolean, default: false },
       showCodeOnList: { type: Boolean, default: false }
@@ -161,7 +157,7 @@
             ? this.countriesFiltered
             : this.countriesList
       },
-      selectedCountryIndex () {
+      selectedValueIndex () {
         return this.value
           ? this.countriesSorted.findIndex(c => c.iso2 === this.value)
           : null
@@ -177,37 +173,47 @@
       this.$parent.$on('phone-number-focused', this.closeList)
     },
     methods: {
+      handleBlur (e) {
+        window.console.log('e.relatedTarget', e.relatedTarget)
+        if (this.$el.contains(e.relatedTarget)) return
+        this.isFocus = false
+        this.closeList()
+      },
       toggleList () {
         this.hasListOpen ? this.closeList() : this.openList()
       },
       openList () {
         if (!this.disabled) {
-          this.$emit('focus')
+          this.$emit('open')
           this.isFocus = true
-          if (this.value) {
-            this.scrollToSelectedOnFocus(this.selectedCountryIndex)
-          }
           this.hasListOpen = true
-          this.$emit('focus')
-          if (this.value && this.hasListOpen) this.scrollToSelectedOnFocus(this.selectedCountryIndex)
+          this.selectFirstValue()
+          if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
         }
       },
       closeList () {
-        if (this.hasListOpen) {
-          this.isFocus = false
-          this.hasListOpen = false
-          this.$emit('blur')
-        }
+        this.$emit('close')
+        this.hasListOpen = false
       },
-      updateValue (iso2) {
+      async reset () {
         this.closeList()
-        this.tmpValue = iso2
-        this.$emit('input', iso2)
+        await this.$nextTick()
+        this.$refs.CountrySelector.focus()
+      },
+      async updateValue (val) {
+        this.tmpValue = val
+        this.$emit('input', val || null)
+        await this.$nextTick()
+        this.reset()
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
           this.$refs.countriesList.scrollTop = arrayIndex * this.countriesHeight - (this.countriesHeight * 3)
         })
+      },
+      selectFirstValue () {
+        if (this.value) return
+        this.$emit('input', this.countriesSorted[0].iso2)
       },
       keyboardNav (e) {
         const code = e.keyCode
@@ -227,10 +233,10 @@
           this.tmpValue = this.countriesSorted[index].iso2
           this.scrollToSelectedOnFocus(index)
         } else if (code === 13) {
-          // enter key
+          // enter
           this.hasListOpen ? this.updateValue(this.tmpValue) : this.openList()
         } else if (code === 27) {
-          // escapt
+          // escape
           this.closeList()
         } else {
           // typing a country's name
@@ -240,7 +246,7 @@
           }, 1000)
           const q = String.fromCharCode(code)
           if (code === 8 && this.query !== '') {
-            this.query = this.query.substring(0, this.query.length-1)
+            this.query = this.query.substring(0, this.query.length - 1)
           } else if (/[a-zA-Z-e ]/.test(q)) {
             this.query += e.key
             const countries = this.preferredCountries ? this.countriesSorted.slice(this.preferredCountries.length) : this.countriesSorted
@@ -259,35 +265,18 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/assets/scss/variables.scss';
   @import 'style-helpers';
   @import './assets/iti-flags/flags.css';
-
-  $primary-color: var(--phone-number-primary-color);
-  $second-color: var(--phone-number-second-color);
-  $second-color-dark: var(--phone-number-second-color-dark);
-  $third-color: var(--phone-number-third-color);
-  $third-color-dark: var(--phone-number-third-color-dark);
-  $muted-color: var(--phone-number-muted-color);
-  $muted-color-dark: var(--phone-number-muted-color-dark);
-  $hover-color: var(--phone-number-hover-color);
-  $hover-color-dark: var(--phone-number-hover-color-dark);
-  $bg-color: var(--phone-number-bg-color);
-  $bg-color-dark: var(--phone-number-bg-color-dark);
-  $valid-color: var(--phone-number-valid-color);
-  $error-color: var(--phone-number-error-color);
-  $error-color-transparency: var(--phone-number-error-color-transparency);
-  $primary-color-transparency: var(--phone-number-primary-color-transparency);
-  $valid-color-transparency: var(--phone-number-valid-color-transparency);
-  $border-radius: var(--phone-number-border-radius);
-  $disabled-color: #747474;
 
   // Light Theme
   .country-selector {
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     position: relative;
-    height: 42px;
-    min-height: 42px;
+    height: 40px;
+    min-height: 40px;
     z-index: 0;
+    user-select: none;
 
     &:hover {
       z-index: 1;
@@ -306,9 +295,7 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color;
-      z-index: 0;
-      user-select: none;
+      color: $secondary-color;
     }
 
     &__input {
@@ -316,8 +303,8 @@
       background-color: $bg-color;
       position: relative;
       width: 100%;
-      height: 42px;
-      min-height: 42px;
+      height: 40px;
+      min-height: 40px;
       padding-right: 22px;
       font-weight: 400;
       appearance: none;
@@ -329,30 +316,7 @@
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
       padding-left: 8px;
-
-      &::-webkit-input-placeholder {
-        color: $second-color;
-      }
-
-      &::-moz-placeholder {
-        color: $second-color;
-      }
-
-      &:-ms-input-placeholder {
-        color: $second-color;
-      }
-
-      &::-ms-input-placeholder {
-        color: $second-color;
-      }
-
-      &:-moz-placeholder {
-        color: $second-color;
-      }
-
-      &::placeholder {
-        color: $second-color;
-      }
+      color: $text-color;
     }
 
     &__toggle {
@@ -366,10 +330,10 @@
       height: 24px;
 
       &__arrow {
-        color: $second-color;
+        color: $secondary-color;
 
         path.arrow {
-          fill: $second-color;
+          fill: $secondary-color;
         }
       }
     }
@@ -388,22 +352,23 @@
     }
 
     &__list {
-      border-radius: $border-radius;
-      background-color: $bg-color;
-      padding: 0;
-      list-style: none;
+      max-width: 100%;
       height: 210px;
       max-height: 210px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      z-index: 9;
-      margin: 0;
-      max-width: 100%;
-      position: absolute;
       top: 100%;
       width: 100%;
       min-width: 230px;
+      position: absolute;
+      border-radius: $border-radius;
+      background-color: $bg-color;
+      overflow: hidden;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      z-index: 9;
+      list-style: none;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0;
+      margin: 0;
 
       &.has-calling-code {
         min-width: 270px;
@@ -423,7 +388,7 @@
 
         &__calling-code {
           width: 45px;
-          color: var(--phone-number-muted-color);
+          color: $muted-color;
         }
 
         &:hover,
@@ -447,69 +412,79 @@
     &.is-dark {
       .country-selector {
         &__label {
-          color: $second-color-dark;
+          color: $secondary-color-dark;
         }
 
         &__input {
           cursor: pointer;
-          background-color: $bg-color-dark;
+          background-color: $bg-color-dark-l;
           border: 1px solid $third-color-dark;
-          color: $second-color-dark;
+          color: $secondary-color-dark;
 
           &::-webkit-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
         }
 
         &__toggle {
           &__arrow {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
 
             path.arrow {
-              fill: $second-color-dark;
+              fill: $secondary-color-dark;
             }
           }
         }
 
         &__list {
-          background-color: $bg-color-dark;
+          background-color: $bg-color-dark-l;
 
           &__item {
             &:hover,
             &.keyboard-selected {
-              background-color: $hover-color-dark;
+              background-color: lighten($hover-color-dark, 10%);
             }
+          }
 
-            &__calling-code {
-              color: var(--phone-number-muted-color-dark);
-            }
+          &__calling-code {
+            color: $muted-color-dark;
           }
         }
       }
 
       .country-selector__input,
       .country-selector__list {
-        color: $second-color-dark;
+        color: $secondary-color-dark;
+      }
+    }
+
+    &.is-valid {
+      .country-selector__input {
+        border-color: $success-color;
+      }
+
+      .country-selector__label {
+        color: $success-color;
       }
     }
 
@@ -537,28 +512,18 @@
 
       &.is-valid {
         .country-selector__input {
-          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
+          box-shadow: 0 0 0 0.2rem $success-color-transparency;
         }
       }
     }
 
-    &.has-error:not(.is-valid) {
+    &.has-error {
       .country-selector__input {
-        border-color: $error-color;
+        border-color: $danger-color;
       }
 
       .country-selector__label {
-        color: $error-color;
-      }
-    }
-
-    &.is-valid {
-      .country-selector__input {
-        border-color: $valid-color;
-      }
-
-      .country-selector__label {
-        color: $valid-color;
+        color: $danger-color;
       }
     }
 
@@ -674,7 +639,7 @@
       .country-selector__input {
         height: 48px;
         min-height: 48px;
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .country-selector__label {

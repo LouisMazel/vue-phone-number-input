@@ -1,0 +1,32 @@
+$primary-color:    dodgerblue !default;
+$secondary-color:  #747474 !default;
+$secondary-color-dark:  rgba(255, 255, 255, 0.7) !default;
+$third-color:  #CCC !default;
+$third-color-dark:  rgba(255, 255, 255, 0.7) !default;
+$danger-color:     orangered !default;
+$success-color:    yellowgreen !default;
+$info-color:       #17A2B8 !default;
+$warning-color:    #FFA300 !default;
+$light-color:      #F5F5F5 !default;
+$default-color:    #CCC !default;
+$black-color:      #000 !default;
+$white-color:      #FFF !default;
+$grey-color: #F2F2F2 !default;
+$text-color: black !default;
+$bg-color: white !default;
+$hover-color: #F2F2F2 !default;
+$muted-color: #747474 !default;
+$disabled-color: #CCC !default;
+$primary-color-transparency: rgba($primary-color, 0.7) !default;
+$danger-color-transparency: rgba($danger-color, 0.7) !default;
+$success-color-transparency: rgba($success-color, 0.7) !default;
+
+$dark-color:       #24292E !default;
+$grey-color-dark:  darken($grey-color, 25%) !default;
+$text-color-dark: #F2F2F2 !default;
+$bg-color-dark: #21222E !default;
+$bg-color-dark-l: #303144 !default;
+$hover-color-dark: #2E2F40 !default;
+$muted-color-dark: rgba(255, 255, 255, 0.3) !default;
+
+$border-radius: 8px !default;
