@@ -63,8 +63,8 @@
               :preferred-countries="countriesList"
               :loader="hasLoaderActive"
               :default-country-code="defaultCountry"
-              :error="hasErrorActive"
               clearable
+              :error="hasErrorActive"
               class="mb-2"
               @update="onUpdate"
             />
@@ -116,7 +116,7 @@
               :error="hasErrorActive"
               class="mb-2"
               clearable
-              color="tomato"
+              color="#FF9933"
               dark-color="#21222e"
               :border-radius="8"
               show-code-on-list

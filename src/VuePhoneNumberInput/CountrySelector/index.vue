@@ -14,10 +14,13 @@
     }, size]"
     class="country-selector"
     @blur.capture="handleBlur"
+    @mouseenter="updateHoverState(true)"
+    @mouseleave="updateHoverState(false)"
   >
     <div
       v-if="value && !noFlags"
       class="country-selector__country-flag"
+      @click.stop="toggleList"
     >
       <div :class="`iti-flag-small iti-flag ${value.toLowerCase()}`" />
     </div>
@@ -29,6 +32,16 @@
       :disabled="disabled"
       class="country-selector__input"
       readonly
+      :style="[
+        isHover || isFocus ? theme.borderColor : null,
+        isFocus
+          ? valid
+            ? theme.boxShadowValid
+            : error ? theme.boxShadowError : theme.boxShadowColor
+          : null,
+        valid ? theme.borderValidColor : null,
+        error ? theme.borderErrorColor : null
+      ]"
       @focus="isFocus = true"
       @keydown="keyboardNav"
       @click.stop="toggleList"
@@ -59,7 +72,15 @@
     <label
       ref="label"
       :for="id"
-      :class="error ? 'text-danger' : null"
+      :style="[
+        error
+          ? theme.errorColor
+          : isFocus
+            ? valid
+              ? theme.validColor
+              : theme.color
+            : null
+      ]"
       class="country-selector__label"
     >
       {{ hint || label }}
@@ -107,7 +128,6 @@
   export default {
     name: 'CountrySelector',
     props: {
-      countriesHeight: { type: Number, default: 35 },
       value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
@@ -122,15 +142,18 @@
       onlyCountries: { type: Array, default: null },
       ignoredCountries: { type: Array, default: null },
       noFlags: { type: Boolean, default: false },
-      showCodeOnList: { type: Boolean, default: false }
+      countriesHeight: { type: Number, default: 35 },
+      showCodeOnList: { type: Boolean, default: false },
+      theme: { type: Object, required: true }
     },
     data () {
       return {
         isFocus: false,
+        isHover: false,
         hasListOpen: false,
         selectedIndex: null,
         tmpValue: this.value,
-        query: ''
+        query: '',
       }
     },
     computed: {
@@ -173,8 +196,11 @@
       this.$parent.$on('phone-number-focused', this.closeList)
     },
     methods: {
+      updateHoverState(value) {
+        this.isHover = value
+      },
       handleBlur (e) {
-        window.console.log('e.relatedTarget', e.relatedTarget)
+        window.console.log('this.$el.contains(e.relatedTarget)', this.$el.contains(e.relatedTarget), e.relatedTarget)
         if (this.$el.contains(e.relatedTarget)) return
         this.isFocus = false
         this.closeList()
@@ -187,7 +213,6 @@
           this.$emit('open')
           this.isFocus = true
           this.hasListOpen = true
-          this.selectFirstValue()
           if (this.value) this.scrollToSelectedOnFocus(this.selectedValueIndex)
         }
       },
@@ -210,10 +235,6 @@
         this.$nextTick(() => {
           this.$refs.countriesList.scrollTop = arrayIndex * this.countriesHeight - (this.countriesHeight * 3)
         })
-      },
-      selectFirstValue () {
-        if (this.value) return
-        this.$emit('input', this.countriesSorted[0].iso2)
       },
       keyboardNav (e) {
         const code = e.keyCode
@@ -280,10 +301,6 @@
 
     &:hover {
       z-index: 1;
-
-      .country-selector__input {
-        border-color: $primary-color !important;
-      }
     }
 
     &__label {
@@ -478,16 +495,6 @@
       }
     }
 
-    &.is-valid {
-      .country-selector__input {
-        border-color: $success-color;
-      }
-
-      .country-selector__label {
-        color: $success-color;
-      }
-    }
-
     &.has-list-open {
       .country-selector {
         &__toggle {
@@ -498,23 +505,6 @@
 
     &.is-focused {
       z-index: 1;
-
-      .country-selector {
-        &__input {
-          border-color: $primary-color;
-          box-shadow: 0 0 0 0.2rem $primary-color-transparency;
-        }
-
-        &__label {
-          color: $primary-color;
-        }
-      }
-
-      &.is-valid {
-        .country-selector__input {
-          box-shadow: 0 0 0 0.2rem $success-color-transparency;
-        }
-      }
     }
 
     &.has-error {
