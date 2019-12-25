@@ -2,7 +2,7 @@
   <div
     :id="id"
     :class="[{ 'dark': dark }, size]"
-    class="maz-phone-number-input flex"
+    class="vue-phone-number-input flex"
   >
     <div
       v-if="!noCountrySelector"
@@ -299,7 +299,7 @@
 <style lang="scss" scoped>
   @import 'style-helpers';
 
-  .maz-phone-number-input {
+  .vue-phone-number-input {
     .select-country-container {
       flex: 0 0 120px;
       width: 120px;
