@@ -85,6 +85,7 @@
           ]"
           class="flex align-center country-selector__list__item"
           :style="[itemHeight]"
+          tabindex="-1"
           @click.stop="updateValue(item.iso2)"
         >
           <div
@@ -185,7 +186,6 @@
         this.isHover = value
       },
       handleBlur (e) {
-        window.console.log('this.$el.contains(e.relatedTarget)', this.$el.contains(e.relatedTarget), e.relatedTarget)
         if (this.$el.contains(e.relatedTarget)) return
         this.isFocus = false
         this.closeList()
@@ -254,6 +254,7 @@
         if (code === 8 && this.query !== '') {
           this.query = this.query.substring(0, this.query.length - 1)
         } else if (/[a-zA-Z-e ]/.test(q)) {
+          if (!this.hasListOpen) this.openList()
           this.query += e.key
           const countries = this.preferredCountries ? this.countriesSorted.slice(this.preferredCountries.length) : this.countriesSorted
           const resultIndex = countries.findIndex(c => {
