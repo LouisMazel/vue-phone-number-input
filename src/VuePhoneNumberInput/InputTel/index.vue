@@ -26,7 +26,12 @@
       :disabled="disabled"
       :required="required"
       :class="{ 'no-country-selector': noCountrySelector }"
-      :style="[radiusRightStyle, inputBorderStyle, inputBoxShadowStyle]"
+      :style="[
+        noCountrySelector ? radiusStyle : radiusRightStyle,
+        inputCaretStyle,
+        inputBorderStyle,
+        inputBoxShadowStyle
+      ]"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -178,10 +183,8 @@
       appearance: none;
       outline: none;
       border: 1px solid $third-color;
-      border-radius: $border-radius;
       font-size: 14px;
       z-index: 0;
-      caret-color: $primary-color;
       margin-left: -1px;
       height: 40px;
       min-height: 40px;
@@ -501,7 +504,7 @@
       width: calc(100% - 4px);
       position: absolute;
       overflow: hidden;
-      border-radius: 4px;
+      border-radius: 8px;
 
       &__progress-bar {
         background-color: $primary-color;

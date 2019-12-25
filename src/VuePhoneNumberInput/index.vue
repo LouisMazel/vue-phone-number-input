@@ -177,6 +177,7 @@
       },
       theme () {
         return {
+          colorValue: this.color,
           color: { color: this.color },
           validColor: { color: this.validColor },
           errorColor: { color: this.errorColor },

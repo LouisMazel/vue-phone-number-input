@@ -62,9 +62,9 @@
     </div>
     <label
       ref="label"
-      :for="id"
       :style="[labelColorStyle]"
       class="country-selector__label"
+      @click.stop="toggleList"
     >
       {{ hint || label }}
     </label>
@@ -76,7 +76,7 @@
         :class="{ 'has-calling-code': showCodeOnList }"
         :style="[radiusStyle]"
       >
-        <div
+        <button
           v-for="item in countriesSorted"
           :key="item.code"
           :class="[
@@ -100,7 +100,7 @@
           <div class="dots-text">
             {{ item.name }}
           </div>
-        </div>
+        </button>
       </div>
     </Transition>
   </div>
@@ -205,16 +205,11 @@
         this.$emit('close')
         this.hasListOpen = false
       },
-      async reset () {
-        this.closeList()
-        await this.$nextTick()
-        this.$refs.CountrySelector.focus()
-      },
       async updateValue (val) {
         this.tmpValue = val
         this.$emit('input', val || null)
         await this.$nextTick()
-        this.reset()
+        this.closeList()
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
@@ -246,23 +241,27 @@
           this.closeList()
         } else {
           // typing a country's name
-          clearTimeout(this.queryTimer)
-          this.queryTimer = setTimeout(() => {
-            this.query = ''
-          }, 1000)
-          const q = String.fromCharCode(code)
-          if (code === 8 && this.query !== '') {
-            this.query = this.query.substring(0, this.query.length - 1)
-          } else if (/[a-zA-Z-e ]/.test(q)) {
-            this.query += e.key
-            const countries = this.preferredCountries ? this.countriesSorted.slice(this.preferredCountries.length) : this.countriesSorted
-            const resultIndex = countries.findIndex(c => {
-              this.tmpValue = c.iso2
-              return c.name.toLowerCase().startsWith(this.query)
-            })
-            if (resultIndex !== -1) {
-              this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))
-            }
+          this.searching(e)
+        }
+      },
+      searching (e) {
+        const code = e.keyCode
+        clearTimeout(this.queryTimer)
+        this.queryTimer = setTimeout(() => {
+          this.query = ''
+        }, 1000)
+        const q = String.fromCharCode(code)
+        if (code === 8 && this.query !== '') {
+          this.query = this.query.substring(0, this.query.length - 1)
+        } else if (/[a-zA-Z-e ]/.test(q)) {
+          this.query += e.key
+          const countries = this.preferredCountries ? this.countriesSorted.slice(this.preferredCountries.length) : this.countriesSorted
+          const resultIndex = countries.findIndex(c => {
+            this.tmpValue = c.iso2
+            return c.name.toLowerCase().startsWith(this.query)
+          })
+          if (resultIndex !== -1) {
+            this.scrollToSelectedOnFocus(resultIndex + (this.preferredCountries ? this.preferredCountries.length : 0))
           }
         }
       }
@@ -314,8 +313,6 @@
       border: 1px solid $third-color;
       font-size: 13px;
       z-index: 0;
-      border-top-right-radius: 0 !important;
-      border-bottom-right-radius: 0 !important;
       padding-left: 8px;
       color: $text-color;
     }
@@ -381,6 +378,10 @@
         overflow: hidden;
         font-size: 12px;
         cursor: pointer;
+        background-color: transparent;
+        width: 100%;
+        border: 0;
+        outline: none;
 
         &__flag-container {
           margin-right: 10px;
@@ -460,6 +461,8 @@
           background-color: $bg-color-dark-l;
 
           &__item {
+            color: $text-color-dark;
+
             &:hover,
             &.keyboard-selected {
               background-color: lighten($hover-color-dark, 10%);
@@ -479,6 +482,8 @@
     }
 
     &.has-list-open {
+      z-index: 1;
+
       .country-selector {
         &__toggle {
           transform: rotate(180deg);
