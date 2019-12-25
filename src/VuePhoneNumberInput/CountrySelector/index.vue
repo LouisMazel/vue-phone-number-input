@@ -74,37 +74,43 @@
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
-        :style="[radiusStyle]"
+        :style="[radiusStyle, listHeight]"
       >
-        <button
-          v-for="item in countriesSorted"
-          :key="item.code"
-          :class="[
-            { 'selected': value === item.iso2 },
-            { 'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2 }
-          ]"
-          class="flex align-center country-selector__list__item"
-          :style="[
-            itemHeight,
-            value === item.iso2 ? bgItemSelectedStyle : null
-          ]"
-          tabindex="-1"
-          @click.stop="updateValue(item.iso2)"
+        <VirtualList
+          :size="countriesHeight"
+          :remain="7"
+          :start="indexItemToShow"
         >
-          <div
-            v-if="!noFlags"
-            class="country-selector__list__item__flag-container"
+          <button
+            v-for="item in countriesSorted"
+            :key="item.code"
+            :class="[
+              { 'selected': value === item.iso2 },
+              { 'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2 }
+            ]"
+            class="flex align-center country-selector__list__item"
+            :style="[
+              itemHeight,
+              value === item.iso2 ? bgItemSelectedStyle : null
+            ]"
+            tabindex="-1"
+            @click.stop="updateValue(item.iso2)"
           >
-            <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
-          </div>
-          <span
-            v-if="showCodeOnList"
-            class="country-selector__list__item__calling-code flex-fixed"
-          >+{{ item.dialCode }}</span>
-          <div class="dots-text">
-            {{ item.name }}
-          </div>
-        </button>
+            <div
+              v-if="!noFlags"
+              class="country-selector__list__item__flag-container"
+            >
+              <div :class="`iti-flag-small iti-flag ${item.iso2.toLowerCase()}`" />
+            </div>
+            <span
+              v-if="showCodeOnList"
+              class="country-selector__list__item__calling-code flex-fixed"
+            >+{{ item.dialCode }}</span>
+            <div class="dots-text">
+              {{ item.name }}
+            </div>
+          </button>
+        </VirtualList>
       </div>
     </Transition>
   </div>
@@ -112,12 +118,17 @@
 
 <script>
   import { getCountryCallingCode } from 'libphonenumber-js'
+  import VirtualList from 'vue-virtual-scroll-list'
   import StylesHandler from '@/VuePhoneNumberInput/mixins/StylesHandler'
 
   export default {
     name: 'CountrySelector',
+    components: {
+      VirtualList
+    },
     mixins: [StylesHandler],
     props: {
+      id: { type: String, default: 'CountrySelector' },
       value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
       hint: { type: String, default: String },
@@ -126,7 +137,6 @@
       disabled: { type: Boolean, default: false },
       valid: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      id: { type: String, default: 'CountrySelector' },
       items: { type: Array, default: Array, required: true },
       preferredCountries: { type: Array, default: null },
       onlyCountries: { type: Array, default: null },
@@ -143,12 +153,19 @@
         selectedIndex: null,
         tmpValue: this.value,
         query: '',
+        indexItemToShow: 0
       }
     },
     computed: {
       itemHeight () {
         return {
           height: `${this.countriesHeight}px`
+        }
+      },
+      listHeight () {
+        return {
+          height: `${this.countriesHeight * 7}px`,
+          maxHeight: `${this.countriesHeight * 7}px`
         }
       },
       countriesList () {
@@ -180,9 +197,6 @@
       callingCode () {
         return this.value ? `+${getCountryCallingCode(this.value)}` : null
       }
-    },
-    mounted () {
-      this.$parent.$on('phone-number-focused', this.closeList)
     },
     methods: {
       updateHoverState(value) {
@@ -216,7 +230,7 @@
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
-          this.$refs.countriesList.scrollTop = arrayIndex * this.countriesHeight - (this.countriesHeight * 3)
+          this.indexItemToShow = arrayIndex - 3
         })
       },
       keyboardNav (e) {
@@ -355,8 +369,6 @@
 
     &__list {
       max-width: 100%;
-      height: 210px;
-      max-height: 210px;
       top: 100%;
       width: 100%;
       min-width: 230px;
