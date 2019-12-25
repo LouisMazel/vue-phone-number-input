@@ -58,11 +58,11 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 ## Features List
 
 - You can set `preferred-countries`, `ignored-countries` or have `only-countries`
-- Validator State : input becomes green (you can modify this color with `valid-color` option) when the phone number is valid (can be disabled by `no-validator-state` attr)
+- Validator State: input becomes green (you can modify this color with `valid-color` option) when the phone number is valid (can be disabled by `no-validator-state` attr)
 - Multi options to getting country code : By default the component get the country code via the browser (disable it with `no-use-browser-locale`) or you can use `fetch-country` to get the country code via [https://ip2c.org/s](https://ip2c.org/s) (network needed) - you can use `default-country-code` option instead to set one
 - Phone number formatting while typing
 - You can search your country in list (open countries list & type your country name)
-- Keyboard accessibility (Arrow down, Arrow up : Countries list navigation -  Escape : Close countries list)
+- Keyboard accessibility (Arrow down, Arrow up: Countries list navigation -  Escape: Close countries list)
 - Phone number example for each country in placeholder/label
 - Auto focus phone number input after selecting country
 - You can disable the flags - `no-flags` props
