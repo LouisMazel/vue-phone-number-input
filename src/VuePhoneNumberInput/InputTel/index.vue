@@ -12,6 +12,8 @@
     }, size]"
     class="input-tel"
     @click="focusInput"
+    @mouseenter="updateHoverState(true)"
+    @mouseleave="updateHoverState(false)"
   >
     <input
       :id="id"
@@ -23,9 +25,8 @@
       class="input-tel__input"
       :disabled="disabled"
       :required="required"
-      :class="{
-        'no-country-selector': noCountrySelector
-      }"
+      :class="{ 'no-country-selector': noCountrySelector }"
+      :style="[radiusStyle, inputBorderStyle, inputBoxShadowStyle]"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -37,6 +38,7 @@
       :for="id"
       :class="error ? 'text-danger' : null"
       class="input-tel__label"
+      :style="[labelColorStyle]"
       @click="focusInput"
     >
       {{ hintValue || labelValue }}
@@ -85,11 +87,13 @@
       required: { type: Boolean, default: false },
       loader: { type: Boolean, default: false },
       clearable: { type: Boolean, default: false },
-      noCountrySelector: { type: Boolean, default: false }
+      noCountrySelector: { type: Boolean, default: false },
+      theme: { type: Object, required: true }
     },
     data () {
       return {
-        isFocus: false
+        isFocus: false,
+        isHover: false
       }
     },
     computed: {
@@ -108,9 +112,35 @@
       hintValue () {
         const { hint } = this
         return this.required && hint ? `${hint} *` : hint
+      },
+      labelColorStyle () {
+        if (this.error) return this.theme.errorColor
+        else if (this.valid) return this.theme.validColor
+        else if (this.isFocus) return this.theme.color
+        return null
+      },
+      inputBorderStyle () {
+        if (this.error) return this.theme.borderErrorColor
+        else if (this.valid) return this.theme.borderValidColor
+        else if (this.isHover || this.isFocus) return this.theme.borderColor
+        return null
+      },
+      inputBoxShadowStyle () {
+        if (this.isFocus) {
+          if (this.error) return this.theme.boxShadowError
+          else if (this.valid) return this.theme.boxShadowValid
+          return this.theme.boxShadowColor
+        }
+        return null
+      },
+      radiusStyle () {
+        return this.theme.borderRadius
       }
     },
     methods: {
+      updateHoverState(value) {
+        this.isHover = value
+      },
       focusInput () {
         this.$refs.InputTel.focus()
       },
@@ -145,12 +175,6 @@
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
     height: 40px;
     min-height: 40px;
-
-    &:hover {
-      .input-tel__input {
-        border-color: $primary-color;
-      }
-    }
 
     &__label {
       position: absolute;
@@ -188,8 +212,8 @@
       }
 
       &:not(.no-country-selector) {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
       }
 
       &::-webkit-input-placeholder {
@@ -277,12 +301,6 @@
     }
 
     &.is-dark {
-      &:hover {
-        .input-tel__input {
-          border-color: $primary-color;
-        }
-      }
-
       .input-tel {
         &__label {
           color: $secondary-color-dark;

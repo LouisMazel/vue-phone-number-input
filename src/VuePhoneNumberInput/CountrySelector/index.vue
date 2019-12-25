@@ -32,16 +32,7 @@
       :disabled="disabled"
       class="country-selector__input"
       readonly
-      :style="[
-        isHover || isFocus ? theme.borderColor : null,
-        isFocus
-          ? valid
-            ? theme.boxShadowValid
-            : error ? theme.boxShadowError : theme.boxShadowColor
-          : null,
-        valid ? theme.borderValidColor : null,
-        error ? theme.borderErrorColor : null
-      ]"
+      :style="[radiusStyle, inputBorderStyle, inputBoxShadowStyle]"
       @focus="isFocus = true"
       @keydown="keyboardNav"
       @click.stop="toggleList"
@@ -72,15 +63,7 @@
     <label
       ref="label"
       :for="id"
-      :style="[
-        error
-          ? theme.errorColor
-          : isFocus
-            ? valid
-              ? theme.validColor
-              : theme.color
-            : null
-      ]"
+      :style="[labelColorStyle]"
       class="country-selector__label"
     >
       {{ hint || label }}
@@ -91,6 +74,7 @@
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
+        :style="[radiusStyle]"
       >
         <div
           v-for="item in countriesSorted"
@@ -190,6 +174,29 @@
       },
       callingCode () {
         return this.value ? `+${getCountryCallingCode(this.value)}` : null
+      },
+      labelColorStyle () {
+        if (this.error) return this.theme.errorColor
+        else if (this.valid) return this.theme.validColor
+        else if (this.isFocus) return this.theme.color
+        return null
+      },
+      inputBorderStyle () {
+        if (this.error) return this.theme.borderErrorColor
+        else if (this.valid) return this.theme.borderValidColor
+        else if (this.isHover || this.isFocus) return this.theme.borderColor
+        return null
+      },
+      inputBoxShadowStyle () {
+        if (this.isFocus) {
+          if (this.error) return this.theme.boxShadowError
+          else if (this.valid) return this.theme.boxShadowValid
+          else if (this.isHover || this.isFocus) return this.theme.boxShadowColor
+        }
+        return null
+      },
+      radiusStyle () {
+        return this.theme.borderRadius
       }
     },
     mounted () {
@@ -327,11 +334,10 @@
       appearance: none;
       outline: none;
       border: 1px solid $third-color;
-      border-radius: $border-radius;
       font-size: 13px;
       z-index: 0;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
       padding-left: 8px;
       color: $text-color;
     }
@@ -376,7 +382,6 @@
       width: 100%;
       min-width: 230px;
       position: absolute;
-      border-radius: $border-radius;
       background-color: $bg-color;
       overflow: hidden;
       box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
