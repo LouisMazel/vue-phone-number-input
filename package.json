@@ -27,7 +27,8 @@
   "dependencies": {
     "libphonenumber-js": "^1.7.26",
     "style-helpers": "^1.0.1",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-virtual-scroll-list": "^1.4.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
