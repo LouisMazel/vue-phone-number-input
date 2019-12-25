@@ -24,7 +24,7 @@ export default {
       return null
     },
     inputCaretStyle () {
-      return { caretColor: this.theme.colorValue }
+      return ({ caretColor: this.theme.colorValue })
     },
     radiusStyle () {
       return this.theme.borderRadius
