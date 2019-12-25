@@ -36,6 +36,9 @@ export default {
     },
     radiusRightStyle () {
       return this.theme.borderRightRadius
+    },
+    bgItemSelectedStyle () {
+      return this.theme.bgColor
     }
   }
 }

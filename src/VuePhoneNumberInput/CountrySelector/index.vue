@@ -80,11 +80,14 @@
           v-for="item in countriesSorted"
           :key="item.code"
           :class="[
-            {'selected': value === item.iso2},
-            {'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2}
+            { 'selected': value === item.iso2 },
+            { 'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2 }
           ]"
           class="flex align-center country-selector__list__item"
-          :style="[itemHeight]"
+          :style="[
+            itemHeight,
+            value === item.iso2 ? bgItemSelectedStyle : null
+          ]"
           tabindex="-1"
           @click.stop="updateValue(item.iso2)"
         >
@@ -400,7 +403,6 @@
 
         &.selected {
           color: #FFF;
-          background-color: $primary-color;
           font-weight: 600;
 
           .country-selector__list__item__calling-code {
