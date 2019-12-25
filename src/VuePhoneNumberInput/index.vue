@@ -193,6 +193,8 @@
           boxShadowValid: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.validColor)}` },
           boxShadowError: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.errorColor)}` },
           borderRadius: { borderRadius: `${this.borderRadius}px` },
+          borderLeftRadius: { borderTopLeftRadius: `${this.borderRadius}px`, borderBottomLeftRadius: `${this.borderRadius}px` },
+          borderRightRadius: { borderTopRightRadius: `${this.borderRadius}px`, borderBottomRightRadius: `${this.borderRadius}px` }
         }
       }
     },

@@ -26,7 +26,7 @@
       :disabled="disabled"
       :required="required"
       :class="{ 'no-country-selector': noCountrySelector }"
-      :style="[radiusStyle, inputBorderStyle, inputBoxShadowStyle]"
+      :style="[radiusRightStyle, inputBorderStyle, inputBoxShadowStyle]"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
@@ -70,8 +70,11 @@
 </template>
 
 <script>
+  import StylesHandler from '@/VuePhoneNumberInput/mixins/StylesHandler'
+
   export default {
     name: 'InputTel',
+    mixins: [StylesHandler],
     props: {
       value: { type: [String, Number], default: null },
       label: { type: String, default: 'Enter text' },
@@ -87,8 +90,7 @@
       required: { type: Boolean, default: false },
       loader: { type: Boolean, default: false },
       clearable: { type: Boolean, default: false },
-      noCountrySelector: { type: Boolean, default: false },
-      theme: { type: Object, required: true }
+      noCountrySelector: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -112,29 +114,6 @@
       hintValue () {
         const { hint } = this
         return this.required && hint ? `${hint} *` : hint
-      },
-      labelColorStyle () {
-        if (this.error) return this.theme.errorColor
-        else if (this.valid) return this.theme.validColor
-        else if (this.isFocus) return this.theme.color
-        return null
-      },
-      inputBorderStyle () {
-        if (this.error) return this.theme.borderErrorColor
-        else if (this.valid) return this.theme.borderValidColor
-        else if (this.isHover || this.isFocus) return this.theme.borderColor
-        return null
-      },
-      inputBoxShadowStyle () {
-        if (this.isFocus) {
-          if (this.error) return this.theme.boxShadowError
-          else if (this.valid) return this.theme.boxShadowValid
-          return this.theme.boxShadowColor
-        }
-        return null
-      },
-      radiusStyle () {
-        return this.theme.borderRadius
       }
     },
     methods: {

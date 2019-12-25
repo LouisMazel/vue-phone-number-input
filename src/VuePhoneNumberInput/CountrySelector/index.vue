@@ -32,7 +32,7 @@
       :disabled="disabled"
       class="country-selector__input"
       readonly
-      :style="[radiusStyle, inputBorderStyle, inputBoxShadowStyle]"
+      :style="[radiusLeftStyle, inputBorderStyle, inputBoxShadowStyle]"
       @focus="isFocus = true"
       @keydown="keyboardNav"
       @click.stop="toggleList"
@@ -108,9 +108,11 @@
 
 <script>
   import { getCountryCallingCode } from 'libphonenumber-js'
+  import StylesHandler from '@/VuePhoneNumberInput/mixins/StylesHandler'
 
   export default {
     name: 'CountrySelector',
+    mixins: [StylesHandler],
     props: {
       value: { type: [String, Object], default: null },
       label: { type: String, default: 'Choose country' },
@@ -127,8 +129,7 @@
       ignoredCountries: { type: Array, default: null },
       noFlags: { type: Boolean, default: false },
       countriesHeight: { type: Number, default: 35 },
-      showCodeOnList: { type: Boolean, default: false },
-      theme: { type: Object, required: true }
+      showCodeOnList: { type: Boolean, default: false }
     },
     data () {
       return {
@@ -174,29 +175,6 @@
       },
       callingCode () {
         return this.value ? `+${getCountryCallingCode(this.value)}` : null
-      },
-      labelColorStyle () {
-        if (this.error) return this.theme.errorColor
-        else if (this.valid) return this.theme.validColor
-        else if (this.isFocus) return this.theme.color
-        return null
-      },
-      inputBorderStyle () {
-        if (this.error) return this.theme.borderErrorColor
-        else if (this.valid) return this.theme.borderValidColor
-        else if (this.isHover || this.isFocus) return this.theme.borderColor
-        return null
-      },
-      inputBoxShadowStyle () {
-        if (this.isFocus) {
-          if (this.error) return this.theme.boxShadowError
-          else if (this.valid) return this.theme.boxShadowValid
-          else if (this.isHover || this.isFocus) return this.theme.boxShadowColor
-        }
-        return null
-      },
-      radiusStyle () {
-        return this.theme.borderRadius
       }
     },
     mounted () {
