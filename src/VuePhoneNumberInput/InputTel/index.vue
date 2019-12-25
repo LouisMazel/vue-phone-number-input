@@ -12,6 +12,8 @@
     }, size]"
     class="input-tel"
     @click="focusInput"
+    @mouseenter="updateHoverState(true)"
+    @mouseleave="updateHoverState(false)"
   >
     <input
       :id="id"
@@ -23,20 +25,25 @@
       class="input-tel__input"
       :disabled="disabled"
       :required="required"
-      :class="{
-        'no-country-selector': noCountrySelector
-      }"
+      :class="{ 'no-country-selector': noCountrySelector }"
+      :style="[
+        noCountrySelector ? radiusStyle : radiusRightStyle,
+        inputCaretStyle,
+        inputBorderStyle,
+        inputBoxShadowStyle
+      ]"
       @keydown="keyDown"
       @keyup="keyUp"
       @focus="onFocus"
       @blur="onBlur"
-      @click="$emit('click')"
+      @click="$emit('click', $event)"
     >
     <label
       ref="label"
       :for="id"
       :class="error ? 'text-danger' : null"
       class="input-tel__label"
+      :style="[labelColorStyle]"
       @click="focusInput"
     >
       {{ hintValue || labelValue }}
@@ -68,8 +75,11 @@
 </template>
 
 <script>
+  import StylesHandler from '@/VuePhoneNumberInput/mixins/StylesHandler'
+
   export default {
     name: 'InputTel',
+    mixins: [StylesHandler],
     props: {
       value: { type: [String, Number], default: null },
       label: { type: String, default: 'Enter text' },
@@ -87,9 +97,10 @@
       clearable: { type: Boolean, default: false },
       noCountrySelector: { type: Boolean, default: false }
     },
-    data: function () {
+    data () {
       return {
-        isFocus: false
+        isFocus: false,
+        isHover: false
       }
     },
     computed: {
@@ -102,15 +113,18 @@
         }
       },
       labelValue () {
-        let { label } = this
-        return this.required && label ? label += ' *' : label
+        const { label } = this
+        return this.required && label ? `${label} *` : label
       },
       hintValue () {
-        let { hint } = this
-        return this.required && hint ? hint += ' *' : hint
+        const { hint } = this
+        return this.required && hint ? `${hint} *` : hint
       }
     },
     methods: {
+      updateHoverState(value) {
+        this.isHover = value
+      },
       focusInput () {
         this.$refs.InputTel.focus()
       },
@@ -137,39 +151,14 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '@/assets/scss/variables';
   @import 'style-helpers';
-
-  $primary-color: var(--phone-number-primary-color);
-  $second-color: var(--phone-number-second-color);
-  $second-color-dark: var(--phone-number-second-color-dark);
-  $third-color: var(--phone-number-third-color);
-  $third-color-dark: var(--phone-number-third-color-dark);
-  $muted-color: var(--phone-number-muted-color);
-  $muted-color-dark: var(--phone-number-muted-color-dark);
-  $hover-color: var(--phone-number-hover-color);
-  $hover-color-dark: var(--phone-number-hover-color-dark);
-  $bg-color: var(--phone-number-bg-color);
-  $bg-color-dark: var(--phone-number-bg-color-dark);
-  $valid-color: var(--phone-number-valid-color);
-  $error-color: var(--phone-number-error-color);
-  $error-color-transparency: var(--phone-number-error-color-transparency);
-  $primary-color-transparency: var(--phone-number-primary-color-transparency);
-  $valid-color-transparency: var(--phone-number-valid-color-transparency);
-  $border-radius: var(--phone-number-border-radius);
-  $disabled-color: #747474;
 
   .input-tel {
     position: relative;
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    height: 42px;
-    min-height: 42px;
-    z-index: 0;
-
-    &:hover {
-      .input-tel__input {
-        border-color: $primary-color;
-      }
-    }
+    height: 40px;
+    min-height: 40px;
 
     &__label {
       position: absolute;
@@ -180,7 +169,7 @@
       opacity: 0;
       transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
       font-size: 11px;
-      color: $second-color;
+      color: $secondary-color;
     }
 
     &__input {
@@ -194,41 +183,43 @@
       appearance: none;
       outline: none;
       border: 1px solid $third-color;
-      border-radius: $border-radius;
       font-size: 14px;
       z-index: 0;
-      caret-color: $primary-color;
       margin-left: -1px;
-      height: 42px;
-      min-height: 42px;
+      height: 40px;
+      min-height: 40px;
+
+      &:hover {
+        border-color: $primary-color;
+      }
 
       &:not(.no-country-selector) {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
       }
 
       &::-webkit-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::-moz-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &:-ms-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::-ms-input-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &:-moz-placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &::placeholder {
-        color: $second-color;
+        color: $secondary-color;
       }
 
       &__input:-webkit-autofill,
@@ -236,7 +227,7 @@
       &__input:-webkit-autofill:focus,
       &__input:-webkit-autofill:active {
         box-shadow: 0 0 0 1000px $bg-color inset !important;
-        -webkit-text-fill-color: $second-color !important;
+        -webkit-text-fill-color: $secondary-color !important;
       }
     }
 
@@ -253,7 +244,7 @@
       appearance: none;
       border: none;
       background: transparent;
-      color: $second-color;
+      color: $secondary-color;
       border-radius: $clear-size;
       cursor: pointer;
       font-size: 12px;
@@ -294,36 +285,36 @@
     &.is-dark {
       .input-tel {
         &__label {
-          color: $second-color-dark;
+          color: $secondary-color-dark;
         }
 
         &__input {
-          background-color: $bg-color-dark;
+          background-color: $bg-color-dark-l;
           border: 1px solid $third-color-dark;
-          color: $second-color-dark;
+          color: $secondary-color-dark;
 
           &::-webkit-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::-ms-input-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &:-moz-placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &::placeholder {
-            color: $second-color-dark;
+            color: $secondary-color-dark;
           }
 
           &__input:-webkit-autofill,
@@ -331,12 +322,12 @@
           &__input:-webkit-autofill:focus,
           &__input:-webkit-autofill:active {
             box-shadow: 0 0 0 1000px $bg-color-dark inset !important;
-            -webkit-text-fill-color: $second-color-dark !important;
+            -webkit-text-fill-color: $secondary-color-dark !important;
           }
         }
 
         &__clear {
-          color: $second-color-dark;
+          color: $secondary-color-dark;
 
           &__effect {
             background-color: $muted-color-dark;
@@ -365,14 +356,14 @@
 
       &.has-error {
         .input-tel__input {
-          box-shadow: 0 0 0 0.2rem $error-color-transparency;
+          box-shadow: 0 0 0 0.2rem $danger-color-transparency;
         }
       }
 
       &.is-valid {
         .input-tel__input {
-          border-color: $valid-color;
-          box-shadow: 0 0 0 0.2rem $valid-color-transparency;
+          border-color: $success-color;
+          box-shadow: 0 0 0 0.2rem $success-color-transparency;
         }
       }
     }
@@ -403,22 +394,23 @@
     }
 
     &.is-valid {
-      .input-tel__input {
-        border-color: $valid-color;
+      .input-tel__input,
+      .input-tel__input:hover {
+        border-color: $success-color;
       }
 
       .input-tel__label {
-        color: $valid-color;
+        color: $success-color;
       }
     }
 
     &.has-error:not(.is-valid) {
       .input-tel__input {
-        border-color: $error-color;
+        border-color: $danger-color;
       }
 
       .input-tel__label {
-        color: $error-color;
+        color: $danger-color;
       }
     }
 
@@ -489,7 +481,7 @@
       min-height: 48px;
 
       .input-tel__input {
-        font-size: 16px;
+        font-size: 14px;
         height: 48px;
         min-height: 48px;
       }
@@ -512,7 +504,7 @@
       width: calc(100% - 4px);
       position: absolute;
       overflow: hidden;
-      border-radius: 4px;
+      border-radius: 8px;
 
       &__progress-bar {
         background-color: $primary-color;

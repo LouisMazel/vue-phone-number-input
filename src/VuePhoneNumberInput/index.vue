@@ -1,23 +1,21 @@
 <template>
   <div
-    :id="uniqueId"
+    :id="id"
     :class="[{ 'dark': dark }, size]"
     class="vue-phone-number-input flex"
-    :style="[cssTheme]"
   >
     <div
       v-if="!noCountrySelector"
       class="select-country-container"
     >
       <CountrySelector
-        :id="`${id}_country_selector`"
+        :id="`${uniqueId}_country_selector`"
         ref="CountrySelector"
         v-model="countryCode"
         :items="codesCountries"
         :countries-height="countriesHeight"
         :error="shouldChooseCountry"
         :hint="shouldChooseCountry ? t.countrySelectorError : null"
-        :dark="dark"
         :disabled="disabled"
         :valid="isValid && !noValidatorState"
         :preferred-countries="preferredCountries"
@@ -27,6 +25,8 @@
         :no-flags="noFlags"
         :show-code-on-list="showCodeOnList"
         :size="size"
+        :dark="dark"
+        :theme="theme"
         class="input-country-selector"
       >
         <slot
@@ -37,7 +37,7 @@
     </div>
     <div class="flex-1">
       <InputTel
-        :id="`${id}_phone_number`"
+        :id="`${uniqueId}_phone_number`"
         ref="PhoneNumberInput"
         v-model="phoneNumber"
         :label="t.phoneNumberLabel"
@@ -50,6 +50,7 @@
         :required="required"
         :no-country-selector="noCountrySelector"
         v-bind="$attrs"
+        :theme="theme"
         class="input-phone-number"
         @keydown="(e) => { lastKeyPressed = e.keyCode }"
         @focus="$emit('phone-number-focused')"
@@ -59,16 +60,17 @@
   </div>
 </template>
 <script>
-  /* eslint-disable */
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
   import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
   import InputTel from './InputTel'
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
-  import cssVars from 'css-vars-ponyfill'
+  import { HexToRgba, isColorName, colorNameToHex } from 'color-transformer-ui'
 
-  import getTheme from './themes'
+  const getShadowColor = (color) => {
+    return isColorName(color) ? HexToRgba(colorNameToHex(color), 0.7) : HexToRgba(color, 0.7)
+  }
 
   const browserLocale = () => {
     if (!window) return null
@@ -83,18 +85,17 @@
   }
 
   export default {
-    name: 'VuePhoneNumberInput',
+    name: 'MazPhoneNumberInput',
     components: {
       InputTel,
       CountrySelector
     },
     props: {
       value: { type: String, default: null },
-      id: { type: String, default: 'VuePhoneNumberInput' },
+      id: { type: String, default: 'MazPhoneNumberInput' },
       color: { type: String, default: 'dodgerblue' },
       validColor: { type: String, default: 'yellowgreen' },
       errorColor: { type: String, default: 'orangered' },
-      dark: { type: Boolean, default: false },
       darkColor: { type: String, default: '#424242' },
       disabled: { type: Boolean, default: false },
       defaultCountryCode: { type: String, default: null },
@@ -113,12 +114,12 @@
       fetchCountry: { type: Boolean, default: false },
       noCountrySelector: { type: Boolean, default: false },
       showCodeOnList: { type: Boolean, default: false },
+      dark: { type: Boolean, default: false },
       borderRadius: { type: Number, default: 4 }
     },
     data () {
       return {
         results: {},
-        inputFocused: false,
         userLocale: this.defaultCountryCode,
         lastKeyPressed: null
       }
@@ -142,10 +143,7 @@
         },
         set (newCountry) {
           this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
-          if (this.inputFocused) {
-            this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
-          }
-          this.inputFocused = true
+          this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
         }
       },
       phoneNumber: {
@@ -177,38 +175,57 @@
           ? null
           : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
       },
-      cssTheme () {
-        const { dark, color, darkColor, validColor, errorColor, borderRadius } = this
-        return getTheme(
-          {
-            dark,
-            color,
-            darkColor,
-            validColor,
-            borderRadius,
-            lightColor: '#FFFFFF',
-            errorColor
-          }
-        )
+      theme () {
+        return {
+          colorValue: this.color,
+          color: { color: this.color },
+          validColor: { color: this.validColor },
+          errorColor: { color: this.errorColor },
+          darkColor: { color: this.darkColor },
+          bgColor: { backgroundColor: this.color },
+          bgValidColor: { backgroundColor: this.validColor },
+          bgErrorColor: { backgroundColor: this.errorColor },
+          bgDarkColor: { backgroundColor: this.darkColor },
+          borderColor: { borderColor: this.color },
+          borderValidColor: { borderColor: this.validColor },
+          borderErrorColor: { borderColor: this.errorColor },
+          borderDarkColor: { borderColor: this.darkColor },
+          boxShadowColor: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.color)}` },
+          boxShadowValid: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.validColor)}` },
+          boxShadowError: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.errorColor)}` },
+          borderRadius: { borderRadius: `${this.borderRadius}px` },
+          borderLeftRadius: { borderTopLeftRadius: `${this.borderRadius}px`, borderBottomLeftRadius: `${this.borderRadius}px` },
+          borderRightRadius: { borderTopRightRadius: `${this.borderRadius}px`, borderBottomRightRadius: `${this.borderRadius}px` }
+        }
+      }
+    },
+    watch: {
+      defaultCountryCode (newValue, oldValue) {
+        if (newValue === oldValue) return
+        this.setLocale(newValue)
       }
     },
     async mounted () {
       try {
-        this.setCssVars()
         if (this.phoneNumber && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.phoneNumber})
 
-        if (this.defaultCountryCode && this.fetchCountry)
-          throw new Error(`VuePhoneNumberInput: Do not use 'fetch-country' and 'default-country-code' options in the same time`)
-        if (this.defaultCountryCode && this.noUseBrowserLocale)
-          throw new Error(`VuePhoneNumberInput: If you use a 'default-country-code', do not use 'no-use-browser-locale' options`)
+        if (this.defaultCountryCode && this.fetchCountry) {
+          throw new Error('MazPhoneNumberInput: Do not use "fetch-country" and "default-country-code" options in the same time')
+        }
+
+        if (this.defaultCountryCode && this.noUseBrowserLocale) {
+          throw new Error('MazPhoneNumberInput: If you use a "default-country-code", do not use "no-use-browser-locale" options')
+        }
+
         if (this.defaultCountryCode) return
+
         this.fetchCountry
           ? this.fetchCountryCode()
           : !this.noUseBrowserLocale
             ? this.setLocale(browserLocale())
             : null
       } catch (err) {
-        console.error(err)
+        throw new Error(err)
       }
     },
     methods: {
@@ -262,8 +279,7 @@
         if (countryAvailable && locale) {
           this.countryCode = locale
         } else if (!countryAvailable && locale) {
-          // If default country code is not available
-          console.warn(`The locale ${locale} is not available`)
+          window.console.warn(`The locale ${locale} is not available`)
         }
         this.userLocale = countryAvailable ? locale : null
       },
@@ -274,22 +290,8 @@
           const result = (responseText || '').toString()
           if (result && result[0] === '1') this.setLocale(result.substr(2, 2))
         } catch (err) {
-          console.error(err)
+          throw new Error(err)
         }
-      },
-      setCssVars () {
-        cssVars({
-          variables: this.cssTheme
-        })
-      }
-    },
-    watch: {
-      defaultCountryCode (newValue, oldValue) {
-        if (newValue === oldValue) return
-        this.setLocale(newValue)
-      },
-      dark () {
-        this.setCssVars()
       }
     }
   }

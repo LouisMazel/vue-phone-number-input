@@ -3,43 +3,43 @@
     id="app"
     :class="{ 'dark': dark }"
   >
-    <h1 class="text-center my-3">
+    <h1 class="text-center py-3">
       VuePhoneNumberInput
     </h1>
-    <div class="container mb-3 flex flex-direction-column">
-      <div class="flex align-center justify-content-center mb-3">
+    <div class="container mb-3 flex direction-column">
+      <div class="flex align-center justify-center mb-3">
         <a
-          class="btn btn-dark mr-2 btn-sm"
+          class="btn btn--dark mr-2"
           target="_blank"
           href="https://github.com/LouisMazel/vue-phone-number-input"
         >
           Github
         </a>
         <a
-          class="btn btn-danger btn-sm"
+          class="btn btn--danger"
           target="_blank"
           href="https://www.npmjs.com/package/vue-phone-number-input"
         >
           NPM
         </a>
       </div>
-      <div class="flex align-center justify-content-center">
+      <div class="flex align-center justify-center">
         <button
-          class="btn btn-sm mr-2"
+          class="btn mr-2"
           @click="dark = !dark"
         >
           Toggle Dark Mode
         </button>
 
         <button
-          class="btn btn-success btn-sm mr-2"
+          class="btn btn--success mr-2"
           @click="hasLoaderActive = !hasLoaderActive"
         >
           Toggle loader
         </button>
 
         <button
-          class="btn btn-danger btn-sm"
+          class="btn btn--danger"
           @click="hasErrorActive = !hasErrorActive"
         >
           Toggle error
@@ -63,8 +63,8 @@
               :preferred-countries="countriesList"
               :loader="hasLoaderActive"
               :default-country-code="defaultCountry"
-              :error="hasErrorActive"
               clearable
+              :error="hasErrorActive"
               class="mb-2"
               @update="onUpdate"
             />
@@ -108,7 +108,7 @@
               id="phoneNumber2"
               v-model="phoneNumber2"
               :translations="translations"
-              dark
+              :dark="!dark"
               no-flags
               required
               no-use-browser-locale
@@ -116,7 +116,7 @@
               :error="hasErrorActive"
               class="mb-2"
               clearable
-              color="tomato"
+              color="#FF9933"
               dark-color="#21222e"
               :border-radius="8"
               show-code-on-list
@@ -261,19 +261,29 @@
   }
 </script>
 
+<style lang="scss">
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+</style>
+
 <style lang="scss" scoped>
+@import '@/assets/scss/variables';
 @import 'style-helpers';
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  color: #2C3E50;
+  font-family: 'Roboto', 'Avenir', Helvetica, Arial, sans-serif;
+  color: $text-color;
   height: 100%;
   min-height: 100%;
   padding: 1px;
+  margin: 0;
   font-size: 14px;
 
   &.dark {
-    background-color: darken(#424242, 20%);
+    background-color: $bg-color-dark;
 
     h1 {
       color: rgba(255, 255, 255, 0.7);
@@ -303,10 +313,6 @@ hr {
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-a.btn {
-  line-height: 36px;
 }
 
 .component {
@@ -343,11 +349,11 @@ a.btn {
   }
 
   &.dark {
-    background-color: darken(#424242, 10%);
+    background-color: $bg-color-dark;
     color: #FFF;
 
     textarea {
-      background: #424242;
+      background: $bg-color-dark;
       color: dodgerblue;
     }
   }
@@ -380,8 +386,8 @@ table {
 .dark {
   .component-container,
   .component {
-    border: 1px solid #424242;
-    background-color: darken(#424242, 10%);
+    border: 1px solid $hover-color-dark;
+    background-color: $bg-color-dark;
 
     &:hover {
       box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.6), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -391,7 +397,7 @@ table {
   }
 
   hr {
-    border-color: #424242;
+    border-color: $hover-color-dark;
   }
 
   .btn {
@@ -401,16 +407,16 @@ table {
   }
 
   table tr {
-    background-color: #424242;
-    border-top: 1px solid #424242;
+    background-color: $hover-color-dark;
+    border-top: 1px solid $hover-color-dark;
 
     th,
     td {
-      border: 1px solid #424242;
+      border: 1px solid $hover-color-dark;
     }
 
     &:nth-child(2n) {
-      background-color: darken(#424242, 10%);
+      background-color: $bg-color-dark;
     }
   }
 }
