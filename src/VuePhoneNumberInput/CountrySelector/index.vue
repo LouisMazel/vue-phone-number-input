@@ -76,14 +76,14 @@
         :class="{ 'has-calling-code': showCodeOnList }"
         :style="[radiusStyle, listHeight]"
       >
-        <VirtualList
-          :size="countriesHeight"
-          :remain="7"
-          :start="indexItemToShow"
+        <RecycleScroller
+          v-slot="{ item }"
+          :items="countriesSorted"
+          :item-size="1"
+          key-field="iso2"
         >
           <button
-            v-for="item in countriesSorted"
-            :key="item.code"
+            :key="`item-${item.code}`"
             :class="[
               { 'selected': value === item.iso2 },
               { 'keyboard-selected': value !== item.iso2 && tmpValue === item.iso2 }
@@ -110,7 +110,7 @@
               {{ item.name }}
             </div>
           </button>
-        </VirtualList>
+        </RecycleScroller>
       </div>
     </Transition>
   </div>
@@ -118,13 +118,14 @@
 
 <script>
   import { getCountryCallingCode } from 'libphonenumber-js'
-  import VirtualList from 'vue-virtual-scroll-list'
   import StylesHandler from '@/VuePhoneNumberInput/mixins/StylesHandler'
+
+  import { RecycleScroller } from 'vue-virtual-scroller'
 
   export default {
     name: 'CountrySelector',
     components: {
-      VirtualList
+      RecycleScroller
     },
     mixins: [StylesHandler],
     props: {
@@ -164,8 +165,8 @@
       },
       listHeight () {
         return {
-          height: `${this.countriesHeight * 7}px`,
-          maxHeight: `${this.countriesHeight * 7}px`
+          height: `${(this.countriesHeight + 1) * 7}px`,
+          maxHeight: `${(this.countriesHeight + 1) * 7}px`
         }
       },
       countriesList () {
@@ -230,7 +231,8 @@
       },
       scrollToSelectedOnFocus (arrayIndex) {
         this.$nextTick(() => {
-          this.indexItemToShow = arrayIndex - 3
+          // this.indexItemToShow = arrayIndex - 3
+          this.$refs.countriesList.scrollTop = arrayIndex * (this.countriesHeight + 1) - ((this.countriesHeight + 1) * 3)
         })
       },
       keyboardNav (e) {
@@ -408,7 +410,7 @@
           color: $muted-color;
         }
 
-        &:hover,
+        &.hover,
         &.keyboard-selected {
           background-color: $hover-color;
         }
