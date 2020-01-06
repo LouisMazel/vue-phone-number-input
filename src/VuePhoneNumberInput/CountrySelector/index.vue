@@ -94,6 +94,7 @@
               value === item.iso2 ? bgItemSelectedStyle : null
             ]"
             tabindex="-1"
+            type="button"
             @click.stop="updateValue(item.iso2)"
           >
             <div
