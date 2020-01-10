@@ -1,6 +1,6 @@
 {
   "name": "vue-phone-number-input",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A phone number input made with Vue JS && libphonenumber-js",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "scripts": {
