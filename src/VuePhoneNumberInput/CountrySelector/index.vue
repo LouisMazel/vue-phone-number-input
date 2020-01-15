@@ -14,8 +14,6 @@
     }, size]"
     class="country-selector"
     @blur.capture="handleBlur"
-    @mouseenter="updateHoverState(true)"
-    @mouseleave="updateHoverState(false)"
   >
     <div
       v-if="value && !noFlags"
@@ -150,7 +148,6 @@
     data () {
       return {
         isFocus: false,
-        isHover: false,
         hasListOpen: false,
         selectedIndex: null,
         tmpValue: this.value,
@@ -201,9 +198,6 @@
       }
     },
     methods: {
-      updateHoverState(value) {
-        this.isHover = value
-      },
       handleBlur (e) {
         if (this.$el.contains(e.relatedTarget)) return
         this.isFocus = false
