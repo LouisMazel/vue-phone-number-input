@@ -62,7 +62,6 @@
               :ignored-countries="countriesIgnored"
               :preferred-countries="countriesList"
               :loader="hasLoaderActive"
-              :default-country-code="defaultCountry"
               clearable
               :error="hasErrorActive"
               class="mb-2"
