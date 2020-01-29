@@ -277,11 +277,10 @@
       setLocale (locale) {
         const countryAvailable = isCountryAvailable(locale)
         if (countryAvailable && locale) {
-          this.countryCode = locale
+          this.userLocale = countryAvailable ? locale : null
         } else if (!countryAvailable && locale) {
           window.console.warn(`The locale ${locale} is not available`)
         }
-        this.userLocale = countryAvailable ? locale : null
       },
       async fetchCountryCode () {
         try {
