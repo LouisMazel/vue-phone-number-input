@@ -204,10 +204,11 @@
         this.closeList()
       },
       toggleList () {
-        this.hasListOpen ? this.closeList() : this.openList()
+        this.$refs.countriesList.offsetParent ? this.closeList() : this.openList()
       },
       openList () {
         if (!this.disabled) {
+          this.$refs.CountrySelector.focus()
           this.$emit('open')
           this.isFocus = true
           this.hasListOpen = true
