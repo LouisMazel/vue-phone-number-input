@@ -30,7 +30,7 @@
       :disabled="disabled"
       class="country-selector__input"
       readonly
-      :style="[radiusLeftStyle, inputBorderStyle, inputBoxShadowStyle]"
+      :style="[radiusLeftStyle, inputBorderStyle, inputBoxShadowStyle, inputBgColor]"
       @focus="isFocus = true"
       @keydown="keyboardNav"
       @click.stop="toggleList"
@@ -72,7 +72,7 @@
         ref="countriesList"
         class="country-selector__list"
         :class="{ 'has-calling-code': showCodeOnList }"
-        :style="[radiusStyle, listHeight]"
+        :style="[radiusStyle, listHeight, inputBgColor]"
       >
         <RecycleScroller
           v-slot="{ item }"
@@ -425,14 +425,8 @@
     // Dark Theme
     &.is-dark {
       .country-selector {
-        &__label {
-          color: $secondary-color-dark;
-        }
-
         &__input {
           cursor: pointer;
-          background-color: $bg-color-dark-l;
-          border: 1px solid $third-color-dark;
           color: $secondary-color-dark;
 
           &::-webkit-input-placeholder {
@@ -471,8 +465,6 @@
         }
 
         &__list {
-          background-color: $bg-color-dark-l;
-
           &__item {
             color: $text-color-dark;
 

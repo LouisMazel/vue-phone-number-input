@@ -30,7 +30,9 @@
         noCountrySelector ? radiusStyle : radiusRightStyle,
         inputCaretStyle,
         inputBorderStyle,
-        inputBoxShadowStyle
+        inputBoxShadowStyle,
+        inputBgColor,
+        textColor
       ]"
       @keydown="keyDown"
       @keyup="keyUp"
@@ -284,15 +286,7 @@
 
     &.is-dark {
       .input-tel {
-        &__label {
-          color: $secondary-color-dark;
-        }
-
         &__input {
-          background-color: $bg-color-dark-l;
-          border: 1px solid $third-color-dark;
-          color: $secondary-color-dark;
-
           &::-webkit-input-placeholder {
             color: $secondary-color-dark;
           }
@@ -346,7 +340,7 @@
       .input-tel {
         &__input {
           border-color: $primary-color;
-          box-shadow: 0 0 0 0.2rem $primary-color-transparency;
+          box-shadow: 0 0 0 0.125rem $primary-color-transparency;
         }
 
         &__label {
@@ -356,14 +350,14 @@
 
       &.has-error {
         .input-tel__input {
-          box-shadow: 0 0 0 0.2rem $danger-color-transparency;
+          box-shadow: 0 0 0 0.125rem $danger-color-transparency;
         }
       }
 
       &.is-valid {
         .input-tel__input {
           border-color: $success-color;
-          box-shadow: 0 0 0 0.2rem $success-color-transparency;
+          box-shadow: 0 0 0 0.125rem $success-color-transparency;
         }
       }
     }

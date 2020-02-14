@@ -179,6 +179,8 @@
         return {
           colorValue: this.color,
           color: { color: this.color },
+          textColor: { color: '#747474' },
+          textDarkColor: { color: 'rgba(255, 255, 255, 0.7)' },
           validColor: { color: this.validColor },
           errorColor: { color: this.errorColor },
           darkColor: { color: this.darkColor },
@@ -190,9 +192,9 @@
           borderValidColor: { borderColor: this.validColor },
           borderErrorColor: { borderColor: this.errorColor },
           borderDarkColor: { borderColor: this.darkColor },
-          boxShadowColor: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.color)}` },
-          boxShadowValid: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.validColor)}` },
-          boxShadowError: { boxShadow: `0 0 0 0.2rem ${getShadowColor(this.errorColor)}` },
+          boxShadowColor: { boxShadow: `0 0 0 0.125rem ${getShadowColor(this.color)}` },
+          boxShadowValid: { boxShadow: `0 0 0 0.125rem ${getShadowColor(this.validColor)}` },
+          boxShadowError: { boxShadow: `0 0 0 0.125rem ${getShadowColor(this.errorColor)}` },
           borderRadius: { borderRadius: `${this.borderRadius}px` },
           borderLeftRadius: { borderTopLeftRadius: `${this.borderRadius}px`, borderBottomLeftRadius: `${this.borderRadius}px` },
           borderRightRadius: { borderTopRightRadius: `${this.borderRadius}px`, borderBottomRightRadius: `${this.borderRadius}px` }
