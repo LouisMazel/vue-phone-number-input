@@ -107,7 +107,6 @@
               id="phoneNumber2"
               v-model="phoneNumber2"
               :translations="translations"
-              :dark="!dark"
               no-flags
               required
               no-use-browser-locale
@@ -116,7 +115,8 @@
               class="mb-2"
               clearable
               color="#FF9933"
-              dark-color="#21222e"
+              dark
+              dark-color="#303144"
               :border-radius="8"
               show-code-on-list
               @update="onUpdate2"
