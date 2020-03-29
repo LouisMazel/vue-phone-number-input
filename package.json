@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
-    "@vue/cli-plugin-eslint": "^3.3.0",
+    "@vue/cli-plugin-eslint": "^4.2.3",
     "@vue/cli-service": "^4.1.1",
     "babel-eslint": "^10.0.1",
     "color-transformer-ui": "0.0.2",
