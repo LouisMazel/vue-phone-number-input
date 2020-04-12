@@ -139,10 +139,10 @@
       },
       countryCode: {
         get () {
-          return this.results.countryCode || this.userLocale
+          return this.userLocale || this.results.countryCode
         },
         set (newCountry) {
-          this.emitValues({countryCode: newCountry, phoneNumber: this.phoneNumber})
+          this.setLocale(newCountry)
           this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
         }
       },
@@ -280,6 +280,7 @@
         const countryAvailable = isCountryAvailable(locale)
         if (countryAvailable && locale) {
           this.userLocale = countryAvailable ? locale : null
+          this.emitValues({countryCode: locale, phoneNumber: this.phoneNumber})
         } else if (!countryAvailable && locale) {
           window.console.warn(`The locale ${locale} is not available`)
         }
