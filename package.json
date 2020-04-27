@@ -9,8 +9,8 @@
     "build": "npm run build:lib && npm run build:docs",
     "test": "vue-cli-service test:unit /test/specs",
     "lint": "vue-cli-service lint && npm run lint:style",
-    "lint:style": "stylelint 'src/**/*.scss' 'src/**/*.vue'",
-    "lint:style:fix": "stylelint 'src/**/*.scss' 'src/**/*.vue' --fix",
+    "lint:style": "stylelint 'src/**/*{.scss,.vue}'",
+    "lint:style:fix": "npm run lint -- --fix",
     "before-publish": "npm audit && npm run lint && npm i && npm run build",
     "build:docs": "vue-cli-service build --dest docs --mode production",
     "build:lib": "vue-cli-service build --target lib ./src/VuePhoneNumberInput/index.vue",
@@ -25,29 +25,29 @@
     "nuxt/"
   ],
   "dependencies": {
-    "libphonenumber-js": "^1.7.26",
-    "style-helpers": "^1.0.1",
-    "vue": "^2.6.10",
-    "vue-virtual-scroller": "^1.0.0-rc.2"
+    "libphonenumber-js": "^1.7.51",
+    "style-helpers": "^1.0.2",
+    "vue": "^2.6.11",
+    "vue-virtual-scroller": "^1.0.10"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.3.0",
-    "@vue/cli-plugin-eslint": "^4.2.3",
-    "@vue/cli-service": "^4.1.1",
-    "babel-eslint": "^10.0.1",
+    "@vue/cli-plugin-babel": "^3.12.1",
+    "@vue/cli-plugin-eslint": "^4.3.1",
+    "@vue/cli-service": "^4.3.1",
+    "babel-eslint": "^10.1.0",
     "color-transformer-ui": "0.0.2",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.13.1",
-    "nuxt": "^2.10.2",
+    "node-sass": "^4.14.0",
+    "nuxt": "^2.12.2",
     "path": "^0.12.7",
-    "sass-loader": "^7.1.0",
+    "sass-loader": "^8.0.2",
     "stylelint": "^11.1.1",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
-    "stylelint-scss": "^3.12.1",
+    "stylelint-scss": "^3.17.1",
     "vue-server-renderer": "^2.6.11",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.6.11"
   },
   "postcss": {
     "plugins": {

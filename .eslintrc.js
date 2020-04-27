@@ -28,7 +28,8 @@ module.exports = {
     'vue/no-v-html': 'error',
     'vue/order-in-components': 'error',
     'vue/this-in-template': 'error',
-    'vue/script-indent': 'error'
+    'vue/script-indent': 'error',
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },
 
   parserOptions: {
