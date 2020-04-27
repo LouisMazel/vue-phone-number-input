@@ -151,7 +151,7 @@
           return this.value
         },
         set (newPhone) {
-          this.emitValues({countryCode: this.countryCode, phoneNumber: newPhone})
+          this.emitValues({ countryCode: this.countryCode, phoneNumber: newPhone })
         }
       },
       shouldChooseCountry () {
@@ -205,6 +205,21 @@
       defaultCountryCode (newValue, oldValue) {
         if (newValue === oldValue) return
         this.setLocale(newValue)
+      },
+      phoneNumber: {
+        handler (newValue, oldValue) {
+          // init component (countryCode & phoneNumber) if phone number is provide
+          if (newValue && (newValue !== oldValue)) {
+            const phoneNumber = parsePhoneNumberFromString(newValue)
+            if (phoneNumber) {
+              this.emitValues({
+                phoneNumber: phoneNumber.nationalNumber,
+                countryCode: this.countryCode ? this.countryCode : phoneNumber.country
+              })
+            }
+          }
+        },
+        immediate: true
       }
     },
     async mounted () {

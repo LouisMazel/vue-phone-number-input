@@ -168,7 +168,7 @@
             class="mb-2"
             @update="onUpdate3"
           />
-          <b>v-model</b> : {{ phoneNumber2 }}
+          <b>v-model</b> : {{ phoneNumber3 }}
           <br>
           <b>Current country code</b> : {{ defaultCountry }}
         </div>
