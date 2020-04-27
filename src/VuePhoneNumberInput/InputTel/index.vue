@@ -70,6 +70,7 @@
       class="input-tel__loader"
     >
       <div
+        :style="[loaderBgColor]"
         class="input-tel__loader__progress-bar"
       />
     </div>
@@ -494,8 +495,8 @@
     &__loader {
       bottom: 0;
       height: 2px;
-      left: 2px;
-      width: calc(100% - 4px);
+      left: 0;
+      width: calc(100% - 8px);
       position: absolute;
       overflow: hidden;
       border-radius: 8px;

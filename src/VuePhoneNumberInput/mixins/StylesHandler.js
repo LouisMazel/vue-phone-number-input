@@ -44,6 +44,9 @@ export default {
     },
     bgItemSelectedStyle () {
       return this.theme.bgColor
+    },
+    loaderBgColor () {
+      return this.theme.bgColor
     }
   }
 }
