@@ -18,13 +18,13 @@
 
 The new version of VuePhoneNumberInput is now on my **new library** [Maz-UI](https://louismazel.github.io/maz-ui/)
 
-See **doc/demo** page of [MazPhoneNumberInput](https://louismazel.github.io/maz-ui/#/documentation/phone-number-input)
+See **doc/demo** page of [MazPhoneNumberInput](https://louismazel.github.io/maz-ui/documentation/maz-phone-number-input)
 
 Some options may change, check the props documentation with the top right button
 
 In this new library, you can enjoy lot of others components in the same style.
 You can just install the component you want (and not the whole library), for this
-Read the [Get started](https://louismazel.github.io/maz-ui/#/documentation/get-started) page
+Read the [Get started](https://louismazel.github.io/maz-ui/documentation/get-started) page
 
 If you have any problem or question, do no hesitate to ask me !
 
