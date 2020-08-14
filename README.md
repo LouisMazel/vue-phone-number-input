@@ -135,6 +135,9 @@ Vue.component('vue-phone-number-input', VuePhoneNumberInput);
 
 (4) translations comes to replace default texts - Ex :
 
+Usage Example for attributes
+<VuePhoneNumberInput v-model="phone" default-country-code="IN" v-bind:error="true" :only-countries="['IN','US','AE']" />
+
 ```html
 translations="{
   countrySelectorLabel: 'Code pays',
