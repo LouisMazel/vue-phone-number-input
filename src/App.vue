@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    :class="{ 'dark': dark }"
+    :class="{ dark: dark }"
   >
     <h1 class="text-center py-3">
       VuePhoneNumberInput
@@ -61,6 +61,8 @@
               :disabled="disabled"
               :ignored-countries="countriesIgnored"
               :preferred-countries="countriesList"
+              :is-show-simple-label="false"
+              :is-show-label-country="false"
               :loader="hasLoaderActive"
               clearable
               :error="hasErrorActive"
@@ -91,6 +93,7 @@
                   <td>{{ results[item] }}</td>
                 </tr>
               </table>
+
               <div class="flex flex-direction-column flex-1">
                 <b>Payload:</b>
                 {{ results }}
@@ -144,6 +147,7 @@
                   <td>{{ results2[item] }}</td>
                 </tr>
               </table>
+
               <div class="flex flex-direction-column  flex-1">
                 <b>Payload:</b>
                 {{ results2 }}
@@ -193,6 +197,7 @@
                 <td>{{ results3[item] }}</td>
               </tr>
             </table>
+
             <div class="flex flex-direction-column flex-1">
               <b>Payload:</b>
               {{ results3 }}
@@ -236,24 +241,24 @@
       }
     },
     computed: {
-      resultsTable () {
+      resultsTable() {
         return Object.keys(this.results)
       },
-      resultsTable2 () {
+      resultsTable2() {
         return Object.keys(this.results2)
       },
-      resultsTable3 () {
+      resultsTable3() {
         return Object.keys(this.results3)
       }
     },
     methods: {
-      onUpdate (payload) {
+      onUpdate(payload) {
         this.results = payload
       },
-      onUpdate2 (payload) {
+      onUpdate2(payload) {
         this.results2 = payload
       },
-      onUpdate3 (payload) {
+      onUpdate3(payload) {
         this.results3 = payload
       }
     }
@@ -269,11 +274,11 @@ body {
 </style>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/variables';
-@import 'style-helpers';
+@import "@/assets/scss/variables";
+@import "style-helpers";
 
 #app {
-  font-family: 'Roboto', 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Roboto", "Avenir", Helvetica, Arial, sans-serif;
   color: $text-color;
   height: 100%;
   min-height: 100%;
@@ -305,7 +310,7 @@ h6 {
 
 hr {
   border: 0;
-  border-top: 1px solid #EBEBEB;
+  border-top: 1px solid #ebebeb;
 }
 
 *,
@@ -316,13 +321,12 @@ hr {
 
 .component {
   padding: 10px;
-  background: #FFF;
+  background: #fff;
   border-radius: 4px;
-  border: 1px solid #EBEBEB;
+  border: 1px solid #ebebeb;
 
   &:hover {
-    box-shadow:
-      0 0 8px 0 rgba(232, 237, 250, 0.6),
+    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
       0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
 
@@ -334,22 +338,21 @@ hr {
 .component-container {
   margin: 0 10px 20px 10px;
   padding: 20px;
-  background: #FFF;
+  background: #fff;
   border-radius: 4px;
-  border: 1px solid #EBEBEB;
+  border: 1px solid #ebebeb;
   min-width: 300px;
   transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   flex: 1 0 48%;
 
   &:hover {
-    box-shadow:
-      0 0 8px 0 rgba(232, 237, 250, 0.6),
+    box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6),
       0 2px 4px 0 rgba(232, 237, 250, 0.5);
   }
 
   &.dark {
     background-color: $bg-color-dark;
-    color: #FFF;
+    color: #fff;
 
     textarea {
       background: $bg-color-dark;
@@ -367,17 +370,17 @@ table {
   margin-bottom: 16px;
 
   tr {
-    background-color: #FFF;
-    border-top: 1px solid #C6CBD1;
+    background-color: #fff;
+    border-top: 1px solid #c6cbd1;
 
     th,
     td {
       padding: 6px 13px;
-      border: 1px solid #DFE2E5;
+      border: 1px solid #dfe2e5;
     }
 
     &:nth-child(2n) {
-      background-color: #F6F8FA;
+      background-color: #f6f8fa;
     }
   }
 }
