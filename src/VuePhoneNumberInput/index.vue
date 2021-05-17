@@ -1,7 +1,7 @@
 <template>
   <div
     :id="id"
-    :class="[{ 'dark': dark }, size]"
+    :class="[{ dark: dark }, size]"
     class="vue-phone-number-input flex"
   >
     <div
@@ -19,6 +19,7 @@
         :disabled="disabled"
         :valid="isValid && !noValidatorState"
         :preferred-countries="preferredCountries"
+        :is-show-label-country="isShowLabelCountry"
         :only-countries="onlyCountries"
         :ignored-countries="ignoredCountries"
         :label="t.countrySelectorLabel"
@@ -49,10 +50,15 @@
         :valid="isValid && !noValidatorState"
         :required="required"
         :no-country-selector="noCountrySelector"
+        :is-show-simple-label="isShowSimpleLabel"
         v-bind="$attrs"
         :theme="theme"
         class="input-phone-number"
-        @keydown="(e) => { lastKeyPressed = e.keyCode }"
+        @keydown="
+          e => {
+            lastKeyPressed = e.keyCode;
+          }
+        "
         @focus="$emit('phone-number-focused')"
         @blur="$emit('phone-number-blur')"
       />
@@ -62,25 +68,32 @@
 <script>
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
-  import { parsePhoneNumberFromString, AsYouType, getExampleNumber } from 'libphonenumber-js'
+  import {
+    parsePhoneNumberFromString,
+    AsYouType,
+    getExampleNumber
+  } from 'libphonenumber-js'
   import InputTel from './InputTel'
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
   import { HexToRgba, isColorName, colorNameToHex } from 'color-transformer-ui'
 
-  const getShadowColor = (color) => {
-    return isColorName(color) ? HexToRgba(colorNameToHex(color), 0.7) : HexToRgba(color, 0.7)
+  const getShadowColor = color => {
+    return isColorName(color)
+      ? HexToRgba(colorNameToHex(color), 0.7)
+      : HexToRgba(color, 0.7)
   }
 
   const browserLocale = () => {
     if (!window) return null
-    const browserLocale = window.navigator.userLanguage || window.navigator.language
+    const browserLocale =
+      window.navigator.userLanguage || window.navigator.language
     let locale = browserLocale ? browserLocale.substr(3, 4).toUpperCase() : null
     if (locale === '') locale = browserLocale.substr(0, 2).toUpperCase()
     return locale
   }
 
-  const isCountryAvailable = (locale) => {
+  const isCountryAvailable = locale => {
     return countriesIso.includes(locale)
   }
 
@@ -115,9 +128,11 @@
       noCountrySelector: { type: Boolean, default: false },
       showCodeOnList: { type: Boolean, default: false },
       dark: { type: Boolean, default: false },
-      borderRadius: { type: Number, default: 4 }
+      borderRadius: { type: Number, default: 4 },
+      isShowLabelCountry: { type: Boolean, default: true },
+      isShowSimpleLabel: { type: Boolean, default: true }
     },
-    data () {
+    data() {
       return {
         results: {},
         userLocale: this.defaultCountryCode,
@@ -125,57 +140,64 @@
       }
     },
     computed: {
-      uniqueId () {
+      uniqueId() {
         return `${this.id}-${this._uid}`
       },
-      t () {
+      t() {
         return {
           ...locales,
           ...this.translations
         }
       },
-      codesCountries () {
+      codesCountries() {
         return countries
       },
       countryCode: {
-        get () {
+        get() {
           return this.userLocale || this.results.countryCode
         },
-        set (newCountry) {
+        set(newCountry) {
           this.setLocale(newCountry)
           this.$refs.PhoneNumberInput.$el.querySelector('input').focus()
         }
       },
       phoneNumber: {
-        get () {
+        get() {
           return this.value
         },
-        set (newPhone) {
-          this.emitValues({ countryCode: this.countryCode, phoneNumber: newPhone })
+        set(newPhone) {
+          this.emitValues({
+            countryCode: this.countryCode,
+            phoneNumber: newPhone
+          })
         }
       },
-      shouldChooseCountry () {
+      shouldChooseCountry() {
         return !this.countryCode && !!this.phoneNumber
       },
-      phoneFormatted () {
+      phoneFormatted() {
         return this.results.formatInternational
       },
-      isValid () {
+      isValid() {
         return this.results.isValid
       },
-      phoneNumberExample () {
-        const phoneNumber = this.countryCode ? getExampleNumber(this.countryCode, examples) : null
+      phoneNumberExample() {
+        const phoneNumber = this.countryCode
+          ? getExampleNumber(this.countryCode, examples)
+          : null
         return phoneNumber ? phoneNumber.formatNational() : null
       },
-      hasEmptyPhone () {
+      hasEmptyPhone() {
         return this.phoneNumber === '' || this.phoneNumber === null
       },
-      hintValue () {
-        return  this.noExample || !this.phoneNumberExample
+      hintValue() {
+        return this.noExample || !this.phoneNumberExample
           ? null
-          : this.hasEmptyPhone || this.isValid ? null : `${this.t.example} ${this.phoneNumberExample}`
+          : this.hasEmptyPhone || this.isValid
+            ? null
+            : `${this.t.example} ${this.phoneNumberExample}`
       },
-      theme () {
+      theme() {
         return {
           colorValue: this.color,
           color: { color: this.color },
@@ -192,29 +214,43 @@
           borderValidColor: { borderColor: this.validColor },
           borderErrorColor: { borderColor: this.errorColor },
           borderDarkColor: { borderColor: this.darkColor },
-          boxShadowColor: { boxShadow: `0 0 0 0.125rem ${getShadowColor(this.color)}` },
-          boxShadowValid: { boxShadow: `0 0 0 0.125rem ${getShadowColor(this.validColor)}` },
-          boxShadowError: { boxShadow: `0 0 0 0.125rem ${getShadowColor(this.errorColor)}` },
+          boxShadowColor: {
+            boxShadow: `0 0 0 0.125rem ${getShadowColor(this.color)}`
+          },
+          boxShadowValid: {
+            boxShadow: `0 0 0 0.125rem ${getShadowColor(this.validColor)}`
+          },
+          boxShadowError: {
+            boxShadow: `0 0 0 0.125rem ${getShadowColor(this.errorColor)}`
+          },
           borderRadius: { borderRadius: `${this.borderRadius}px` },
-          borderLeftRadius: { borderTopLeftRadius: `${this.borderRadius}px`, borderBottomLeftRadius: `${this.borderRadius}px` },
-          borderRightRadius: { borderTopRightRadius: `${this.borderRadius}px`, borderBottomRightRadius: `${this.borderRadius}px` }
+          borderLeftRadius: {
+            borderTopLeftRadius: `${this.borderRadius}px`,
+            borderBottomLeftRadius: `${this.borderRadius}px`
+          },
+          borderRightRadius: {
+            borderTopRightRadius: `${this.borderRadius}px`,
+            borderBottomRightRadius: `${this.borderRadius}px`
+          }
         }
       }
     },
     watch: {
-      defaultCountryCode (newValue, oldValue) {
+      defaultCountryCode(newValue, oldValue) {
         if (newValue === oldValue) return
         this.setLocale(newValue)
       },
       phoneNumber: {
-        handler (newValue, oldValue) {
+        handler(newValue, oldValue) {
           // init component (countryCode & phoneNumber) if phone number is provide
-          if (newValue && (newValue !== oldValue)) {
+          if (newValue && newValue !== oldValue) {
             const phoneNumber = parsePhoneNumberFromString(newValue)
             if (phoneNumber) {
               this.emitValues({
                 phoneNumber: phoneNumber.nationalNumber,
-                countryCode: this.countryCode ? this.countryCode : phoneNumber.country
+                countryCode: this.countryCode
+                  ? this.countryCode
+                  : phoneNumber.country
               })
             }
           }
@@ -222,16 +258,24 @@
         immediate: true
       }
     },
-    async mounted () {
+    async mounted() {
       try {
-        if (this.phoneNumber && this.defaultCountryCode) this.emitValues({countryCode: this.defaultCountryCode, phoneNumber: this.phoneNumber})
+        if (this.phoneNumber && this.defaultCountryCode)
+          this.emitValues({
+            countryCode: this.defaultCountryCode,
+            phoneNumber: this.phoneNumber
+          })
 
         if (this.defaultCountryCode && this.fetchCountry) {
-          throw new Error('MazPhoneNumberInput: Do not use "fetch-country" and "default-country-code" options in the same time')
+          throw new Error(
+            'MazPhoneNumberInput: Do not use "fetch-country" and "default-country-code" options in the same time'
+          )
         }
 
         if (this.defaultCountryCode && this.noUseBrowserLocale) {
-          throw new Error('MazPhoneNumberInput: If you use a "default-country-code", do not use "no-use-browser-locale" options')
+          throw new Error(
+            'MazPhoneNumberInput: If you use a "default-country-code", do not use "no-use-browser-locale" options'
+          )
         }
 
         if (this.defaultCountryCode) return
@@ -246,20 +290,22 @@
       }
     },
     methods: {
-      getAsYouTypeFormat (payload) {
+      getAsYouTypeFormat(payload) {
         const { countryCode, phoneNumber } = payload
         const asYouType = new AsYouType(countryCode)
         return phoneNumber ? asYouType.input(phoneNumber) : null
       },
-      getParsePhoneNumberFromString ({ phoneNumber, countryCode }) {
-        const parsing = phoneNumber && countryCode ? parsePhoneNumberFromString(phoneNumber, countryCode) : null
+      getParsePhoneNumberFromString({ phoneNumber, countryCode }) {
+        const parsing =
+          phoneNumber && countryCode
+            ? parsePhoneNumberFromString(phoneNumber, countryCode)
+            : null
         return {
           countryCode: countryCode,
           isValid: false,
-          ...(phoneNumber && (phoneNumber !== '')
-            ? { phoneNumber : phoneNumber }
-            : null
-          ),
+          ...(phoneNumber && phoneNumber !== ''
+            ? { phoneNumber: phoneNumber }
+            : null),
           ...(parsing
             ? {
               countryCallingCode: parsing.countryCallingCode,
@@ -272,17 +318,22 @@
               uri: parsing.getURI(),
               e164: parsing.format('E.164')
             }
-            : null
-          )
+            : null)
         }
       },
-      emitValues (payload) {
+      emitValues(payload) {
         let asYouType = this.getAsYouTypeFormat(payload)
         const backSpacePressed = this.lastKeyPressed === 8
 
         this.$nextTick(() => {
-          const lastCharacOfPhoneNumber = this.phoneNumber ? this.phoneNumber.trim().slice(-1) : false
-          if (backSpacePressed && lastCharacOfPhoneNumber && (lastCharacOfPhoneNumber.slice(-1) === ')')) {
+          const lastCharacOfPhoneNumber = this.phoneNumber
+            ? this.phoneNumber.trim().slice(-1)
+            : false
+          if (
+            backSpacePressed &&
+            lastCharacOfPhoneNumber &&
+            lastCharacOfPhoneNumber.slice(-1) === ')'
+          ) {
             asYouType = this.phoneNumber.slice(0, -2)
             payload.phoneNumber = this.phoneNumber.slice(0, -2)
           }
@@ -292,18 +343,18 @@
           this.$emit('input', asYouType)
         })
       },
-      setLocale (locale) {
+      setLocale(locale) {
         const countryAvailable = isCountryAvailable(locale)
         if (countryAvailable && locale) {
           this.userLocale = countryAvailable ? locale : null
-          this.emitValues({countryCode: locale, phoneNumber: this.phoneNumber})
+          this.emitValues({ countryCode: locale, phoneNumber: this.phoneNumber })
         } else if (!countryAvailable && locale) {
           window.console.warn(`The locale ${locale} is not available`)
         }
       },
-      async fetchCountryCode () {
+      async fetchCountryCode() {
         try {
-          const response  = await fetch('https://ip2c.org/s')
+          const response = await fetch('https://ip2c.org/s')
           const responseText = await response.text()
           const result = (responseText || '').toString()
           if (result && result[0] === '1') this.setLocale(result.substr(2, 2))
@@ -315,28 +366,28 @@
   }
 </script>
 <style lang="scss" scoped>
-  @import 'style-helpers';
+@import "style-helpers";
 
-  .vue-phone-number-input {
-    .select-country-container {
-      flex: 0 0 120px;
-      width: 120px;
-      min-width: 120px;
-      max-width: 120px;
-    }
-
-    &.sm .select-country-container {
-      flex: 0 0 110px;
-      width: 110px;
-      min-width: 110px;
-      max-width: 110px;
-    }
-
-    &.lg .select-country-container {
-      flex: 0 0 130px;
-      width: 130px;
-      min-width: 130px;
-      max-width: 130px;
-    }
+.vue-phone-number-input {
+  .select-country-container {
+    flex: 0 0 120px;
+    width: 120px;
+    min-width: 120px;
+    max-width: 120px;
   }
+
+  &.sm .select-country-container {
+    flex: 0 0 110px;
+    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
+  }
+
+  &.lg .select-country-container {
+    flex: 0 0 130px;
+    width: 130px;
+    min-width: 130px;
+    max-width: 130px;
+  }
+}
 </style>
