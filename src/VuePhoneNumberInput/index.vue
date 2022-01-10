@@ -55,6 +55,7 @@
         @keydown="(e) => { lastKeyPressed = e.keyCode }"
         @focus="$emit('phone-number-focused')"
         @blur="$emit('phone-number-blur')"
+        @enter="$emit('enter-button-pressed')"
       />
     </div>
   </div>
