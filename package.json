@@ -38,7 +38,7 @@
     "color-transformer-ui": "0.0.2",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "nuxt": "^2.12.2",
     "path": "^0.12.7",
     "sass-loader": "^8.0.2",
