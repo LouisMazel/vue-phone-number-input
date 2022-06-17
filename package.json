@@ -18,14 +18,15 @@
     "serve:build": "vue-cli-service serve --mode production",
     "test:unit": "vue-cli-service test:unit",
     "test:unit:watch": "vue-cli-service test:unit --watch",
-    "ui": "vue ui"
+    "ui": "vue ui",
+    "prepare": "npm run build"
   },
   "files": [
     "dist/",
     "nuxt/"
   ],
   "dependencies": {
-    "libphonenumber-js": "^1.7.51",
+    "libphonenumber-js": "^1.10.6",
     "style-helpers": "^1.0.2",
     "vue": "^2.6.11",
     "vue-virtual-scroller": "^1.0.10"
