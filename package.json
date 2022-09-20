@@ -35,7 +35,7 @@
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-service": "^4.3.1",
     "babel-eslint": "^10.1.0",
-    "color-transformer-ui": "0.0.2",
+    "color-transformer-ui": "^1.0.3",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^9.5.1",
     "nuxt": "^2.12.2",
