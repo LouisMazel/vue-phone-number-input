@@ -27,7 +27,7 @@
   "dependencies": {
     "libphonenumber-js": "^1.10.13",
     "style-helpers": "^1.0.2",
-    "vue": "^2.6.11",
+    "vue": "^2.6.0",
     "vue-virtual-scroller": "^1.0.10"
   },
   "devDependencies": {
@@ -46,8 +46,9 @@
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
     "stylelint-scss": "^3.17.1",
-    "vue-server-renderer": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "^2.6.14",
+    "vue-server-renderer": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
   },
   "postcss": {
     "plugins": {
