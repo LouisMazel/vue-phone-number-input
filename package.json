@@ -25,7 +25,7 @@
     "nuxt/"
   ],
   "dependencies": {
-    "libphonenumber-js": "^1.7.51",
+    "libphonenumber-js": "^1.10.13",
     "style-helpers": "^1.0.2",
     "vue": "^2.6.11",
     "vue-virtual-scroller": "^1.0.10"
