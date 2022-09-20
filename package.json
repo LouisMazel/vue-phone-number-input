@@ -1,6 +1,6 @@
 {
   "name": "vue-phone-number-input",
-  "version": "1.1.12",
+  "version": "1.12.13",
   "description": "A phone number input made with Vue JS && libphonenumber-js",
   "author": "Louis Mazel <me@loicmazuel.com>",
   "scripts": {
@@ -25,9 +25,9 @@
     "nuxt/"
   ],
   "dependencies": {
-    "libphonenumber-js": "^1.7.51",
+    "libphonenumber-js": "^1.10.13",
     "style-helpers": "^1.0.2",
-    "vue": "^2.6.11",
+    "vue": "^2.6.0",
     "vue-virtual-scroller": "^1.0.10"
   },
   "devDependencies": {
@@ -35,19 +35,20 @@
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-service": "^4.3.1",
     "babel-eslint": "^10.1.0",
-    "color-transformer-ui": "0.0.2",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.14.1",
+    "color-transformer-ui": "^1.0.3",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^9.5.1",
     "nuxt": "^2.12.2",
     "path": "^0.12.7",
-    "sass-loader": "^8.0.2",
+    "sass": "^1.54.9",
+    "sass-loader": "^10.3.1",
     "stylelint": "^13.6.1",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",
     "stylelint-scss": "^3.17.1",
-    "vue-server-renderer": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "^2.6.14",
+    "vue-server-renderer": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
   },
   "postcss": {
     "plugins": {

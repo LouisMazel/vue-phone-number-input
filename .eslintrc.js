@@ -23,12 +23,12 @@ module.exports = {
     quotes: ['error', 'single'],
     'no-var': 'error',
     'vue/attributes-order': 'error',
-    'vue/no-confusing-v-for-v-if': 'error',
     'no-unused-vars': 'error',
     'vue/no-v-html': 'error',
     'vue/order-in-components': 'error',
     'vue/this-in-template': 'error',
     'vue/script-indent': 'error',
+    'vue/multi-word-component-names': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },
 

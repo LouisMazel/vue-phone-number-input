@@ -59,6 +59,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
@@ -66,10 +67,10 @@
   import InputTel from './InputTel'
   import CountrySelector from './CountrySelector'
   import locales from './assets/locales'
-  import { HexToRgba, isColorName, colorNameToHex } from 'color-transformer-ui'
+  import { hexToRgba, isColorName, colorNameToHex } from 'color-transformer-ui'
 
   const getShadowColor = (color) => {
-    return isColorName(color) ? HexToRgba(colorNameToHex(color), 0.7) : HexToRgba(color, 0.7)
+    return isColorName(color) ? hexToRgba(colorNameToHex(color), 0.7) : hexToRgba(color, 0.7)
   }
 
   const browserLocale = () => {
@@ -85,7 +86,7 @@
   }
 
   export default {
-    name: 'MazPhoneNumberInput',
+    name: 'VuePhoneNumberInput',
     components: {
       InputTel,
       CountrySelector
