@@ -28,6 +28,7 @@ module.exports = {
     'vue/order-in-components': 'error',
     'vue/this-in-template': 'error',
     'vue/script-indent': 'error',
+    'vue/multi-word-component-names': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },
 
