@@ -41,7 +41,7 @@
     "nuxt": "^2.12.2",
     "path": "^0.12.7",
     "sass": "^1.54.9",
-    "sass-loader": "^8.0.2",
+    "sass-loader": "^10.3.1",
     "stylelint": "^13.6.1",
     "stylelint-config-standard": "^19.0.0",
     "stylelint-order": "^3.1.1",

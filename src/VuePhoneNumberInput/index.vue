@@ -59,6 +59,7 @@
     </div>
   </div>
 </template>
+
 <script>
   import { countries, countriesIso } from './assets/js/phoneCodeCountries.js'
   import examples from 'libphonenumber-js/examples.mobile.json'
@@ -85,7 +86,7 @@
   }
 
   export default {
-    name: 'MazPhoneNumberInput',
+    name: 'VuePhoneNumberInput',
     components: {
       InputTel,
       CountrySelector
