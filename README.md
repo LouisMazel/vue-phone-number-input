@@ -48,7 +48,7 @@ The version for **Vue 3** is available here: **[maz-ui v3.x - MazPhoneNumberInpu
 import VuePhoneNumberInput from 'vue-phone-number-input';
 import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 
-Vue.component('vue-phone-number-input', VuePhoneNumberInput);
+Vue.component('VuePhoneNumberInput', VuePhoneNumberInput);
 ```
 
 ```html
