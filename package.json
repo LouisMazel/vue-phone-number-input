@@ -31,14 +31,14 @@
     "vue-virtual-scroller": "^1.0.10"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-eslint": "^4.3.1",
-    "@vue/cli-service": "^4.3.1",
+    "@vue/cli-plugin-babel": "^5.0.8",
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
     "babel-eslint": "^10.1.0",
     "color-transformer-ui": "^1.0.3",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^9.5.1",
-    "nuxt": "^2.12.2",
+    "nuxt": "^3.0.0",
     "path": "^0.12.7",
     "sass": "^1.54.9",
     "sass-loader": "^10.3.1",
