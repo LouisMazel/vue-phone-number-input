@@ -149,7 +149,7 @@
       keyDown (e) {
         this.$emit('keydown', e)
       }
-    }
+     }
   }
 </script>
 

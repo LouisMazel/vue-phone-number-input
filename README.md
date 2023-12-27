@@ -18,9 +18,9 @@
 
 The version for **Vue 2** is available here: **[maz-ui v2.x - MazPhoneNumberInput](https://louismazel.github.io/maz-ui/documentation/maz-phone-number-input)**
 
-### New version for Vue 3 on [maz-ui v3.x](https://louismazel.github.io/maz-ui-3)
+### New version for Vue 3 on [maz-ui v3.x](https://maz-ui.com)
 
-The version for **Vue 3** is available here: **[maz-ui v3.x - MazPhoneNumberInput](https://louismazel.github.io/maz-ui-3/components/maz-phone-number-input.html)**
+The version for **Vue 3** is available here: **[maz-ui v3.x - MazPhoneNumberInput](https://maz-ui.com/components/maz-phone-number-input.html)**
 
 ---
 
