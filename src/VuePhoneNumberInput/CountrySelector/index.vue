@@ -252,7 +252,9 @@
               ? this.countriesSorted.length - 1
               : 0
           }
-          this.tmpValue = this.countriesSorted[index].iso2
+          if (this.countriesSorted[index]) {
+             this.tmpValue = this.countriesSorted[index].iso2;
+          }
           this.scrollToSelectedOnFocus(index)
         } else if (code === 13) {
           // enter
